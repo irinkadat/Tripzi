@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>357816486517-taklp36apr783kd2vh4mpk5e8160ibp2.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.357816486517-taklp36apr783kd2vh4mpk5e8160ibp2</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDFyLBT8Xd9vKae-YVequZOK1okkHnnOpI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>357816486517</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>ge.academy.Tripzi</string>
+	<key>PROJECT_ID</key>
+	<string>tripzi-2a08e</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tripzi-2a08e.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:357816486517:ios:ef10cbf6e02137a1eb863c</string>
+</dict>
+</plist>
