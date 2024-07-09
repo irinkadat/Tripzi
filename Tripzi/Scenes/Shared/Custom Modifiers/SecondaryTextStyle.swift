@@ -5,4 +5,18 @@
 //  Created by Irinka Datoshvili on 09.07.24.
 //
 
-import Foundation
+import SwiftUI
+
+struct SecondaryTextStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.subheadline)
+            .foregroundColor(.secondary)
+    }
+}
+
+extension View {
+    func secondaryTextStyle() -> some View {
+        self.modifier(SecondaryTextStyle())
+    }
+}

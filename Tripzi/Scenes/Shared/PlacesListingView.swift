@@ -1,5 +1,5 @@
 //
-//  ListingView.swift
+//  PlacesListingView.swift
 //  Tripzi
 //
 //  Created by Irinka Datoshvili on 08.07.24.
@@ -18,7 +18,7 @@ struct Listing: Identifiable {
     var rating: Double
 }
 
-struct ListingView: View {
+struct PlacesListingView: View {
     var listing: Listing
     
     var body: some View {
@@ -70,7 +70,7 @@ struct ListingView: View {
                     HStack {
                         Text(listing.price)
                             .font(.headline)
-
+                        
                     }
                     .padding(.top, 4)
                 }
@@ -83,7 +83,7 @@ struct ListingView: View {
 }
 
 #Preview {
-    ListingView(listing: Listing(
+    PlacesListingView(listing: Listing(
         imageName: "desert",
         location: "Two Rivers, Wisconsin",
         designer: "Frank Lloyd Wright",
