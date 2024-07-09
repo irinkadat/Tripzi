@@ -6,24 +6,41 @@
 //
 
 import UIKit
+import SwiftUI
+import Combine
 
 class AuthenticationVC: UIViewController {
-
+    private var viewModel = AuthenticationViewModel()
+    private var hostingController: UIHostingController<AnyView>? = nil
+    private var cancellables: Set<AnyCancellable> = []
+    @Published var email: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        updateUI()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    private func updateUI() {
+        let loginView = AnyView(LoginView().environmentObject(viewModel))
+        switchToSwiftUIView(loginView)
     }
-    */
-
+    
+    private func switchToSwiftUIView(_ swiftUIView: AnyView) {
+        if let hostingController = hostingController {
+            hostingController.rootView = swiftUIView
+        } else {
+            let hostingController = UIHostingController(rootView: swiftUIView)
+            addChild(hostingController)
+            view.addSubview(hostingController.view)
+            hostingController.didMove(toParent: self)
+            hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
+                hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+            self.hostingController = hostingController
+        }
+    }
 }
