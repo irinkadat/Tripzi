@@ -14,6 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
+        
         let window = UIWindow(windowScene: windowScene)
         let rootViewController = RootViewController()
         
@@ -21,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         window.makeKeyAndVisible()
         
-        DispatchQueue.main.async {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.checkAuthenticationAndPresentLoginIfNeeded(rootViewController: rootViewController)
         }
     }
@@ -43,13 +44,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         
-        let authVC = AuthenticationVC()
-        authVC.modalPresentationStyle = .popover
-        rootViewController.present(authVC, animated: true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            let authVC = AuthenticationVC()
+            authVC.modalPresentationStyle = .popover
+            rootViewController.present(authVC, animated: true, completion: nil)
+        }
         
         UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil)
     }
-    
     
     func sceneDidDisconnect(_ scene: UIScene) {
         
@@ -71,5 +73,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
     }
 }
-
-
