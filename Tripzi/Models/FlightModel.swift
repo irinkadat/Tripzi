@@ -6,3 +6,10 @@
 //
 
 import Foundation
+
+struct FlightModel {
+    let time: String
+    let route: String
+    let duration: String
+    let price: String
+}
