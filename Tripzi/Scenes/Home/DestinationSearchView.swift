@@ -9,7 +9,17 @@ import SwiftUI
 
 struct DestinationSearchView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Button {
+            
+        } label: {
+            Image(systemName: "xmark.circle")
+                .imageScale(.large)
+                .foregroundStyle(.black)
+        }
+        
+        VStack {
+            Text("Where to? ")
+        }
     }
 }
 

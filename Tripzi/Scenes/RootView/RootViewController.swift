@@ -16,25 +16,42 @@ class RootViewController: UIViewController {
     }
     
     func setUpTabBar() {
-        
         let tabBarController = UITabBarController()
-        let homeVC = HomeViewController()
-        let flightsVC = FlightsViewController()
-        let favoritesVC = FavoritesViewController()
-        let profileVC = ProfileVC()
         
+        // Embed HomeViewController in a UINavigationController
+        let homeVC = HomeViewController()
+        let homeNavVC = UINavigationController(rootViewController: homeVC)
+        
+        let flightsVC = FlightsViewController()
+        let flightsNavVC = UINavigationController(rootViewController: flightsVC)
+        
+        let favoritesVC = FavoritesViewController()
+        let favoritesNavVC = UINavigationController(rootViewController: favoritesVC)
+        
+        let profileVC = ProfileVC()
+        let profileNavVC = UINavigationController(rootViewController: profileVC)
         
         tabBarController.viewControllers = [
-            homeVC,
-            flightsVC,
-            favoritesVC,
-            profileVC
+            homeNavVC,
+            flightsNavVC,
+            favoritesNavVC,
+            profileNavVC
         ]
         
-        homeVC.tabBarItem = UITabBarItem(title: "Explore", image: UIImage(systemName: "magnifyingglass"), tag: 0)
-        flightsVC.tabBarItem = UITabBarItem(title: "Flights", image: UIImage(systemName: "airplane"), tag: 1)
-        favoritesVC.tabBarItem = UITabBarItem(title: "Wishlists", image: UIImage(systemName: "heart"), tag: 2)
-        profileVC.tabBarItem = UITabBarItem(title: "Population", image: UIImage(systemName: "person"), tag: 3)
+        homeNavVC.tabBarItem = UITabBarItem(title: "Explore", image: UIImage(systemName: "magnifyingglass"), tag: 0)
+        flightsNavVC.tabBarItem = UITabBarItem(title: "Flights", image: UIImage(systemName: "airplane"), tag: 1)
+        favoritesNavVC.tabBarItem = UITabBarItem(title: "Wishlists", image: UIImage(systemName: "heart"), tag: 2)
+        profileNavVC.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag: 3)
+        
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.configureWithOpaqueBackground()
+        tabBarAppearance.backgroundColor = .white
+        
+        tabBarController.tabBar.standardAppearance = tabBarAppearance
+        if #available(iOS 15.0, *) {
+            tabBarController.tabBar.scrollEdgeAppearance = tabBarAppearance
+        }
+        
         
         tabBarController.tabBar.barTintColor = UIColor(red: 58/255, green: 137/255, blue: 255/255, alpha: 1.0)
         tabBarController.tabBar.tintColor = UIColor(named: "buttonColor")

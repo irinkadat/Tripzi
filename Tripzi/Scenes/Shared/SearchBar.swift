@@ -1,5 +1,5 @@
 //
-//  PlacesSearch.swift
+//  SearchBar.swift
 //  Tripzi
 //
 //  Created by Irinka Datoshvili on 09.07.24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PlacesSearch: View {
+struct SearchBar: View {
     var body: some View {
         HStack {
             Image(systemName: "magnifyingglass")
@@ -43,5 +43,5 @@ struct PlacesSearch: View {
 }
 
 #Preview {
-    PlacesSearch()
+    SearchBar()
 }
