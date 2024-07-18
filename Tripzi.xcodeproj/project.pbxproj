@@ -13,8 +13,6 @@
 		8C309DD52C2DB46A00436F92 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 8C309DD42C2DB46A00436F92 /* Base */; };
 		8C309DEA2C2DB70A00436F92 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C309DE92C2DB70A00436F92 /* CustomButton.swift */; };
 		8C309DEC2C2DB71800436F92 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C309DEB2C2DB71800436F92 /* CustomTextField.swift */; };
-		8C309DEE2C2DB72700436F92 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C309DED2C2DB72700436F92 /* LoadingView.swift */; };
-		8C309DF32C2DB78F00436F92 /* FirebaseDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C309DF22C2DB78F00436F92 /* FirebaseDatabaseService.swift */; };
 		8C309DF62C2DB82C00436F92 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C309DF52C2DB82C00436F92 /* LoginView.swift */; };
 		8C309DF82C2DB83A00436F92 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C309DF72C2DB83A00436F92 /* RegistrationView.swift */; };
 		8C309DFA2C2DB84800436F92 /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C309DF92C2DB84800436F92 /* ResetPasswordView.swift */; };
@@ -27,6 +25,27 @@
 		8C309E0D2C2DD01C00436F92 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C309E0C2C2DD01C00436F92 /* GoogleService-Info.plist */; };
 		8C64D63F2C31B9E90050780C /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 8C64D63E2C31B9E90050780C /* FirebaseFirestore */; };
 		8C651CDD2C49359400339BA3 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 8C651CDC2C49359400339BA3 /* FirebaseStorage */; };
+		8C651CDF2C4935D300339BA3 /* Port.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CDE2C4935D300339BA3 /* Port.swift */; };
+		8C651CE12C49362000339BA3 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CE02C49362000339BA3 /* Place.swift */; };
+		8C651CE62C4936A800339BA3 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CE52C4936A800339BA3 /* NetworkManager.swift */; };
+		8C651CE82C4937F100339BA3 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CE72C4937F100339BA3 /* ProfileViewModel.swift */; };
+		8C651CEA2C49380F00339BA3 /* PersonalInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CE92C49380F00339BA3 /* PersonalInfoViewController.swift */; };
+		8C651CEC2C49391500339BA3 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CEB2C49391500339BA3 /* CustomSearchBar.swift */; };
+		8C651CEE2C49393200339BA3 /* CustomStyledView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CED2C49393200339BA3 /* CustomStyledView.swift */; };
+		8C651CF02C49394900339BA3 /* CustomSearchButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CEF2C49394900339BA3 /* CustomSearchButton.swift */; };
+		8C651CF22C49396200339BA3 /* CustomTextField2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CF12C49396200339BA3 /* CustomTextField2.swift */; };
+		8C651CF42C49397B00339BA3 /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CF32C49397B00339BA3 /* CustomLabel.swift */; };
+		8C651CF62C493A4F00339BA3 /* FlightsSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CF52C493A4F00339BA3 /* FlightsSearchVC.swift */; };
+		8C651CF82C493A7600339BA3 /* CountriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CF72C493A7600339BA3 /* CountriesViewController.swift */; };
+		8C651CFA2C493A9000339BA3 /* FlightsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CF92C493A9000339BA3 /* FlightsViewModel.swift */; };
+		8C651CFC2C493AAB00339BA3 /* PortsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CFB2C493AAB00339BA3 /* PortsViewController.swift */; };
+		8C651CFE2C493ADF00339BA3 /* InfoStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CFD2C493ADF00339BA3 /* InfoStatsView.swift */; };
+		8C651D002C493AF600339BA3 /* IconTextStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CFF2C493AF600339BA3 /* IconTextStackView.swift */; };
+		8C651D022C493B2F00339BA3 /* FavoritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651D012C493B2F00339BA3 /* FavoritesViewModel.swift */; };
+		8C651D042C493CBB00339BA3 /* PlacesListingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651D032C493CBB00339BA3 /* PlacesListingViewModel.swift */; };
+		8C651D062C493CE000339BA3 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651D052C493CE000339BA3 /* SearchViewModel.swift */; };
+		8C651D082C493D0A00339BA3 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651D072C493D0A00339BA3 /* CategoryCell.swift */; };
+		8C651D0A2C493D4600339BA3 /* Places.json in Resources */ = {isa = PBXBuildFile; fileRef = 8C651D092C493D4600339BA3 /* Places.json */; };
 		8C8FFFB12C2E8D0F00079E8B /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8FFFB02C2E8D0F00079E8B /* AuthenticationManager.swift */; };
 		8C8FFFB62C2E9A8A00079E8B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8FFFB52C2E9A8A00079E8B /* HomeViewController.swift */; };
 		8C8FFFB82C2EACD600079E8B /* AuthenticationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8FFFB72C2EACD600079E8B /* AuthenticationVC.swift */; };
@@ -36,15 +55,10 @@
 		8C8FFFC22C2EE45900079E8B /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8FFFC12C2EE45900079E8B /* FavoritesViewController.swift */; };
 		8C91FA442C30616E00B6C52F /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 8C91FA432C30616E00B6C52F /* FacebookLogin */; };
 		8CC3EFEF2C3D116800400A89 /* SecondaryTextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3EFEE2C3D116800400A89 /* SecondaryTextStyle.swift */; };
-		8CC3EFF12C3D485200400A89 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3EFF02C3D485200400A89 /* SearchBar.swift */; };
 		8CC3EFF32C3D6C7300400A89 /* ListingImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3EFF22C3D6C7300400A89 /* ListingImageCarouselView.swift */; };
-		8CC3EFF52C3D6E4200400A89 /* DestinationSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3EFF42C3D6E4200400A89 /* DestinationSearchView.swift */; };
-		8CC3EFF72C3D71C400400A89 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3EFF62C3D71C400400A89 /* HomeViewModel.swift */; };
 		8CC3EFF92C3D726D00400A89 /* Listing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3EFF82C3D726D00400A89 /* Listing.swift */; };
 		8CC3EFFD2C3DAE4A00400A89 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3EFFC2C3DAE4A00400A89 /* CustomCollectionViewCell.swift */; };
-		8CC3EFFF2C3DB8F400400A89 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3EFFE2C3DB8F400400A89 /* CustomTableViewCell.swift */; };
 		8CC3F0012C3DB91300400A89 /* FlightModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F0002C3DB91300400A89 /* FlightModel.swift */; };
-		8CC3F0032C3DBC4800400A89 /* SearchedFlightsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F0022C3DBC4800400A89 /* SearchedFlightsVC.swift */; };
 		8CC3F0052C3E541500400A89 /* FlightTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F0042C3E541500400A89 /* FlightTableViewCell.swift */; };
 		8CC3F0072C3E542F00400A89 /* FlightsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F0062C3E542F00400A89 /* FlightsTableViewController.swift */; };
 		8CC3F0092C3EC63900400A89 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F0082C3EC63900400A89 /* SearchViewController.swift */; };
@@ -62,13 +76,32 @@
 		8C309DD62C2DB46A00436F92 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8C309DE92C2DB70A00436F92 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		8C309DEB2C2DB71800436F92 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
-		8C309DED2C2DB72700436F92 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
-		8C309DF22C2DB78F00436F92 /* FirebaseDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDatabaseService.swift; sourceTree = "<group>"; };
 		8C309DF52C2DB82C00436F92 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		8C309DF72C2DB83A00436F92 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
 		8C309DF92C2DB84800436F92 /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
 		8C309E052C2DC7D100436F92 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
 		8C309E0C2C2DD01C00436F92 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8C651CDE2C4935D300339BA3 /* Port.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Port.swift; sourceTree = "<group>"; };
+		8C651CE02C49362000339BA3 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
+		8C651CE52C4936A800339BA3 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		8C651CE72C4937F100339BA3 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		8C651CE92C49380F00339BA3 /* PersonalInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoViewController.swift; sourceTree = "<group>"; };
+		8C651CEB2C49391500339BA3 /* CustomSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
+		8C651CED2C49393200339BA3 /* CustomStyledView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomStyledView.swift; sourceTree = "<group>"; };
+		8C651CEF2C49394900339BA3 /* CustomSearchButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchButton.swift; sourceTree = "<group>"; };
+		8C651CF12C49396200339BA3 /* CustomTextField2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField2.swift; sourceTree = "<group>"; };
+		8C651CF32C49397B00339BA3 /* CustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabel.swift; sourceTree = "<group>"; };
+		8C651CF52C493A4F00339BA3 /* FlightsSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightsSearchVC.swift; sourceTree = "<group>"; };
+		8C651CF72C493A7600339BA3 /* CountriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesViewController.swift; sourceTree = "<group>"; };
+		8C651CF92C493A9000339BA3 /* FlightsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightsViewModel.swift; sourceTree = "<group>"; };
+		8C651CFB2C493AAB00339BA3 /* PortsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortsViewController.swift; sourceTree = "<group>"; };
+		8C651CFD2C493ADF00339BA3 /* InfoStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoStatsView.swift; sourceTree = "<group>"; };
+		8C651CFF2C493AF600339BA3 /* IconTextStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconTextStackView.swift; sourceTree = "<group>"; };
+		8C651D012C493B2F00339BA3 /* FavoritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewModel.swift; sourceTree = "<group>"; };
+		8C651D032C493CBB00339BA3 /* PlacesListingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesListingViewModel.swift; sourceTree = "<group>"; };
+		8C651D052C493CE000339BA3 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		8C651D072C493D0A00339BA3 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
+		8C651D092C493D4600339BA3 /* Places.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Places.json; sourceTree = "<group>"; };
 		8C8FFFB02C2E8D0F00079E8B /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
 		8C8FFFB52C2E9A8A00079E8B /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		8C8FFFB72C2EACD600079E8B /* AuthenticationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationVC.swift; sourceTree = "<group>"; };
@@ -77,15 +110,10 @@
 		8C8FFFBE2C2EE42C00079E8B /* FlightsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightsViewController.swift; sourceTree = "<group>"; };
 		8C8FFFC12C2EE45900079E8B /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		8CC3EFEE2C3D116800400A89 /* SecondaryTextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryTextStyle.swift; sourceTree = "<group>"; };
-		8CC3EFF02C3D485200400A89 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		8CC3EFF22C3D6C7300400A89 /* ListingImageCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingImageCarouselView.swift; sourceTree = "<group>"; };
-		8CC3EFF42C3D6E4200400A89 /* DestinationSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationSearchView.swift; sourceTree = "<group>"; };
-		8CC3EFF62C3D71C400400A89 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		8CC3EFF82C3D726D00400A89 /* Listing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Listing.swift; sourceTree = "<group>"; };
 		8CC3EFFC2C3DAE4A00400A89 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
-		8CC3EFFE2C3DB8F400400A89 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		8CC3F0002C3DB91300400A89 /* FlightModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightModel.swift; sourceTree = "<group>"; };
-		8CC3F0022C3DBC4800400A89 /* SearchedFlightsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchedFlightsVC.swift; sourceTree = "<group>"; };
 		8CC3F0042C3E541500400A89 /* FlightTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightTableViewCell.swift; sourceTree = "<group>"; };
 		8CC3F0062C3E542F00400A89 /* FlightsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightsTableViewController.swift; sourceTree = "<group>"; };
 		8CC3F0082C3EC63900400A89 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -133,7 +161,7 @@
 		8C309DC72C2DB46800436F92 /* Tripzi */ = {
 			isa = PBXGroup;
 			children = (
-				8C309DE22C2DB63300436F92 /* Utilities */,
+				8C651CE42C49369200339BA3 /* Utilities */,
 				8C309DE12C2DB62700436F92 /* Models */,
 				8C309DE02C2DB61D00436F92 /* Services */,
 				8C309DDF2C2DB60700436F92 /* Scenes */,
@@ -174,14 +202,13 @@
 		8C309DDF2C2DB60700436F92 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				8C8FFFC02C2EE44400079E8B /* Favorites */,
 				8C8FFFBB2C2EE38F00079E8B /* RootView */,
 				8C309DE32C2DB66500436F92 /* Authentication */,
-				8C309DF42C2DB80100436F92 /* Hotels */,
 				8C309DE82C2DB6EE00436F92 /* Shared */,
 				8C309DE72C2DB6B400436F92 /* Profile */,
 				8C309DE62C2DB6A100436F92 /* Flights */,
 				8C309DE52C2DB69900436F92 /* Destination */,
+				8C8FFFC02C2EE44400079E8B /* Favorites */,
 				8C309DE42C2DB67100436F92 /* Home */,
 			);
 			path = Scenes;
@@ -200,15 +227,10 @@
 			children = (
 				8CC3EFF82C3D726D00400A89 /* Listing.swift */,
 				8CC3F0002C3DB91300400A89 /* FlightModel.swift */,
+				8C651CDE2C4935D300339BA3 /* Port.swift */,
+				8C651CE02C49362000339BA3 /* Place.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		8C309DE22C2DB63300436F92 /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Utilities;
 			sourceTree = "<group>";
 		};
 		8C309DE32C2DB66500436F92 /* Authentication */ = {
@@ -227,11 +249,14 @@
 			isa = PBXGroup;
 			children = (
 				8C8FFFB52C2E9A8A00079E8B /* HomeViewController.swift */,
-				8CC3EFF42C3D6E4200400A89 /* DestinationSearchView.swift */,
-				8CC3EFF62C3D71C400400A89 /* HomeViewModel.swift */,
+				8CC530242C3C677E00E020DD /* PlacesListingView.swift */,
 				8CC3EFFC2C3DAE4A00400A89 /* CustomCollectionViewCell.swift */,
 				8CC3F0082C3EC63900400A89 /* SearchViewController.swift */,
 				8CC3F00C2C3EEC8E00400A89 /* ImageCollectionViewCell.swift */,
+				8C651D092C493D4600339BA3 /* Places.json */,
+				8C651D032C493CBB00339BA3 /* PlacesListingViewModel.swift */,
+				8C651D052C493CE000339BA3 /* SearchViewModel.swift */,
+				8C651D072C493D0A00339BA3 /* CategoryCell.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -240,6 +265,8 @@
 			isa = PBXGroup;
 			children = (
 				8CC3F00A2C3ED2EF00400A89 /* DestinationDetailsVC.swift */,
+				8C651CFD2C493ADF00339BA3 /* InfoStatsView.swift */,
+				8C651CFF2C493AF600339BA3 /* IconTextStackView.swift */,
 			);
 			path = Destination;
 			sourceTree = "<group>";
@@ -248,10 +275,12 @@
 			isa = PBXGroup;
 			children = (
 				8C8FFFBE2C2EE42C00079E8B /* FlightsViewController.swift */,
-				8CC3EFFE2C3DB8F400400A89 /* CustomTableViewCell.swift */,
-				8CC3F0022C3DBC4800400A89 /* SearchedFlightsVC.swift */,
 				8CC3F0042C3E541500400A89 /* FlightTableViewCell.swift */,
 				8CC3F0062C3E542F00400A89 /* FlightsTableViewController.swift */,
+				8C651CF52C493A4F00339BA3 /* FlightsSearchVC.swift */,
+				8C651CF72C493A7600339BA3 /* CountriesViewController.swift */,
+				8C651CF92C493A9000339BA3 /* FlightsViewModel.swift */,
+				8C651CFB2C493AAB00339BA3 /* PortsViewController.swift */,
 			);
 			path = Flights;
 			sourceTree = "<group>";
@@ -260,6 +289,8 @@
 			isa = PBXGroup;
 			children = (
 				8C8FFFB92C2EBB5400079E8B /* ProfileVC.swift */,
+				8C651CE72C4937F100339BA3 /* ProfileViewModel.swift */,
+				8C651CE92C49380F00339BA3 /* PersonalInfoViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -270,10 +301,12 @@
 				8CC3EFED2C3D115300400A89 /* Custom Modifiers */,
 				8C309DE92C2DB70A00436F92 /* CustomButton.swift */,
 				8C309DEB2C2DB71800436F92 /* CustomTextField.swift */,
-				8C309DED2C2DB72700436F92 /* LoadingView.swift */,
-				8CC530242C3C677E00E020DD /* PlacesListingView.swift */,
-				8CC3EFF02C3D485200400A89 /* SearchBar.swift */,
 				8CC3EFF22C3D6C7300400A89 /* ListingImageCarouselView.swift */,
+				8C651CEB2C49391500339BA3 /* CustomSearchBar.swift */,
+				8C651CED2C49393200339BA3 /* CustomStyledView.swift */,
+				8C651CEF2C49394900339BA3 /* CustomSearchButton.swift */,
+				8C651CF12C49396200339BA3 /* CustomTextField2.swift */,
+				8C651CF32C49397B00339BA3 /* CustomLabel.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -282,16 +315,8 @@
 			isa = PBXGroup;
 			children = (
 				8C8FFFB02C2E8D0F00079E8B /* AuthenticationManager.swift */,
-				8C309DF22C2DB78F00436F92 /* FirebaseDatabaseService.swift */,
 			);
 			path = Firebase;
-			sourceTree = "<group>";
-		};
-		8C309DF42C2DB80100436F92 /* Hotels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Hotels;
 			sourceTree = "<group>";
 		};
 		8C309E022C2DC5E300436F92 /* Frameworks */ = {
@@ -299,6 +324,14 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8C651CE42C49369200339BA3 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				8C651CE52C4936A800339BA3 /* NetworkManager.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		8C8FFFBB2C2EE38F00079E8B /* RootView */ = {
@@ -313,6 +346,7 @@
 			isa = PBXGroup;
 			children = (
 				8C8FFFC12C2EE45900079E8B /* FavoritesViewController.swift */,
+				8C651D012C493B2F00339BA3 /* FavoritesViewModel.swift */,
 			);
 			path = Favorites;
 			sourceTree = "<group>";
@@ -401,6 +435,7 @@
 				8C309DD22C2DB46A00436F92 /* Assets.xcassets in Resources */,
 				8C309DD52C2DB46A00436F92 /* Base in Resources */,
 				8C309E0D2C2DD01C00436F92 /* GoogleService-Info.plist in Resources */,
+				8C651D0A2C493D4600339BA3 /* Places.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,38 +446,51 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C651CE62C4936A800339BA3 /* NetworkManager.swift in Sources */,
 				8CC3EFF32C3D6C7300400A89 /* ListingImageCarouselView.swift in Sources */,
+				8C651CF62C493A4F00339BA3 /* FlightsSearchVC.swift in Sources */,
+				8C651CFC2C493AAB00339BA3 /* PortsViewController.swift in Sources */,
+				8C651CF82C493A7600339BA3 /* CountriesViewController.swift in Sources */,
 				8C8FFFBA2C2EBB5400079E8B /* ProfileVC.swift in Sources */,
+				8C651D062C493CE000339BA3 /* SearchViewModel.swift in Sources */,
 				8C309DEA2C2DB70A00436F92 /* CustomButton.swift in Sources */,
 				8CC3EFFD2C3DAE4A00400A89 /* CustomCollectionViewCell.swift in Sources */,
 				8C309DC92C2DB46800436F92 /* AppDelegate.swift in Sources */,
+				8C651D002C493AF600339BA3 /* IconTextStackView.swift in Sources */,
 				8C309DF62C2DB82C00436F92 /* LoginView.swift in Sources */,
-				8CC3EFF72C3D71C400400A89 /* HomeViewModel.swift in Sources */,
 				8CC3F0092C3EC63900400A89 /* SearchViewController.swift in Sources */,
 				8C309DCB2C2DB46800436F92 /* SceneDelegate.swift in Sources */,
 				8CC530252C3C677F00E020DD /* PlacesListingView.swift in Sources */,
 				8C309E062C2DC7D100436F92 /* AuthenticationViewModel.swift in Sources */,
+				8C651CEE2C49393200339BA3 /* CustomStyledView.swift in Sources */,
 				8C8FFFBD2C2EE3A500079E8B /* RootViewController.swift in Sources */,
 				8CC3F00D2C3EEC8E00400A89 /* ImageCollectionViewCell.swift in Sources */,
+				8C651CF22C49396200339BA3 /* CustomTextField2.swift in Sources */,
+				8C651CEC2C49391500339BA3 /* CustomSearchBar.swift in Sources */,
 				8CC3EFF92C3D726D00400A89 /* Listing.swift in Sources */,
-				8CC3EFFF2C3DB8F400400A89 /* CustomTableViewCell.swift in Sources */,
 				8C8FFFB62C2E9A8A00079E8B /* HomeViewController.swift in Sources */,
+				8C651D082C493D0A00339BA3 /* CategoryCell.swift in Sources */,
+				8C651CDF2C4935D300339BA3 /* Port.swift in Sources */,
+				8C651CF02C49394900339BA3 /* CustomSearchButton.swift in Sources */,
 				8C309DEC2C2DB71800436F92 /* CustomTextField.swift in Sources */,
-				8C309DEE2C2DB72700436F92 /* LoadingView.swift in Sources */,
+				8C651CE12C49362000339BA3 /* Place.swift in Sources */,
 				8C8FFFC22C2EE45900079E8B /* FavoritesViewController.swift in Sources */,
 				8C309DFA2C2DB84800436F92 /* ResetPasswordView.swift in Sources */,
-				8CC3F0032C3DBC4800400A89 /* SearchedFlightsVC.swift in Sources */,
 				8C8FFFB12C2E8D0F00079E8B /* AuthenticationManager.swift in Sources */,
+				8C651D022C493B2F00339BA3 /* FavoritesViewModel.swift in Sources */,
 				8CC3EFEF2C3D116800400A89 /* SecondaryTextStyle.swift in Sources */,
-				8C309DF32C2DB78F00436F92 /* FirebaseDatabaseService.swift in Sources */,
+				8C651CFA2C493A9000339BA3 /* FlightsViewModel.swift in Sources */,
 				8C309DF82C2DB83A00436F92 /* RegistrationView.swift in Sources */,
+				8C651D042C493CBB00339BA3 /* PlacesListingViewModel.swift in Sources */,
 				8C8FFFB82C2EACD600079E8B /* AuthenticationVC.swift in Sources */,
+				8C651CF42C49397B00339BA3 /* CustomLabel.swift in Sources */,
 				8C8FFFBF2C2EE42C00079E8B /* FlightsViewController.swift in Sources */,
 				8CC3F0012C3DB91300400A89 /* FlightModel.swift in Sources */,
+				8C651CE82C4937F100339BA3 /* ProfileViewModel.swift in Sources */,
+				8C651CFE2C493ADF00339BA3 /* InfoStatsView.swift in Sources */,
 				8CC3F00B2C3ED2EF00400A89 /* DestinationDetailsVC.swift in Sources */,
 				8CC3F0072C3E542F00400A89 /* FlightsTableViewController.swift in Sources */,
-				8CC3EFF12C3D485200400A89 /* SearchBar.swift in Sources */,
-				8CC3EFF52C3D6E4200400A89 /* DestinationSearchView.swift in Sources */,
+				8C651CEA2C49380F00339BA3 /* PersonalInfoViewController.swift in Sources */,
 				8CC3F0052C3E541500400A89 /* FlightTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
