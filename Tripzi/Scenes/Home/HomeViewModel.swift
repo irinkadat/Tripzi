@@ -5,14 +5,28 @@
 //  Created by Irinka Datoshvili on 09.07.24.
 //
 
-import SwiftUI
+import Foundation
 
-struct HomeViewModel: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+class HomeViewModel {
+    var listings: [Listing] = []
+    
+    init() {
+        fetchListings()
+    }
+    
+    func fetchListings() {
+        for i in 1...10 {
+            listings.append(Listing(
+                imageName: "desert",
+                location: "Location \(i), Wisconsin",
+                designer: "Frank Lloyd Wright",
+                dateRange: "Jun \(i) – \(i + 7)",
+                price: "$\(569 + i * 20) night",
+                rating: 4.91 - Double(i) * 0.02
+            ))
+        }
     }
 }
 
-#Preview {
-    HomeViewModel()
-}
+
+
