@@ -8,38 +8,22 @@
 import Foundation
 import SwiftUI
 
-struct Listing: Identifiable {
-    var id = UUID()
-    var imageName: String
-    var location: String
-    var designer: String
-    var dateRange: String
-    var price: String
-    var rating: Double
-}
-
 struct PlacesListingView: View {
     var listing: Listing
+    var onTap: () -> Void
     
     var body: some View {
         VStack {
             VStack(alignment: .center) {
                 VStack {
                     ZStack(alignment: .topTrailing) {
-                        TabView {
-                            ForEach(0...3, id: \.self) { image in
-                                Image(listing.imageName)
-                                    .resizable()
-                                    .scaledToFill()
-                                
+                        ListingImageCarouselView(imageName: "desert")
+                            .frame(height: 320)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .onTapGesture {
+                                onTap() 
                             }
-                        }
-                        .frame(height: 320)
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                        .tabViewStyle(.page)
-                        
-                        
-                        
+                
                         Image(systemName: "heart")
                             .padding()
                             .foregroundColor(.white)
@@ -70,12 +54,10 @@ struct PlacesListingView: View {
                     HStack {
                         Text(listing.price)
                             .font(.headline)
-                        
                     }
                     .padding(.top, 4)
                 }
             }
-            .background(Color.white)
             .cornerRadius(16)
         }
         .padding(.horizontal, 20)
@@ -83,12 +65,15 @@ struct PlacesListingView: View {
 }
 
 #Preview {
-    PlacesListingView(listing: Listing(
-        imageName: "desert",
-        location: "Two Rivers, Wisconsin",
-        designer: "Frank Lloyd Wright",
-        dateRange: "Jun 6 – 13",
-        price: "$569 night",
-        rating: 4.91
-    ))
+    PlacesListingView(
+        listing: Listing(
+            imageName: "desert",
+            location: "Two Rivers, Wisconsin",
+            designer: "Frank Lloyd Wright",
+            dateRange: "Jun 6 – 13",
+            price: "$569 night",
+            rating: 4.91
+        ),
+        onTap: { }
+    )
 }
