@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct PlacesListingView: View {
-    var listing: Listing
+    @ObservedObject var viewModel: PlacesListingViewModel
     var onTap: () -> Void
     
     var body: some View {
@@ -17,63 +17,60 @@ struct PlacesListingView: View {
             VStack(alignment: .center) {
                 VStack {
                     ZStack(alignment: .topTrailing) {
-                        ListingImageCarouselView(imageName: "desert")
+                        ListingImageCarouselView(imageUrls: viewModel.listing.imageUrls)
                             .frame(height: 320)
                             .clipShape(RoundedRectangle(cornerRadius: 16))
                             .onTapGesture {
-                                onTap() 
+                                onTap()
                             }
-                
-                        Image(systemName: "heart")
-                            .padding()
-                            .foregroundColor(.white)
-                            .font(.system(size: 21))
+
+                        Button(action: {
+                            viewModel.isFavorited.toggle()
+                            if viewModel.isFavorited {
+                                viewModel.saveToFavorites()
+                            } else {
+                                viewModel.removeFromFavorites()
+                            }
+                        }) {
+                            Image(systemName: viewModel.isFavorited ? "heart.fill" : "heart")
+                                .padding()
+                                .foregroundColor(.white)
+                                .font(.system(size: 21))
+                        }
                     }
                 }
-                
+
                 VStack(alignment: .leading) {
                     HStack {
-                        Text(listing.location)
+                        Text(viewModel.listing.name)
                             .font(.headline)
                             .padding(.top, 5)
                         Spacer()
                         Image(systemName: "star.fill")
                             .foregroundColor(.yellow.opacity(0.7))
-                        Text(String(format: "%.2f", listing.rating))
+                        Text(String(format: "%.2f", (viewModel.listing.rating)))
                             .font(.headline)
                             .padding(.trailing, 8)
                     }
-                    
-                    Group {
-                        Text("Designed by \(listing.designer)")
-                        
-                        Text(listing.dateRange)
+
+                    VStack(alignment: .leading) {
+                        Text("Address \(viewModel.listing.address)")
+//                        Text("check in's \(String(viewModel.listing.stats?.checkinsCount ?? 0))")
+                        Text(viewModel.listing.contextLine)
                     }
                     .secondaryTextStyle()
-                    
+
                     HStack {
-                        Text(listing.price)
+                        Text(viewModel.listing.categorieName)
                             .font(.headline)
                     }
                     .padding(.top, 4)
                 }
             }
-            .cornerRadius(16)
         }
         .padding(.horizontal, 20)
+        .onAppear {
+            viewModel.checkIfFavorited()
+        }
     }
-}
-
-#Preview {
-    PlacesListingView(
-        listing: Listing(
-            imageName: "desert",
-            location: "Two Rivers, Wisconsin",
-            designer: "Frank Lloyd Wright",
-            dateRange: "Jun 6 – 13",
-            price: "$569 night",
-            rating: 4.91
-        ),
-        onTap: { }
-    )
 }
