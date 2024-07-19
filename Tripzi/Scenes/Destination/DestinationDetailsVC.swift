@@ -92,16 +92,6 @@ class DestinationDetailsVC: UIViewController {
         locationLabel.text = listing.location
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
         
-//        let reviewTxt = CustomLabel(style: .subtitle, fontSize: 15)
-//        reviewTxt.text = listing.header
-//        reviewTxt.numberOfLines = 2
-//        reviewTxt.translatesAutoresizingMaskIntoConstraints = false
-        
-//        let infoStackView = UIStackView(arrangedSubviews: [locationLabel])
-//        infoStackView.axis = .vertical
-//        infoStackView.spacing = 10
-//        infoStackView.translatesAutoresizingMaskIntoConstraints = false
-        
         contentView.addSubview(nameLabel)
         contentView.addSubview(locationLabel)
         
@@ -212,7 +202,7 @@ class DestinationDetailsVC: UIViewController {
         sectionTitle.text = "Contact Information"
         contentView.addSubview(sectionTitle)
         
-        let phoneStackView = IconTextStackView(icon: UIImage(named: "phone"), text: contact.phone)
+        let phoneStackView = IconTextStackView(icon: UIImage(named: "phone"), text: contact.formattedPhone)
         let instagramStackView = IconTextStackView(icon: UIImage(named: "insta"), text: contact.instagram)
         
         contentView.addSubview(phoneStackView)
@@ -251,3 +241,4 @@ class DestinationDetailsVC: UIViewController {
 #Preview {
     DestinationDetailsVC()
 }
+

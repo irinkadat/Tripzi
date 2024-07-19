@@ -25,7 +25,8 @@ struct Listing: Identifiable, Codable {
     let stats: Stats?
     var isFavorited: Bool = false
     let photos: [PhotoGroup]?
-    let tips: [TipGroup]?
+//    let tips: [TipItem]
+    let tips: Tips?
     let summary: String?
     let isOpen: Bool?
     let timeframes: [Timeframe]?
@@ -52,9 +53,14 @@ struct Listing: Identifiable, Codable {
         self.stats = venue.stats
         self.isFavorited = false
         self.photos = result.photos?.groups
-        self.tips = nil
+//        self.tips = nil
+        self.tips = venue.tips ?? Tips(count: 0, groups: [])
+//        self.tips = venue.tips?.groups ?? []
         self.summary = venue.summary
         self.isOpen = venue.popular?.isOpen
         self.timeframes = venue.popular?.timeframes
     }
 }
+
+
+

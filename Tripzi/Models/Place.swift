@@ -70,31 +70,54 @@ struct Group: Codable {
 }
 
 struct Feature: Codable {
-    let cc: String?
+//    let cc: String?
     let name: String?
     let displayName: String?
     let matchedName: String?
     let highlightedName: String?
-    let woeType: Int?
-    let slug: String?
     let id: String?
     let longId: String?
     let geometry: Geometry?
 }
 
+struct Tips: Codable {
+    let count: Int?
+    let groups: [TipGroup]?
+}
+
+struct TipGroup: Codable {
+    let type: String?
+    let name: String?
+    let count: Int?
+    let items: [TipItem]?
+}
+
+struct TipItem: Codable, Identifiable {
+    let id: String
+    let createdAt: Int?
+    let text: String
+    let type: String?
+    let agreeCount: Int?
+    let disagreeCount: Int?
+    let user: TipUser?
+}
+
+struct TipUser: Codable {
+    let id: String
+    let firstName: String?
+    let lastName: String?
+    let countryCode: String?
+    let photo: UserPhoto?
+}
+
+
 struct Geometry: Codable {
     let center: Center?
-    let bounds: Bounds?
 }
 
 struct Center: Codable {
     let lat: Double?
     let lng: Double?
-}
-
-struct Bounds: Codable {
-    let ne: NE?
-//    let sw: SW?
 }
 
 struct NE: Codable {
@@ -104,7 +127,6 @@ struct NE: Codable {
 
 struct CurrentLocation: Codable {
     let what: String?
-//    let where: String?
     let feature: Feature?
     let parents: [String]?
 }
@@ -112,9 +134,6 @@ struct CurrentLocation: Codable {
 struct GeoBounds: Codable {
     let geoId: String?
 }
-//struct Group: Codable {
-//    let results: [PlaceResult]
-//}
 
 struct PlaceResult: Codable {
     let displayType: String
@@ -134,6 +153,7 @@ struct Venue: Codable {
     let price: Price?
     let header: String?
     let summary: String?
+    let tips: Tips?
     let popular: Popular?
 }
 
@@ -217,8 +237,8 @@ struct Contact: Codable {
 
     init(from venueContact: VenueContact) {
         self.phone = venueContact.phone ?? ""
-        self.formattedPhone = venueContact.formattedPhone ?? ""
-        self.instagram = venueContact.instagram ?? ""
+        self.formattedPhone = venueContact.formattedPhone ?? "No phone number"
+        self.instagram = venueContact.instagram ?? "No instagram page"
     }
 }
 
@@ -228,63 +248,15 @@ struct Stats: Codable {
     let checkinsCount: Int
 }
 
-// New Tip Structures
-struct TipGroup: Codable {
-    let type: String
-    let name: String
-    let count: Int
-    let items: [TipItem]
-}
-
-struct TipItem: Codable {
-    let id: String
-    let createdAt: Int
-    let text: String
-    let type: String
-    let canonicalUrl: String
-    let canonicalPath: String
-    let lang: String
-    let likes: Likes
-    let logView: Bool
-    let agreeCount: Int
-    let disagreeCount: Int
-    let todo: Todo
-    let user: TipUser
-}
-
-struct Todo: Codable {
-    let count: Int
-}
-
-struct TipUser: Codable {
-    let id: String
-    let firstName: String
-    let lastName: String?
-    let handle: String?
-    let privateProfile: Bool
-    let gender: String
-    let countryCode: String
-    let followingRelationship: String
-    let canonicalUrl: String
-    let canonicalPath: String
-    let photo: UserPhoto
-}
-
-struct Likes: Codable {
-    let count: Int
-    let groups: [LikeGroup]
-    let summary: String?
-}
-
 struct LikeGroup: Codable {
-    let type: String
-    let count: Int
-    let items: [String]
+    let type: String?
+    let count: Int?
+    let items: [String]?
 }
 
 struct UserPhoto: Codable {
-    let prefix: String
-    let suffix: String
+    let prefix: String?
+    let suffix: String?
 }
 
 struct DetailedVenueResponse: Codable {
