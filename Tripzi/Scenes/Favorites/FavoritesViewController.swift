@@ -19,18 +19,18 @@ class FavoritesViewController: UIViewController {
         setupNavigation()
         setupCollectionView()
         viewModel.fetchFavorites()
-
+        
         viewModel.$favorites.sink { [weak self] listings in
             self?.collectionView.reloadData()
         }.store(in: &cancellables)
     }
     
     private func setupNavigation() {
-         title = "Favorites"
-         navigationController?.navigationBar.prefersLargeTitles = true
-         navigationController?.navigationItem.largeTitleDisplayMode = .always
-     }
-
+        title = "Favorites"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationItem.largeTitleDisplayMode = .always
+    }
+    
     private func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -53,7 +53,7 @@ class FavoritesViewController: UIViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
-
+    
     private var cancellables = Set<AnyCancellable>()
 }
 
@@ -65,10 +65,19 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CustomCell", for: indexPath) as! CustomCollectionViewCell
         let listing = viewModel.favorites[indexPath.row]
+        
         cell.configure(with: listing) { [weak self] in
-            let destinationDetailsVC = DestinationDetailsVC()
-            destinationDetailsVC.listing = listing
-            self?.navigationController?.pushViewController(destinationDetailsVC, animated: true)
+            guard let self = self else { return }
+            let detailVM = SearchViewModel()
+            detailVM.destinationDetails(for: listing.id) { detailedListing in
+                guard let detailedListing = detailedListing else { return }
+                DispatchQueue.main.async {
+                    let destinationDetailsVC = DestinationDetailsVC()
+                    destinationDetailsVC.listing = detailedListing
+                    destinationDetailsVC.imageUrls = listing.imageUrls
+                    self.navigationController?.pushViewController(destinationDetailsVC, animated: true)
+                }
+            }
         }
         return cell
     }

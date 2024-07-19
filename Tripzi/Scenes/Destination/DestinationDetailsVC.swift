@@ -13,13 +13,17 @@ class DestinationDetailsVC: UIViewController {
     private var scrollView: UIScrollView!
     private var contentView: UIView!
     private var lastAddedView: UIView?
+    var imageUrls: [String] = []
+    
+    private var tips: [TipItem] = []
+    private var tip: TipItem?
+    private let viewModel = SearchViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        
         guard let listing = listing else { return }
-        
+        tips = listing.tips ?? []
         setupScrollView()
         setupUI(with: listing)
     }
@@ -34,7 +38,7 @@ class DestinationDetailsVC: UIViewController {
         scrollView.addSubview(contentView)
         
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -48,15 +52,17 @@ class DestinationDetailsVC: UIViewController {
     }
     
     private func setupUI(with listing: Listing) {
-        addImageCarousel(with: listing.imageUrls)
+        addImageCarousel(with: imageUrls)
         addBasicInfo(with: listing)
         addInfoStatsView(with: listing)
         addLocationSection(with: listing)
         addDivider()
         addWebsiteSection(with: listing.description)
         addContactSection(with: listing)
-        addDivider()
         addSection(title: "Cost", content: paymentDescription(listing.price))
+        addDivider()
+        addTipCollectionView()
+        addMapView(lat: listing.lat ?? 0.0, long: listing.lng ?? 0.0, locationName: listing.name)
         
         if let lastAddedView = lastAddedView {
             NSLayoutConstraint.activate([
@@ -69,14 +75,14 @@ class DestinationDetailsVC: UIViewController {
         let hostingController = UIHostingController(rootView: ListingImageCarouselView(imageUrls: imageUrls))
         addChild(hostingController)
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(hostingController.view)
+        contentView.addSubview(hostingController.view)
         hostingController.didMove(toParent: self)
         
         NSLayoutConstraint.activate([
-            hostingController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -200),
-            hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            hostingController.view.bottomAnchor.constraint(equalTo: contentView.topAnchor, constant: 230)
+            hostingController.view.topAnchor.constraint(equalTo: contentView.topAnchor, constant: -100),
+            hostingController.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            hostingController.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            hostingController.view.heightAnchor.constraint(equalToConstant: 350)
         ])
         
         lastAddedView = hostingController.view
@@ -106,6 +112,48 @@ class DestinationDetailsVC: UIViewController {
         ])
         
         lastAddedView = locationLabel
+    }
+    
+    private func addMapView(lat: Double, long: Double, locationName: String) {
+        let titleLabel = UILabel()
+        titleLabel.text = "Where you will be"
+        titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(titleLabel)
+        
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: lastAddedView?.bottomAnchor ?? contentView.topAnchor, constant: 26),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20)
+        ])
+        
+        lastAddedView = titleLabel
+        
+        let mapView = UIHostingController(rootView: MapView(latitude: lat, longitude: long, locationName: locationName))
+        addChild(mapView)
+        mapView.view.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(mapView.view)
+        mapView.didMove(toParent: self)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(mapViewTapped))
+        mapView.view.addGestureRecognizer(tapGesture)
+        mapView.view.isUserInteractionEnabled = true
+        
+        NSLayoutConstraint.activate([
+            mapView.view.topAnchor.constraint(equalTo: lastAddedView?.bottomAnchor ?? contentView.topAnchor, constant: 20),
+            mapView.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            mapView.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            mapView.view.heightAnchor.constraint(equalToConstant: 250)
+        ])
+        
+        lastAddedView = mapView.view
+    }
+    
+    @objc private func mapViewTapped() {
+        guard let listing = listing else { return }
+        let fullScreenMapVC = FullScreenMapViewController(latitude: listing.lat ?? 0.0, longitude: listing.lng ?? 0.0, locationName: listing.name)
+        fullScreenMapVC.modalPresentationStyle = .fullScreen
+        present(fullScreenMapVC, animated: true, completion: nil)
     }
     
     private func addWebsiteSection(with website: String?) {
@@ -225,20 +273,73 @@ class DestinationDetailsVC: UIViewController {
         lastAddedView = instagramStackView
     }
     
+    private func addTipCollectionView() {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 26
+        
+        let tipCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        tipCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        tipCollectionView.backgroundColor = .white
+        tipCollectionView.register(TipCardCollectionViewCell.self, forCellWithReuseIdentifier: "TipCardCollectionViewCell")
+        tipCollectionView.dataSource = self
+        tipCollectionView.delegate = self
+        contentView.addSubview(tipCollectionView)
+        
+        NSLayoutConstraint.activate([
+            tipCollectionView.topAnchor.constraint(equalTo: lastAddedView?.bottomAnchor ?? contentView.topAnchor, constant: 26),
+            tipCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            tipCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            tipCollectionView.heightAnchor.constraint(equalToConstant: 200)
+        ])
+        
+        lastAddedView = tipCollectionView
+    }
+    
     private func paymentDescription(_ payment: Price?) -> String {
         guard let payment = payment else { return "No cost information available." }
-        let tier = payment.tier
-        let message = payment.message
+        let tierDescription = tierDescription(for: payment.tier)
         let currency = payment.currency
         return """
-        Tier: \(tier)
-        Cost: \(message)
+        Tier: \(tierDescription)
         Currency: \(currency)
         """
     }
+    
+    private func tierDescription(for tier: Int) -> String {
+        switch tier {
+        case 1:
+            return "Affordable"
+        case 2:
+            return "Moderate"
+        case 3:
+            return "Expensive"
+        default:
+            return "Unknown"
+        }
+    }
+    
 }
 
-#Preview {
-    DestinationDetailsVC()
-}
+// MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 
+extension DestinationDetailsVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return tips.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TipCardCollectionViewCell", for: indexPath) as? TipCardCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        
+        let tipItem = tips[indexPath.item]
+        cell.configure(tipText: tipItem.text, UserName: tipItem.user?.firstName ?? "", likes: String(tipItem.agreeCount), dislikes: String(tipItem.disagreeCount), userImage: UIImage(named: "user")!)
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 300, height: 200)
+    }
+}

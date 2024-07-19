@@ -36,7 +36,7 @@ struct Response: Codable {
     let group: Group?
     let results: [PlaceResult]?
     //
-    let context: Context?
+    let context: MyContext?
     let headerFullLocation: String?
     let headerLocationGranularity: String?
 }
@@ -53,7 +53,7 @@ struct ActiveFilters: Codable {
 }
 
 
-struct Context: Codable {
+struct MyContext: Codable {
     let searchLocationNearYou: Bool?
     let searchLocationMapBounds: Bool?
     let searchLocationType: String?
@@ -70,54 +70,31 @@ struct Group: Codable {
 }
 
 struct Feature: Codable {
-//    let cc: String?
+    let cc: String?
     let name: String?
     let displayName: String?
     let matchedName: String?
     let highlightedName: String?
+    let woeType: Int?
+    let slug: String?
     let id: String?
     let longId: String?
     let geometry: Geometry?
 }
 
-struct Tips: Codable {
-    let count: Int?
-    let groups: [TipGroup]?
-}
-
-struct TipGroup: Codable {
-    let type: String?
-    let name: String?
-    let count: Int?
-    let items: [TipItem]?
-}
-
-struct TipItem: Codable, Identifiable {
-    let id: String
-    let createdAt: Int?
-    let text: String
-    let type: String?
-    let agreeCount: Int?
-    let disagreeCount: Int?
-    let user: TipUser?
-}
-
-struct TipUser: Codable {
-    let id: String
-    let firstName: String?
-    let lastName: String?
-    let countryCode: String?
-    let photo: UserPhoto?
-}
-
-
 struct Geometry: Codable {
     let center: Center?
+    let bounds: Bounds?
 }
 
 struct Center: Codable {
     let lat: Double?
     let lng: Double?
+}
+
+struct Bounds: Codable {
+    let ne: NE?
+//    let sw: SW?
 }
 
 struct NE: Codable {
@@ -127,6 +104,7 @@ struct NE: Codable {
 
 struct CurrentLocation: Codable {
     let what: String?
+//    let where: String?
     let feature: Feature?
     let parents: [String]?
 }
@@ -153,19 +131,13 @@ struct Venue: Codable {
     let price: Price?
     let header: String?
     let summary: String?
-    let tips: Tips?
     let popular: Popular?
+    let tips: Tips?
+    let photos: Photos?
 }
 
 struct Popular: Codable {
     let isOpen: Bool?
-    let timeframes: [Timeframe]
-}
-struct Timeframe: Codable {
-    let days: String
-    let includesToday: Bool
-    let open: [OpenTime]
-    let segments: [String]
 }
 
 struct OpenTime: Codable {
@@ -193,7 +165,7 @@ struct VenueIcon: Codable {
 
 struct Photos: Codable {
     let count: Int
-    let groups: [PhotoGroup]
+    let groups: [PhotoGroup]?
 }
 
 struct PhotoGroup: Codable {
@@ -235,10 +207,10 @@ struct Contact: Codable {
     let formattedPhone: String
     let instagram: String
 
-    init(from venueContact: VenueContact) {
-        self.phone = venueContact.phone ?? ""
-        self.formattedPhone = venueContact.formattedPhone ?? "No phone number"
-        self.instagram = venueContact.instagram ?? "No instagram page"
+    init(from venueContact: VenueContact?) {
+        self.phone = venueContact?.phone ?? ""
+        self.formattedPhone = venueContact?.formattedPhone ?? "No phone number"
+        self.instagram = venueContact?.instagram ?? "No instagram page"
     }
 }
 
@@ -248,15 +220,53 @@ struct Stats: Codable {
     let checkinsCount: Int
 }
 
-struct LikeGroup: Codable {
-    let type: String?
+struct TipGroup: Codable {
+    let type: String
+    let name: String
+    let count: Int
+    let items: [TipItem]?
+}
+
+struct Tips: Codable {
     let count: Int?
-    let items: [String]?
+    let groups: [TipGroup]?
+}
+
+struct TipItem: Codable {
+    let id: String
+    let createdAt: Int
+    let text: String
+    let type: String
+    let canonicalUrl: String
+    let canonicalPath: String
+//    let logView: Bool
+    let agreeCount: Int
+    let disagreeCount: Int
+    let todo: Todo
+    let user: TipUser?
+}
+
+struct Todo: Codable {
+    let count: Int
+}
+
+struct TipUser: Codable {
+    let id: String
+    let firstName: String
+    let lastName: String?
+    let countryCode: String?
+    let photo: UserPhoto?
+}
+
+struct LikeGroup: Codable {
+    let type: String
+    let count: Int
+    let items: [String]
 }
 
 struct UserPhoto: Codable {
-    let prefix: String?
-    let suffix: String?
+    let prefix: String
+    let suffix: String
 }
 
 struct DetailedVenueResponse: Codable {

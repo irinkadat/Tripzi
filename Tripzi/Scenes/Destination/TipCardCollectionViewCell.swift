@@ -19,25 +19,23 @@ class TipCardCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let tipTextLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.numberOfLines = 0
+    private let tipTextLabel: CustomLabel = {
+        let label = CustomLabel(style: .subtitle, fontSize: 14, textColor: .black)
+        label.numberOfLines = 6
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let userImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.layer.cornerRadius = 24
+        imageView.layer.cornerRadius = 12
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private let userNameLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+    private let userNameLabel: CustomLabel = {
+        let label = CustomLabel(style: .title, fontSize: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -107,6 +105,12 @@ class TipCardCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
+    private let spacerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -123,9 +127,11 @@ class TipCardCollectionViewCell: UICollectionViewCell {
         contentView.layer.cornerRadius = 8
         
         contentView.addSubview(starsLabel)
-        contentView.addSubview(tipTextLabel)
-        contentView.addSubview(userInfoStackView)
         contentView.addSubview(textStackView)
+        contentView.addSubview(spacerView)
+        contentView.addSubview(userInfoStackView)
+        contentView.addSubview(likesStackView)
+        contentView.addSubview(dislikesStackView)
         
         userInfoStackView.addArrangedSubview(userImageView)
         userInfoStackView.addArrangedSubview(userNameLabel)
@@ -135,9 +141,6 @@ class TipCardCollectionViewCell: UICollectionViewCell {
         
         dislikesStackView.addArrangedSubview(dislikesImageView)
         dislikesStackView.addArrangedSubview(dislikesLabel)
-        
-        userInfoStackView.addArrangedSubview(likesStackView)
-        userInfoStackView.addArrangedSubview(dislikesStackView)
         
         textStackView.addArrangedSubview(tipTextLabel)
         
@@ -149,13 +152,22 @@ class TipCardCollectionViewCell: UICollectionViewCell {
             textStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             textStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             
-            userInfoStackView.topAnchor.constraint(equalTo: textStackView.bottomAnchor, constant: 10),
+            spacerView.topAnchor.constraint(equalTo: textStackView.bottomAnchor),
+            spacerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            spacerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            spacerView.bottomAnchor.constraint(equalTo: userInfoStackView.topAnchor, constant: -10),
+            
             userInfoStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            userInfoStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             userInfoStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
             
-            userImageView.widthAnchor.constraint(equalToConstant: 48),
-            userImageView.heightAnchor.constraint(equalToConstant: 48)
+            userImageView.widthAnchor.constraint(equalToConstant: 24),
+            userImageView.heightAnchor.constraint(equalToConstant: 24),
+            
+            likesStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            likesStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            
+            dislikesStackView.trailingAnchor.constraint(equalTo: likesStackView.leadingAnchor, constant: -10),
+            dislikesStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
         ])
     }
     

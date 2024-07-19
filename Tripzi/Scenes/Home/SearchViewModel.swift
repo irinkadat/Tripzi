@@ -25,8 +25,8 @@ class SearchViewModel: ObservableObject {
             let results = decodedData.response.group?.results ?? []
             
             let sortedResults = results.sorted { (place1, place2) -> Bool in
-                let hasPhotos1 = (place1.photos?.groups.first?.items.isEmpty == false)
-                let hasPhotos2 = (place2.photos?.groups.first?.items.isEmpty == false)
+                let hasPhotos1 = (place1.photos?.groups?.first?.items.isEmpty == false)
+                let hasPhotos2 = (place2.photos?.groups?.first?.items.isEmpty == false)
                 return hasPhotos1 && !hasPhotos2
             }
             
@@ -110,7 +110,7 @@ class SearchViewModel: ObservableObject {
     }
     
     func destinationDetails(for id: String, completion: @escaping (Listing?) -> Void) {
-        let urlString = "https://api.foursquare.com/v2/venues/\(id)/?v=20231010&oauth_token=QEJ4AQPTMMNB413HGNZ5YDMJSHTOHZHMLZCAQCCLXIX41OMP"
+        let urlString = "https://api.foursquare.com/v2/venues/\(id)?v=20231010&oauth_token=QEJ4AQPTMMNB413HGNZ5YDMJSHTOHZHMLZCAQCCLXIX41OMP"
         
         guard let url = URL(string: urlString) else {
             print("Failed to construct URL")
@@ -133,12 +133,12 @@ class SearchViewModel: ObservableObject {
                 return
             }
             
-            print("Raw response data: \(String(data: data, encoding: .utf8) ?? "No readable data")")
-            
             do {
                 let decodedData = try JSONDecoder().decode(DetailedVenueResponse.self, from: data)
                 if let venueDetail = decodedData.response.venue {
-                    let listing = Listing(from: PlaceResult(displayType: "venue", venue: venueDetail, photos: nil))
+                    let placeResult = PlaceResult(displayType: "venue", venue: venueDetail, photos: venueDetail.photos)
+                    let listing = Listing(from: placeResult)
+                    
                     DispatchQueue.main.async {
                         self.detailedPlace = listing
                         completion(listing)
