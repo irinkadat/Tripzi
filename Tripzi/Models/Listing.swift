@@ -19,18 +19,16 @@ struct Listing: Identifiable, Codable {
     let crossStreet: String?
     let header: String?
     let contextLine: String
-    let imageUrls: [String]
+    var imageUrls: [String]
     let description: String?
     let contact: Contact?
     let stats: Stats?
     var isFavorited: Bool = false
     let photos: [PhotoGroup]?
-//    let tips: [TipItem]
-    let tips: Tips?
+    let tips: [TipItem]?
     let summary: String?
     let isOpen: Bool?
-    let timeframes: [Timeframe]?
-
+    
     init?(from result: PlaceResult) {
         guard let venue = result.venue else {
             return nil
@@ -47,20 +45,16 @@ struct Listing: Identifiable, Codable {
         self.crossStreet = venue.location.crossStreet
         self.rating = venue.rating ?? 0.0
         self.contextLine = venue.location.contextLine
-        self.imageUrls = result.photos?.groups.flatMap { $0.items.map { "\($0.prefix)\($0.width)x\($0.height)\($0.suffix)" } } ?? []
+        self.imageUrls = result.photos?.groups?.flatMap { $0.items.map { "\($0.prefix)\($0.width)x\($0.height)\($0.suffix)" } } ?? []
         self.description = venue.url
         self.contact = Contact(from: venue.contact)
         self.stats = venue.stats
         self.isFavorited = false
         self.photos = result.photos?.groups
-//        self.tips = nil
-        self.tips = venue.tips ?? Tips(count: 0, groups: [])
-//        self.tips = venue.tips?.groups ?? []
+        self.tips = venue.tips?.groups?.flatMap { group in
+            group.items ?? []
+        }
         self.summary = venue.summary
         self.isOpen = venue.popular?.isOpen
-        self.timeframes = venue.popular?.timeframes
     }
 }
-
-
-
