@@ -19,6 +19,8 @@ struct Listing: Identifiable, Codable {
     let crossStreet: String?
     let header: String?
     let contextLine: String
+    let lat: Double?
+    let lng: Double?
     var imageUrls: [String]
     let description: String?
     let contact: Contact?
@@ -55,6 +57,8 @@ struct Listing: Identifiable, Codable {
             group.items ?? []
         }
         self.summary = venue.summary
+        self.lat = venue.location.lat
+        self.lng = venue.location.lng
         self.isOpen = venue.popular?.isOpen
     }
 }

@@ -36,7 +36,7 @@ struct Response: Codable {
     let group: Group?
     let results: [PlaceResult]?
     //
-    let context: Context?
+    let context: MyContext?
     let headerFullLocation: String?
     let headerLocationGranularity: String?
 }
@@ -53,7 +53,7 @@ struct ActiveFilters: Codable {
 }
 
 
-struct Context: Codable {
+struct MyContext: Codable {
     let searchLocationNearYou: Bool?
     let searchLocationMapBounds: Bool?
     let searchLocationType: String?

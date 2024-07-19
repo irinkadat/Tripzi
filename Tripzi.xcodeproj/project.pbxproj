@@ -48,6 +48,8 @@
 		8C651D0A2C493D4600339BA3 /* Places.json in Resources */ = {isa = PBXBuildFile; fileRef = 8C651D092C493D4600339BA3 /* Places.json */; };
 		8C651D0C2C49578A00339BA3 /* TipCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651D0B2C49578A00339BA3 /* TipCardView.swift */; };
 		8C651D102C496AA100339BA3 /* TipCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651D0F2C496AA100339BA3 /* TipCardCollectionViewCell.swift */; };
+		8C651D382C4ABCF300339BA3 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651D372C4ABCF300339BA3 /* MapView.swift */; };
+		8C651D5C2C4AE60300339BA3 /* FullScreenMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651D5B2C4AE60300339BA3 /* FullScreenMapViewController.swift */; };
 		8C8FFFB12C2E8D0F00079E8B /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8FFFB02C2E8D0F00079E8B /* AuthenticationManager.swift */; };
 		8C8FFFB62C2E9A8A00079E8B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8FFFB52C2E9A8A00079E8B /* HomeViewController.swift */; };
 		8C8FFFB82C2EACD600079E8B /* AuthenticationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8FFFB72C2EACD600079E8B /* AuthenticationVC.swift */; };
@@ -106,6 +108,8 @@
 		8C651D092C493D4600339BA3 /* Places.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Places.json; sourceTree = "<group>"; };
 		8C651D0B2C49578A00339BA3 /* TipCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipCardView.swift; sourceTree = "<group>"; };
 		8C651D0F2C496AA100339BA3 /* TipCardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipCardCollectionViewCell.swift; sourceTree = "<group>"; };
+		8C651D372C4ABCF300339BA3 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		8C651D5B2C4AE60300339BA3 /* FullScreenMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenMapViewController.swift; sourceTree = "<group>"; };
 		8C8FFFB02C2E8D0F00079E8B /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
 		8C8FFFB52C2E9A8A00079E8B /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		8C8FFFB72C2EACD600079E8B /* AuthenticationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationVC.swift; sourceTree = "<group>"; };
@@ -273,6 +277,8 @@
 				8C651CFF2C493AF600339BA3 /* IconTextStackView.swift */,
 				8C651D0B2C49578A00339BA3 /* TipCardView.swift */,
 				8C651D0F2C496AA100339BA3 /* TipCardCollectionViewCell.swift */,
+				8C651D372C4ABCF300339BA3 /* MapView.swift */,
+				8C651D5B2C4AE60300339BA3 /* FullScreenMapViewController.swift */,
 			);
 			path = Destination;
 			sourceTree = "<group>";
@@ -466,6 +472,7 @@
 				8C309DC92C2DB46800436F92 /* AppDelegate.swift in Sources */,
 				8C651D002C493AF600339BA3 /* IconTextStackView.swift in Sources */,
 				8C309DF62C2DB82C00436F92 /* LoginView.swift in Sources */,
+				8C651D382C4ABCF300339BA3 /* MapView.swift in Sources */,
 				8CC3F0092C3EC63900400A89 /* SearchViewController.swift in Sources */,
 				8C309DCB2C2DB46800436F92 /* SceneDelegate.swift in Sources */,
 				8CC530252C3C677F00E020DD /* PlacesListingView.swift in Sources */,
@@ -477,6 +484,7 @@
 				8C651CEC2C49391500339BA3 /* CustomSearchBar.swift in Sources */,
 				8CC3EFF92C3D726D00400A89 /* Listing.swift in Sources */,
 				8C8FFFB62C2E9A8A00079E8B /* HomeViewController.swift in Sources */,
+				8C651D5C2C4AE60300339BA3 /* FullScreenMapViewController.swift in Sources */,
 				8C651D082C493D0A00339BA3 /* CategoryCell.swift in Sources */,
 				8C651CDF2C4935D300339BA3 /* Port.swift in Sources */,
 				8C651CF02C49394900339BA3 /* CustomSearchButton.swift in Sources */,

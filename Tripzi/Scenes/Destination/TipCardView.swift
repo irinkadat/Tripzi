@@ -338,8 +338,8 @@ class TipCardView: UIView {
             userInfoStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
             userInfoStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
             
-            userImageView.widthAnchor.constraint(equalToConstant: 48),
-            userImageView.heightAnchor.constraint(equalToConstant: 48)
+            userImageView.widthAnchor.constraint(equalToConstant: 32),
+            userImageView.heightAnchor.constraint(equalToConstant: 32)
         ])
     }
     
