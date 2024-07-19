@@ -18,7 +18,6 @@ class RootViewController: UIViewController {
     func setUpTabBar() {
         let tabBarController = UITabBarController()
         
-        // Embed HomeViewController in a UINavigationController
         let homeVC = HomeViewController()
         let homeNavVC = UINavigationController(rootViewController: homeVC)
         
@@ -46,6 +45,9 @@ class RootViewController: UIViewController {
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithOpaqueBackground()
         tabBarAppearance.backgroundColor = .white
+        
+        tabBarAppearance.stackedLayoutAppearance.selected.iconColor = .greenPrimary
+               tabBarAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.greenPrimary]
         
         tabBarController.tabBar.standardAppearance = tabBarAppearance
         if #available(iOS 15.0, *) {

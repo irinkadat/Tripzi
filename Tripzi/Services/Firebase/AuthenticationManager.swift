@@ -10,6 +10,7 @@ import GoogleSignIn
 import FBSDKLoginKit
 import FirebaseCore
 import FirebaseFirestore
+import FirebaseStorage
 
 class AuthenticationManager: ObservableObject {
     @Published var isSignedIn = false
@@ -31,7 +32,7 @@ class AuthenticationManager: ObservableObject {
         }
     }
     
-    func registerUser(withEmail email: String, password: String, fullName: String, birthDate: Date) {
+    func registerUser(withEmail email: String, password: String, fullName: String, birthDate: Date, profileImage: UIImage?) {
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
             if let error = error {
                 self?.errorMessage = error.localizedDescription
@@ -41,13 +42,51 @@ class AuthenticationManager: ObservableObject {
                 self?.errorMessage = "User ID not found"
                 return
             }
-            self?.saveUserData(fullName: fullName, birthDate: birthDate, userId: userId)
+            
+            if let image = profileImage {
+                self?.uploadProfileImage(image, userId: userId) { url in
+                    self?.saveUserData(fullName: fullName, birthDate: birthDate, userId: userId, photoURL: url)
+                }
+            } else {
+                self?.saveUserData(fullName: fullName, birthDate: birthDate, userId: userId, photoURL: nil)
+            }
         }
     }
     
-    private func saveUserData(fullName: String, birthDate: Date, userId: String) {
+    private func uploadProfileImage(_ image: UIImage, userId: String, completion: @escaping (URL?) -> Void) {
+        guard let imageData = image.jpegData(compressionQuality: 0.75) else {
+            completion(nil)
+            return
+        }
+        
+        let storageRef = Storage.storage().reference().child("profile_images/\(userId).jpg")
+        storageRef.putData(imageData, metadata: nil) { metadata, error in
+            if let error = error {
+                print("Error uploading image: \(error.localizedDescription)")
+                completion(nil)
+                return
+            }
+            storageRef.downloadURL { url, error in
+                if let error = error {
+                    print("Error getting download URL: \(error.localizedDescription)")
+                    completion(nil)
+                    return
+                }
+                completion(url)
+            }
+        }
+    }
+    
+    private func saveUserData(fullName: String, birthDate: Date, userId: String, photoURL: URL?) {
         let db = Firestore.firestore()
-        let userData = ["fullName": fullName, "birthDate": Timestamp(date: birthDate), "userId": userId] as [String : Any]
+        var userData: [String: Any] = [
+            "fullName": fullName,
+            "birthDate": Timestamp(date: birthDate),
+            "userId": userId
+        ]
+        if let photoURL = photoURL {
+            userData["photoURL"] = photoURL.absoluteString
+        }
         db.collection("users").document(userId).setData(userData) { [weak self] error in
             if let error = error {
                 self?.errorMessage = "Failed to save user data: \(error.localizedDescription)"
@@ -153,4 +192,3 @@ class AuthenticationManager: ObservableObject {
         return window.rootViewController!
     }
 }
-

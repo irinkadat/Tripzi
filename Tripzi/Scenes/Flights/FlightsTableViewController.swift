@@ -6,48 +6,119 @@
 //
 
 import UIKit
+import Combine
 
-// MARK: - aq tvitmprinavis animacia minda
+class FlightsTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, FlightsViewModelDelegate {
+    var viewModel: FlightsViewModel
+    private var cancellables = Set<AnyCancellable>()
 
-class FlightsTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    
+    init(viewModel: FlightsViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(FlightTableViewCell.self, forCellReuseIdentifier: FlightTableViewCell.identifier)
         return tableView
     }()
     
-    private let flights: [FlightInfoModel] = [
-        FlightInfoModel(departureDate: "კვი, 14, ივლ, 2024", departureTime: "22:15", flightDuration: "3სთ 30წთ", flightDetail: "Wizz Air Malta", arrivalTime: "03:45"),
-        FlightInfoModel(departureDate: "კვი, 14, ივლ, 2024", departureTime: "22:15", flightDuration: "3სთ 30წთ", flightDetail: "Wizz Air Malta", arrivalTime: "03:45"),
-        FlightInfoModel(departureDate: "კვი, 14, ივლ, 2024", departureTime: "22:15", flightDuration: "3სთ 30წთ", flightDetail: "Wizz Air Malta", arrivalTime: "03:45"),
-        FlightInfoModel(departureDate: "კვი, 14, ივლ, 2024", departureTime: "22:15", flightDuration: "3სთ 30წთ", flightDetail: "Wizz Air Malta", arrivalTime: "03:45")
-    ]
+    private let noFlightsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "No flights searched"
+        label.textAlignment = .center
+        label.isHidden = true
+        return label
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.addSubview(tableView)
-        tableView.frame = view.bounds
-        tableView.dataSource = self
-        tableView.delegate = self
+        setupTableView()
+        setupNoFlightsLabel()
+        setupBindings()
+        viewModel.flightsDelegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        restartAnimations()
+    }
+    
+    private func restartAnimations() {
+        for cell in tableView.visibleCells {
+            if let flightCell = cell as? FlightTableViewCell {
+                flightCell.startPlaneAnimation()
+            }
+        }
+    }
+
+    private func setupTableView() {
+         tableView.dataSource = self
+         tableView.delegate = self
+         view.addSubview(tableView)
+         tableView.translatesAutoresizingMaskIntoConstraints = false
+         
+         NSLayoutConstraint.activate([
+             tableView.topAnchor.constraint(equalTo: view.topAnchor),
+             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+         ])
+     }
+    
+    private func setupNoFlightsLabel() {
+         view.addSubview(noFlightsLabel)
+         noFlightsLabel.translatesAutoresizingMaskIntoConstraints = false
+         
+         NSLayoutConstraint.activate([
+             noFlightsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+             noFlightsLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+         ])
+     }
+    
+    private func setupBindings() {
+        viewModel.$searchedFlights
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.tableView.reloadData()
+            }
+            .store(in: &cancellables)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return flights.count
+        let count = viewModel.searchedFlights.count
+        noFlightsLabel.isHidden = count > 0
+        return count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FlightTableViewCell.identifier, for: indexPath) as! FlightTableViewCell
-        cell.configure(with: flights[indexPath.row])
+        cell.configure(with: viewModel.searchedFlights[indexPath.row])
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150
     }
-}
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let flightCell = cell as? FlightTableViewCell {
+            flightCell.startPlaneAnimation()
+        }
+    }
 
-#Preview {
-    FlightsTableViewController()
+    // MARK: - FlightsViewModelDelegate
+    func didUpdateFlightSegments() {
+        tableView.reloadData()
+    }
+
+    func didFailWithError(_ error: Error) {
+        let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
 }

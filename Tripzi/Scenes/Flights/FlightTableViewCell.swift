@@ -31,14 +31,6 @@ class FlightTableViewCell: UITableViewCell {
         return label
     }()
     
-    //    private let flightDetailsLabel: UILabel = {
-    //        let label = UILabel()
-    //        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-    //        label.textColor = .gray
-    //        label.textAlignment = .center
-    //        return label
-    //    }()
-    
     private let flightDurationLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
@@ -50,6 +42,7 @@ class FlightTableViewCell: UITableViewCell {
     private let flightImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "airplane"))
         imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .greenPrimary
         return imageView
     }()
     
@@ -140,7 +133,7 @@ class FlightTableViewCell: UITableViewCell {
         
     }
     
-    private func startPlaneAnimation() {
+    func startPlaneAnimation() {
         let startPosition = -containerView.bounds.width / 4
         let endPosition = containerView.bounds.width / 4
         
@@ -151,39 +144,31 @@ class FlightTableViewCell: UITableViewCell {
         }, completion: nil)
     }
     
-//    private func startPlaneAnimation() {
-//        // Get the width of the containerView to set the initial and final positions
-//        let startPosition = -containerView.bounds.width / 4
-//        let endPosition = containerView.bounds.width / 4
-//        
-//        // Set the initial position of the plane off the left side of the container view
-//        flightImageView.transform = CGAffineTransform(translationX: startPosition, y: 0)
-//        
-//        UIView.animate(withDuration: 2.0, delay: 0, options: [.curveLinear], animations: {
-//            // Move the plane to the right side of the container view
-//            self.flightImageView.transform = CGAffineTransform(translationX: endPosition, y: 0)
-//        }, completion: { _ in
-//            // Reset the position of the plane off the left side and restart the animation
-//            self.flightImageView.transform = CGAffineTransform(translationX: startPosition, y: 0)
-//            self.startPlaneAnimation()
-//        })
-//    }
-    
-    func configure(with model: FlightInfoModel) {
-        departureDateLabel.text = model.departureDate
-        departureTimeLabel.text = model.departureTime
-        departureTimezoneLabel.text = "UTC+2"
-        flightDurationLabel.text = model.flightDuration
-        flightDetailLabel.text = model.flightDetail
-        arrivalTimeLabel.text = model.arrivalTime
-        arrivalTimezoneLabel.text = "UTC+4"
+    func configure(with model: FlightSegment) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
+        
+        if let departureDate = dateFormatter.date(from: model.departureDateTime) {
+            dateFormatter.dateFormat = "HH:mm"
+            departureDateLabel.text = dateFormatter.string(from: departureDate)
+            dateFormatter.dateFormat = "HH:mm"
+            departureTimeLabel.text = dateFormatter.string(from: departureDate)
+        } else {
+            departureDateLabel.text = model.departureDateTime
+            departureTimeLabel.text = model.departureDateTime
+        }
+
+        departureTimezoneLabel.text = model.departureAirportCode
+        flightDurationLabel.text = "Duration: \(model.journeyDurationInMillis / 60000) mins"
+        flightDetailLabel.text =  model.arrivalDateTime
+
+        let arrivalTime = String(model.arrivalDateTime.suffix(5))
+        arrivalTimeLabel.text = arrivalTime
+        
+        arrivalTimezoneLabel.text = model.arrivalAirportCode
     }
 }
 
-struct FlightInfoModel {
-    let departureDate: String
-    let departureTime: String
-    let flightDuration: String
-    let flightDetail: String
-    let arrivalTime: String
+#Preview {
+    FlightTableViewCell()
 }
