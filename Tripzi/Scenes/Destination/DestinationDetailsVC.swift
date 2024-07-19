@@ -13,15 +13,22 @@ class DestinationDetailsVC: UIViewController {
     private var scrollView: UIScrollView!
     private var contentView: UIView!
     private var lastAddedView: UIView?
+    var imageUrls: [String] = []
+    
+    private var tips: [TipItem] = []
+    private var tip: TipItem?
+    private let viewModel = SearchViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        
         guard let listing = listing else { return }
-        
+        print("image urlsss✅\(imageUrls)")
+        tips = listing.tips ?? []
+        print(tips)
         setupScrollView()
         setupUI(with: listing)
+        
     }
     
     private func setupScrollView() {
@@ -48,15 +55,16 @@ class DestinationDetailsVC: UIViewController {
     }
     
     private func setupUI(with listing: Listing) {
-        addImageCarousel(with: listing.imageUrls)
+        addImageCarousel(with: imageUrls)
         addBasicInfo(with: listing)
         addInfoStatsView(with: listing)
         addLocationSection(with: listing)
         addDivider()
         addWebsiteSection(with: listing.description)
         addContactSection(with: listing)
-        addDivider()
         addSection(title: "Cost", content: paymentDescription(listing.price))
+        addDivider()
+        addTipCollectionView()
         
         if let lastAddedView = lastAddedView {
             NSLayoutConstraint.activate([
@@ -225,6 +233,27 @@ class DestinationDetailsVC: UIViewController {
         lastAddedView = instagramStackView
     }
     
+    private func addTipCollectionView() {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let tipCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        tipCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        tipCollectionView.backgroundColor = .white
+        tipCollectionView.register(TipCardCollectionViewCell.self, forCellWithReuseIdentifier: "TipCardCollectionViewCell")
+        tipCollectionView.dataSource = self
+        tipCollectionView.delegate = self
+        contentView.addSubview(tipCollectionView)
+        
+        NSLayoutConstraint.activate([
+            tipCollectionView.topAnchor.constraint(equalTo: lastAddedView?.bottomAnchor ?? contentView.topAnchor, constant: 20),
+            tipCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            tipCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            tipCollectionView.heightAnchor.constraint(equalToConstant: 200)
+        ])
+        
+        lastAddedView = tipCollectionView
+    }
+    
     private func paymentDescription(_ payment: Price?) -> String {
         guard let payment = payment else { return "No cost information available." }
         let tier = payment.tier
@@ -238,7 +267,26 @@ class DestinationDetailsVC: UIViewController {
     }
 }
 
-#Preview {
-    DestinationDetailsVC()
+// MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+
+extension DestinationDetailsVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return tips.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TipCardCollectionViewCell", for: indexPath) as? TipCardCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        
+        let tipItem = tips[indexPath.item]
+        cell.configure(tipText: tipItem.text, UserName: tipItem.user?.firstName ?? "", likes: String(tipItem.agreeCount ?? 0), dislikes: String(tipItem.disagreeCount ?? 0), userImage: UIImage(named: "pic")!)
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 200)
+    }
 }
 

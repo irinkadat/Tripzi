@@ -154,32 +154,27 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             return cell
         } else {
             let listing = viewModel.listings[indexPath.row]
+            
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CustomCell", for: indexPath) as! CustomCollectionViewCell
-            print("Configuring cell for listing: \(listing.name)") // Debug output
             cell.configure(with: listing) { [weak self] in
-                let destinationDetailsVC = DestinationDetailsVC()
-                destinationDetailsVC.listing = listing
-                self?.navigationController?.pushViewController(destinationDetailsVC, animated: true)
+                guard let self = self else { return }
+                self.viewModel.destinationDetails(for: listing.id) { detailedListing in
+                    guard let detailedListing = detailedListing else { return }
+                    DispatchQueue.main.async {
+                        let destinationDetailsVC = DestinationDetailsVC()
+                        destinationDetailsVC.listing = detailedListing
+                        destinationDetailsVC.imageUrls = listing.imageUrls
+                        self.navigationController?.pushViewController(destinationDetailsVC, animated: true)
+                    }
+                }
             }
             return cell
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if collectionView == categoriesCollectionView {
-            let category = categories[indexPath.row].name
-            viewModel.fetchListings(for: category)
-        } else {
-            let selectedListing = viewModel.listings[indexPath.row]
-            viewModel.destinationDetails(for: selectedListing.id) { [weak self] detailedListing in
-                guard let self = self else { return }
-                DispatchQueue.main.async {
-                    let destinationDetailsVC = DestinationDetailsVC()
-                    destinationDetailsVC.listing = detailedListing
-                    self.navigationController?.pushViewController(destinationDetailsVC, animated: true)
-                }
-            }
-        }
+        let category = categories[indexPath.row].name
+        viewModel.fetchListings(for: category)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
