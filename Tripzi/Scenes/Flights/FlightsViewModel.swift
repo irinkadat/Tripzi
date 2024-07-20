@@ -7,19 +7,6 @@
 
 import Foundation
 
-struct CountryResponse: Hashable, Codable {
-    let data: CountryData
-}
-
-struct CountryData: Hashable, Codable {
-    let countries: [[Country]]
-}
-
-struct Country: Hashable, Equatable, Codable {
-    let code: String
-    let name: String
-}
-
 protocol PortSelectionDelegate: AnyObject {
     func didChoosePort(port: Port, forField: CustomTextField2)
 }
@@ -32,13 +19,12 @@ protocol FlightsViewModelDelegate: AnyObject {
 class FlightsViewModel: ObservableObject {
     @Published var searchedFlights: [FlightSegment] = []
     var countries: [Country] = []
-    var ports: [Port] = []
+    @Published var ports: [Port] = []
     let currentTimeMillis = Int(Date().timeIntervalSince1970 * 1000)
     
     weak var flightsDelegate: FlightsViewModelDelegate?
     
     func fetchCountries(completion: @escaping ([Country]) -> Void) {
-        
         guard let url = URL(string: "https://www.turkishairlines.com/api/v1/booking/countries?\(currentTimeMillis)") else { return }
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil else {
@@ -68,11 +54,31 @@ class FlightsViewModel: ObservableObject {
             do {
                 let portsResponse = try JSONDecoder().decode(PortResponse.self, from: data)
                 DispatchQueue.main.async {
-                    self?.ports = portsResponse.data
-                    completion(portsResponse.data)
+                    self?.ports = portsResponse.data.ports
+                    completion(portsResponse.data.ports)
                 }
             } catch {
                 print("Error decoding ports: \(error.localizedDescription)")
+            }
+        }.resume()
+    }
+    
+    func fetchPortSuggestions(for query: String, completion: @escaping ([Port]) -> Void) {
+        guard let url = URL(string: "https://www.turkishairlines.com/api/v1/booking/locations/TK/en?searchText=\(query)") else { return }
+        
+        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            guard let data = data, error == nil else {
+                print("Error fetching port suggestions: \(error?.localizedDescription ?? "Unknown error")")
+                return
+            }
+            do {
+                let portsResponse = try JSONDecoder().decode(PortResponse.self, from: data)
+                DispatchQueue.main.async {
+                    self?.ports = portsResponse.data.ports
+                    completion(portsResponse.data.ports)
+                }
+            } catch {
+                print("Error decoding port suggestions: \(error.localizedDescription)")
             }
         }.resume()
     }
