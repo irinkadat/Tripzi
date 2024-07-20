@@ -310,15 +310,8 @@
 		8C309DE82C2DB6EE00436F92 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				8C8DA2882C4B776300D42E1A /* Custom Components */,
 				8CC3EFED2C3D115300400A89 /* Custom Modifiers */,
-				8C309DE92C2DB70A00436F92 /* CustomButton.swift */,
-				8C309DEB2C2DB71800436F92 /* CustomTextField.swift */,
-				8CC3EFF22C3D6C7300400A89 /* ListingImageCarouselView.swift */,
-				8C651CEB2C49391500339BA3 /* CustomSearchBar.swift */,
-				8C651CED2C49393200339BA3 /* CustomStyledView.swift */,
-				8C651CEF2C49394900339BA3 /* CustomSearchButton.swift */,
-				8C651CF12C49396200339BA3 /* CustomTextField2.swift */,
-				8C651CF32C49397B00339BA3 /* CustomLabel.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -344,6 +337,21 @@
 				8C651CE52C4936A800339BA3 /* NetworkManager.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		8C8DA2882C4B776300D42E1A /* Custom Components */ = {
+			isa = PBXGroup;
+			children = (
+				8C309DEB2C2DB71800436F92 /* CustomTextField.swift */,
+				8C651CEB2C49391500339BA3 /* CustomSearchBar.swift */,
+				8C651CED2C49393200339BA3 /* CustomStyledView.swift */,
+				8C651CF12C49396200339BA3 /* CustomTextField2.swift */,
+				8C651CEF2C49394900339BA3 /* CustomSearchButton.swift */,
+				8C651CF32C49397B00339BA3 /* CustomLabel.swift */,
+				8CC3EFF22C3D6C7300400A89 /* ListingImageCarouselView.swift */,
+				8C309DE92C2DB70A00436F92 /* CustomButton.swift */,
+			);
+			path = "Custom Components";
 			sourceTree = "<group>";
 		};
 		8C8FFFBB2C2EE38F00079E8B /* RootView */ = {

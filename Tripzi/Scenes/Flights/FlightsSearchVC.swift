@@ -44,7 +44,14 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
         let button = UIButton(type: .system)
         button.setTitleColor(.black, for: .normal)
         button.tintColor = .black
-        button.setTitle("See all destinations", for: .normal)
+        button.isHidden = true
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 16, weight: .semibold)
+        ]
+        let attributedTitle = NSAttributedString(string: "🌍 See all destinations", attributes: attributes)
+        
+        button.setAttributedTitle(attributedTitle, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -64,6 +71,7 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "suggestionCell")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.isHidden = true
+        tableView.separatorStyle = .none
         return tableView
     }()
     
@@ -83,6 +91,7 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
         setupDatePicker()
         setupSuggestionTableView()
         setupBindings()
+        setupTapGesture()
     }
     
     private func setupUI() {
@@ -124,7 +133,7 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
             departureDateField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             departureDateField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
-            seeAllDestinationsButton.topAnchor.constraint(equalTo: departureDateField.bottomAnchor, constant: 20),
+            seeAllDestinationsButton.topAnchor.constraint(equalTo: departureDateField.bottomAnchor, constant: 100),
             seeAllDestinationsButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             seeAllDestinationsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
@@ -167,6 +176,7 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
         selectedTextField = originField
         seeAllDestinationsButton.isHidden = false
         suggestionTableView.isHidden = false
+        updateSuggestionTableViewConstraints()
         print("Origin field tapped")
     }
     
@@ -174,11 +184,12 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
         selectedTextField = destinationField
         seeAllDestinationsButton.isHidden = false
         suggestionTableView.isHidden = false
+        updateSuggestionTableViewConstraints()
         print("Destination field tapped")
     }
     
     @objc private func didTapSeeAllDestinationsButton() {
-        print("See all destinations button tapped") // Debugging print
+        print("See all destinations button tapped")
         viewModel.fetchCountries { [weak self] countries in
             self?.showCountries()
         }
@@ -233,15 +244,31 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
     private func setupSuggestionTableView() {
         suggestionTableView.delegate = self
         suggestionTableView.dataSource = self
+        
+        let backgroundView = CustomStyledView()
+        suggestionTableView.backgroundView = backgroundView
+        
+        updateSuggestionTableViewConstraints()
+    }
+    
+    private func updateSuggestionTableViewConstraints() {
+        suggestionTableView.removeFromSuperview()
         suggestionTableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(suggestionTableView)
         
+        guard let selectedTextField = selectedTextField else {
+            return
+        }
+        
         NSLayoutConstraint.activate([
-            suggestionTableView.topAnchor.constraint(equalTo: destinationField.bottomAnchor, constant: 8),
+            suggestionTableView.topAnchor.constraint(equalTo: selectedTextField.bottomAnchor, constant: 8),
             suggestionTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             suggestionTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             suggestionTableView.heightAnchor.constraint(equalToConstant: 200)
         ])
+        
+        suggestionTableView.backgroundView?.frame = suggestionTableView.bounds
+        suggestionTableView.backgroundView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     }
     
     private func setupBindings() {
@@ -252,6 +279,17 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
                 self?.suggestionTableView.reloadData()
             }
             .store(in: &cancellables)
+    }
+    
+    private func setupTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardAndSuggestions))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func dismissKeyboardAndSuggestions() {
+        view.endEditing(true)
+        suggestionTableView.isHidden = true
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -280,6 +318,7 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
         let cell = tableView.dequeueReusableCell(withIdentifier: "suggestionCell", for: indexPath)
         let port = suggestions[indexPath.row]
         cell.textLabel?.text = port.name
+        cell.backgroundColor = .clear
         return cell
     }
     

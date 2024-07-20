@@ -52,10 +52,10 @@ class FlightsViewModel: ObservableObject {
                 return
             }
             do {
-                let portsResponse = try JSONDecoder().decode(PortResponse.self, from: data)
+                let portsResponse = try JSONDecoder().decode(PportResponse.self, from: data)
                 DispatchQueue.main.async {
-                    self?.ports = portsResponse.data.ports
-                    completion(portsResponse.data.ports)
+                    self?.ports = portsResponse.data
+                    completion(portsResponse.data)
                 }
             } catch {
                 print("Error decoding ports: \(error.localizedDescription)")

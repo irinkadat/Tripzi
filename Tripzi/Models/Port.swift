@@ -7,31 +7,57 @@
 
 import Foundation
 
-struct PortResponse: Hashable, Codable {
+struct PortResponse: Codable {
+    let data: PortData
+}
+
+struct PportResponse: Hashable, Codable {
     let data: [Port]
 }
 
-struct Port: Hashable, Codable {
-    let code: String
-    let name: String
-    
-    init(code: String, name: String) {
-        self.code = code
-        self.name = name
-    }
+struct PortData: Hashable, Codable {
+    let ports: [Port]
 }
 
-struct City: Hashable, Codable {
+struct Port: Codable, Hashable {
+    let code: String
+    let name: String
+    let city: City
+    let country: Country
+    let multi: Bool
+    let port: PortDetail
+    let region: Region
+    let domestic: Bool
+    let hideInBooker: Bool
+    let starAwardTicket: Bool
+    let ports: [String]
+    let type: String
+}
+
+struct City: Codable, Hashable {
     let code: String
     let name: String
 }
 
-struct PortDetail: Hashable, Codable {
+struct Country: Codable, Hashable {
     let code: String
     let name: String
 }
 
-struct Region: Hashable, Codable {
+struct PortDetail: Codable, Hashable {
     let code: String
     let name: String
+}
+
+struct Region: Codable, Hashable {
+    let code: String
+    let name: String
+}
+
+struct CountryResponse: Hashable, Codable {
+    let data: CountryData
+}
+
+struct CountryData: Hashable, Codable {
+    let countries: [[Country]]
 }
