@@ -62,7 +62,7 @@
 		8CC3EFF32C3D6C7300400A89 /* ListingImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3EFF22C3D6C7300400A89 /* ListingImageCarouselView.swift */; };
 		8CC3EFF92C3D726D00400A89 /* Listing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3EFF82C3D726D00400A89 /* Listing.swift */; };
 		8CC3EFFD2C3DAE4A00400A89 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3EFFC2C3DAE4A00400A89 /* CustomCollectionViewCell.swift */; };
-		8CC3F0012C3DB91300400A89 /* FlightModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F0002C3DB91300400A89 /* FlightModel.swift */; };
+		8CC3F0012C3DB91300400A89 /* FlightResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F0002C3DB91300400A89 /* FlightResponse.swift */; };
 		8CC3F0052C3E541500400A89 /* FlightTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F0042C3E541500400A89 /* FlightTableViewCell.swift */; };
 		8CC3F0072C3E542F00400A89 /* FlightsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F0062C3E542F00400A89 /* FlightsTableViewController.swift */; };
 		8CC3F0092C3EC63900400A89 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F0082C3EC63900400A89 /* SearchViewController.swift */; };
@@ -121,7 +121,7 @@
 		8CC3EFF22C3D6C7300400A89 /* ListingImageCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingImageCarouselView.swift; sourceTree = "<group>"; };
 		8CC3EFF82C3D726D00400A89 /* Listing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Listing.swift; sourceTree = "<group>"; };
 		8CC3EFFC2C3DAE4A00400A89 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
-		8CC3F0002C3DB91300400A89 /* FlightModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightModel.swift; sourceTree = "<group>"; };
+		8CC3F0002C3DB91300400A89 /* FlightResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightResponse.swift; sourceTree = "<group>"; };
 		8CC3F0042C3E541500400A89 /* FlightTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightTableViewCell.swift; sourceTree = "<group>"; };
 		8CC3F0062C3E542F00400A89 /* FlightsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightsTableViewController.swift; sourceTree = "<group>"; };
 		8CC3F0082C3EC63900400A89 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -234,7 +234,7 @@
 			isa = PBXGroup;
 			children = (
 				8CC3EFF82C3D726D00400A89 /* Listing.swift */,
-				8CC3F0002C3DB91300400A89 /* FlightModel.swift */,
+				8CC3F0002C3DB91300400A89 /* FlightResponse.swift */,
 				8C651CDE2C4935D300339BA3 /* Port.swift */,
 				8C651CE02C49362000339BA3 /* Place.swift */,
 			);
@@ -310,15 +310,8 @@
 		8C309DE82C2DB6EE00436F92 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				8C8DA2882C4B776300D42E1A /* Custom Components */,
 				8CC3EFED2C3D115300400A89 /* Custom Modifiers */,
-				8C309DE92C2DB70A00436F92 /* CustomButton.swift */,
-				8C309DEB2C2DB71800436F92 /* CustomTextField.swift */,
-				8CC3EFF22C3D6C7300400A89 /* ListingImageCarouselView.swift */,
-				8C651CEB2C49391500339BA3 /* CustomSearchBar.swift */,
-				8C651CED2C49393200339BA3 /* CustomStyledView.swift */,
-				8C651CEF2C49394900339BA3 /* CustomSearchButton.swift */,
-				8C651CF12C49396200339BA3 /* CustomTextField2.swift */,
-				8C651CF32C49397B00339BA3 /* CustomLabel.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -344,6 +337,21 @@
 				8C651CE52C4936A800339BA3 /* NetworkManager.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		8C8DA2882C4B776300D42E1A /* Custom Components */ = {
+			isa = PBXGroup;
+			children = (
+				8C309DEB2C2DB71800436F92 /* CustomTextField.swift */,
+				8C651CEB2C49391500339BA3 /* CustomSearchBar.swift */,
+				8C651CED2C49393200339BA3 /* CustomStyledView.swift */,
+				8C651CF12C49396200339BA3 /* CustomTextField2.swift */,
+				8C651CEF2C49394900339BA3 /* CustomSearchButton.swift */,
+				8C651CF32C49397B00339BA3 /* CustomLabel.swift */,
+				8CC3EFF22C3D6C7300400A89 /* ListingImageCarouselView.swift */,
+				8C309DE92C2DB70A00436F92 /* CustomButton.swift */,
+			);
+			path = "Custom Components";
 			sourceTree = "<group>";
 		};
 		8C8FFFBB2C2EE38F00079E8B /* RootView */ = {
@@ -501,7 +509,7 @@
 				8C8FFFB82C2EACD600079E8B /* AuthenticationVC.swift in Sources */,
 				8C651CF42C49397B00339BA3 /* CustomLabel.swift in Sources */,
 				8C8FFFBF2C2EE42C00079E8B /* FlightsViewController.swift in Sources */,
-				8CC3F0012C3DB91300400A89 /* FlightModel.swift in Sources */,
+				8CC3F0012C3DB91300400A89 /* FlightResponse.swift in Sources */,
 				8C651CE82C4937F100339BA3 /* ProfileViewModel.swift in Sources */,
 				8C651CFE2C493ADF00339BA3 /* InfoStatsView.swift in Sources */,
 				8CC3F00B2C3ED2EF00400A89 /* DestinationDetailsVC.swift in Sources */,

@@ -16,8 +16,6 @@ struct Listing: Identifiable, Codable {
     let location: String?
     let address: String
     let rating: Double
-    let crossStreet: String?
-    let header: String?
     let contextLine: String
     let lat: Double?
     let lng: Double?
@@ -26,9 +24,7 @@ struct Listing: Identifiable, Codable {
     let contact: Contact?
     let stats: Stats?
     var isFavorited: Bool = false
-    let photos: [PhotoGroup]?
     let tips: [TipItem]?
-    let summary: String?
     let isOpen: Bool?
     
     init?(from result: PlaceResult) {
@@ -43,8 +39,6 @@ struct Listing: Identifiable, Codable {
         self.location = venue.location.city
         self.categorieName = venue.categories[0].name
         self.address = venue.location.address ?? ""
-        self.header = venue.header
-        self.crossStreet = venue.location.crossStreet
         self.rating = venue.rating ?? 0.0
         self.contextLine = venue.location.contextLine
         self.imageUrls = result.photos?.groups?.flatMap { $0.items.map { "\($0.prefix)\($0.width)x\($0.height)\($0.suffix)" } } ?? []
@@ -52,11 +46,9 @@ struct Listing: Identifiable, Codable {
         self.contact = Contact(from: venue.contact)
         self.stats = venue.stats
         self.isFavorited = false
-        self.photos = result.photos?.groups
         self.tips = venue.tips?.groups?.flatMap { group in
             group.items ?? []
         }
-        self.summary = venue.summary
         self.lat = venue.location.lat
         self.lng = venue.location.lng
         self.isOpen = venue.popular?.isOpen

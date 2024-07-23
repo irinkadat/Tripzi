@@ -6,31 +6,21 @@
 //
 
 import UIKit
+import Combine
 
-class FlightsSearchVC: UIViewController, PortSelectionDelegate {
+class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
     var viewModel: FlightsViewModel
-    
-    init(viewModel: FlightsViewModel) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private var selectedOriginCountry: Country?
-    private var selectedDestinationCountry: Country?
-    private var selectedOriginPort: Port?
-    private var selectedDestinationPort: Port?
+    private var cancellables = Set<AnyCancellable>()
     
     private var selectedTextField: CustomTextField2?
+    
     private let datePicker = UIDatePicker()
     
     private let originField: CustomTextField2 = {
         let textField = CustomTextField2()
         textField.placeholder = "From"
         textField.borderStyle = .roundedRect
+        textField.tag = 1
         return textField
     }()
     
@@ -38,6 +28,7 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate {
         let textField = CustomTextField2()
         textField.placeholder = "To"
         textField.borderStyle = .roundedRect
+        textField.tag = 2
         return textField
     }()
     
@@ -50,11 +41,16 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate {
     
     private let seeAllDestinationsButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("See all destinations", for: .normal)
         button.setTitleColor(.black, for: .normal)
-        button.setImage(UIImage(named: "globe"), for: .normal)
         button.tintColor = .black
         button.isHidden = true
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 16, weight: .semibold)
+        ]
+        let attributedTitle = NSAttributedString(string: "🌍 See all destinations", attributes: attributes)
+        
+        button.setAttributedTitle(attributedTitle, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -69,26 +65,61 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate {
         return button
     }()
     
+    private let suggestionTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "suggestionCell")
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.isHidden = true
+        tableView.separatorStyle = .none
+        return tableView
+    }()
+    
+    init(viewModel: FlightsViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        viewModel.portSelectionDelegate = self
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupActions()
         setupDatePicker()
+        setupSuggestionTableView()
+        setupBindings()
+        setupTapGesture()
     }
     
     private func setupUI() {
         view.backgroundColor = .white
-        
+        setupTextFields()
+        setupButtons()
+        setupConstraints()
+    }
+    
+    private func setupTextFields() {
         view.addSubview(originField)
         view.addSubview(destinationField)
         view.addSubview(departureDateField)
-        view.addSubview(seeAllDestinationsButton)
-        view.addSubview(searchButton)
         
         originField.translatesAutoresizingMaskIntoConstraints = false
         destinationField.translatesAutoresizingMaskIntoConstraints = false
         departureDateField.translatesAutoresizingMaskIntoConstraints = false
         
+        originField.delegate = self
+        destinationField.delegate = self
+    }
+    
+    private func setupButtons() {
+        view.addSubview(seeAllDestinationsButton)
+        view.addSubview(searchButton)
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             originField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
             originField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -102,7 +133,7 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate {
             departureDateField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             departureDateField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
-            seeAllDestinationsButton.topAnchor.constraint(equalTo: departureDateField.bottomAnchor, constant: 20),
+            seeAllDestinationsButton.topAnchor.constraint(equalTo: departureDateField.bottomAnchor, constant: 100),
             seeAllDestinationsButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             seeAllDestinationsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
@@ -110,17 +141,6 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate {
             searchButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             searchButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             searchButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
-        ])
-        
-        let closeButton = UIButton(type: .system)
-        closeButton.setTitle("Close", for: .normal)
-        closeButton.addTarget(self, action: #selector(didTapCloseButton), for: .touchUpInside)
-        closeButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(closeButton)
-        
-        NSLayoutConstraint.activate([
-            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10)
         ])
     }
     
@@ -152,18 +172,18 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate {
         departureDateField.text = dateFormatter.string(from: datePicker.date)
     }
     
-    @objc private func didTapCloseButton() {
-        dismiss(animated: true, completion: nil)
-    }
-    
     @objc private func didTapOriginField() {
         selectedTextField = originField
         seeAllDestinationsButton.isHidden = false
+        suggestionTableView.isHidden = false
+        updateSuggestionTableViewConstraints()
     }
     
     @objc private func didTapDestinationField() {
         selectedTextField = destinationField
         seeAllDestinationsButton.isHidden = false
+        suggestionTableView.isHidden = false
+        updateSuggestionTableViewConstraints()
     }
     
     @objc private func didTapSeeAllDestinationsButton() {
@@ -182,16 +202,13 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate {
     }
     
     private func performSearch(completion: @escaping () -> Void) {
-        guard let selectedOriginPort = selectedOriginPort,
-              let selectedDestinationPort = selectedDestinationPort,
-              let departureDate = departureDateField.text else {
-            showErrorAlert("Please select both origin and destination ports and enter a departure date.")
+        guard let departureDate = departureDateField.text else {
+            showErrorAlert("Please enter a departure date.")
             return
         }
         
-        viewModel.performSearch(originPort: selectedOriginPort, destinationPort: selectedDestinationPort, departureDate: departureDate, completion: completion)
+        viewModel.performSearch(originPort: viewModel.selectedOriginPort!, destinationPort: viewModel.selectedDestinationPort!, departureDate: departureDate, completion: completion)
     }
-    
     
     private func showErrorAlert(_ message: String) {
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
@@ -200,24 +217,116 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate {
     }
     
     private func showCountries() {
-        let countriesViewController = CountriesViewController(viewModel: viewModel, delegate: self, selectedTextField: selectedTextField!)
+        guard let selectedTextField = selectedTextField else {
+            return
+        }
+        let countriesViewController = CountriesViewController(viewModel: viewModel, delegate: self, selectedTextField: selectedTextField)
         let navigationController = UINavigationController(rootViewController: countriesViewController)
         present(navigationController, animated: true, completion: nil)
     }
     
     private func showPorts(for country: Country) {
-        let portsViewController = PortsViewController(viewModel: viewModel, country: country, delegate: self, selectedTextField: selectedTextField!)
+        guard let selectedTextField = selectedTextField else {
+            return
+        }
+        let portsViewController = PortsViewController(viewModel: viewModel, country: country, delegate: self, selectedTextField: selectedTextField)
         let navigationController = UINavigationController(rootViewController: portsViewController)
         present(navigationController, animated: true, completion: nil)
     }
     
-    // MARK: - PortSelectionDelegate
-    func didChoosePort(port: Port, forField: CustomTextField2) {
-        forField.text = port.name
-        if forField == originField {
-            selectedOriginPort = port
-        } else if forField == destinationField {
-            selectedDestinationPort = port
+    private func setupSuggestionTableView() {
+        suggestionTableView.delegate = self
+        suggestionTableView.dataSource = self
+        
+        let backgroundView = CustomStyledView()
+        suggestionTableView.backgroundView = backgroundView
+        
+        updateSuggestionTableViewConstraints()
+    }
+    
+    private func updateSuggestionTableViewConstraints() {
+        suggestionTableView.removeFromSuperview()
+        suggestionTableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(suggestionTableView)
+        
+        guard let selectedTextField = selectedTextField else {
+            return
         }
+        
+        NSLayoutConstraint.activate([
+            suggestionTableView.topAnchor.constraint(equalTo: selectedTextField.bottomAnchor, constant: 8),
+            suggestionTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            suggestionTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            suggestionTableView.heightAnchor.constraint(equalToConstant: 200)
+        ])
+        
+        suggestionTableView.backgroundView?.frame = suggestionTableView.bounds
+        suggestionTableView.backgroundView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    }
+    
+    private func setupBindings() {
+        viewModel.$ports
+            .receive(on: RunLoop.main)
+            .sink { [weak self] ports in
+                self?.suggestionTableView.isHidden = ports.isEmpty
+                self?.suggestionTableView.reloadData()
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$errorMessage
+            .compactMap { $0 }
+            .sink { [weak self] errorMessage in
+                self?.showErrorAlert(errorMessage)
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func setupTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardAndSuggestions))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func dismissKeyboardAndSuggestions() {
+        view.endEditing(true)
+        suggestionTableView.isHidden = true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let currentText = textField.text ?? ""
+        let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
+        
+        viewModel.handleTextChange(newText: newText)
+        
+        return true
+    }
+    
+    // MARK: - UITableViewDelegate and UITableViewDataSource
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.ports.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "suggestionCell", for: indexPath)
+        let port = viewModel.ports[indexPath.row]
+        cell.textLabel?.text = port.name
+        cell.backgroundColor = .clear
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let selectedTextField = selectedTextField else { return }
+        viewModel.selectPort(at: indexPath.row, forField: selectedTextField)
+        suggestionTableView.isHidden = true
+    }
+    
+    // MARK: - PortSelectionDelegate
+    func didChoosePort(portName: String, forField: CustomTextField2) {
+        forField.text = portName
+    }
+    
+    func didUpdateSuggestions() {
+        suggestionTableView.isHidden = viewModel.ports.isEmpty
+        suggestionTableView.reloadData()
     }
 }
