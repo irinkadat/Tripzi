@@ -23,6 +23,7 @@ struct OriginDestinationOption: Codable {
     let arrivalDate: String?
     let originLocation: String
     let destinationLocation: String
+    let filterAndSortParameters: FilterAndSortParameters?
     let soldOutAllFlights: Bool
     let originDestinationOptionList: [FlightOption]
 }
@@ -54,12 +55,20 @@ struct FlightSegment: Codable {
     let departureDateTime: String
     let arrivalDateTime: String
     let flightCode: FlightCode
-    let connected: Bool?
+    let connected: Bool
     let rph: String?
     let codeShareInd: String?
     let journeyDurationInMillis: Int
-    let equipmentCode: String?
-    let stopCount: Int?
+    let groundDuration: Int
+    let codeSharingAirline: String?
+    let carrierAirline: CarrierAirline
+    let spaFlight: Bool
+    let equipmentCode: String
+    let stopCount: Int
+    let containsTransitVisaRequiredPort: Bool
+    let tourIstanbul: Bool
+    let stopoverHotel: Bool
+    let technicalStops: [String]
 }
 
 struct FlightCode: Codable {
@@ -101,4 +110,3 @@ struct PassengerType: Codable {
     let quantity: Int
     let code: String
 }
-
