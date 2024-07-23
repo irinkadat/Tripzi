@@ -98,6 +98,7 @@ class FlightTableViewCell: UITableViewCell {
     private func setupView() {
         contentView.addSubview(containerView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
@@ -134,8 +135,9 @@ class FlightTableViewCell: UITableViewCell {
             flightStack.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             
             arrivalStack.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 16),
-            arrivalStack.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
+            arrivalStack.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16)
         ])
+        
         layoutIfNeeded()
         startPlaneAnimation()
     }
@@ -151,34 +153,14 @@ class FlightTableViewCell: UITableViewCell {
         }, completion: nil)
     }
     
-    func configure(with model: FlightSegment, price: FlightPrice) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
-        
-        if let departureDate = dateFormatter.date(from: model.departureDateTime) {
-            dateFormatter.dateFormat = "HH:mm"
-            departureDateLabel.text = dateFormatter.string(from: departureDate)
-            dateFormatter.dateFormat = "HH:mm"
-            departureTimeLabel.text = dateFormatter.string(from: departureDate)
-        } else {
-            departureDateLabel.text = model.departureDateTime
-            departureTimeLabel.text = model.departureDateTime
-        }
-
-        departureTimezoneLabel.text = model.departureAirportCode
-        flightDurationLabel.text = "Duration: \(model.journeyDurationInMillis / 60000) mins"
-        flightPriceLabel.text = "Price: \(price.amount) \(price.currencyCode)"
- 
-
-        flightDetailLabel.text = model.arrivalDateTime
-
-        let arrivalTime = String(model.arrivalDateTime.suffix(5))
-        arrivalTimeLabel.text = arrivalTime
-        
-        arrivalTimezoneLabel.text = model.arrivalAirportCode
+    func configure(with viewModel: FlightsViewModel) {
+        departureDateLabel.text = viewModel.departureDate
+        departureTimeLabel.text = viewModel.departureTime
+        departureTimezoneLabel.text = viewModel.departureAirportCode
+        flightDetailLabel.text = viewModel.arrivalDate
+        arrivalTimeLabel.text = viewModel.arrivalTime
+        flightDurationLabel.text = viewModel.flightDuration
+        flightPriceLabel.text = "\(viewModel.flightPrice) \(viewModel.flightPriceCurrency)"
+        arrivalTimezoneLabel.text = viewModel.arrivalAirportCode
     }
-}
-
-#Preview {
-    FlightTableViewCell()
 }

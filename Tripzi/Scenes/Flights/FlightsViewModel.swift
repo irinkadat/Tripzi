@@ -24,12 +24,32 @@ class FlightsViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var selectedOriginPort: Port?
     @Published var selectedDestinationPort: Port?
+    @Published var hasSearchedFlights: Bool = false
     
     @Published var flattenedFlights: [(FlightSegment, FlightPrice?)] = []
-
+    var selectedFlightOption: FlightOption? {
+        didSet {
+            updateFlightDetails()
+        }
+    }
     
+    // Computed properties for cell data
+    @Published var departureDate: String = ""
+    @Published var departureTime: String = ""
+    @Published var arrivalDate: String = ""
+    @Published var arrivalTime: String = ""
+    @Published var departureAirportCode: String = ""
+    @Published var arrivalAirportCode: String = ""
+    @Published var flightDuration: String = ""
+    @Published var flightPriceCurrency: String = ""
+    @Published var flightPrice: Double = 0.0
+
+    func selectFlightOption(at index: Int) {
+        selectedFlightOption = searchedFlights[index]
+    }
+
     func flattenFlights(flight: [FlightOption]) {
-        flattenedFlights = flight.flatMap { option in
+        flattenedFlights = searchedFlights.flatMap { option in
             option.segmentList.map { segment in
                 (segment, option.startingPrice)
             }
@@ -132,6 +152,7 @@ class FlightsViewModel: ObservableObject {
             switch result {
             case .success(let segments):
                 self?.searchedFlights = segments
+                self?.hasSearchedFlights = !segments.isEmpty
                 self?.flattenFlights(flight: segments)
                 self?.flightsDelegate?.didUpdateFlightSegments()
                 print("Searched flights updated: \(self?.searchedFlights ?? [])")
@@ -180,5 +201,42 @@ class FlightsViewModel: ObservableObject {
     func selectPort(at index: Int, forField field: CustomTextField2) {
         let selectedPort = ports[index]
         didChoosePort(port: selectedPort, forField: field)
+    }
+
+    private func updateFlightDetails() {
+        guard let selectedFlight = selectedFlightOption,
+              let startSegment = selectedFlight.segmentList.first,
+              let endSegment = selectedFlight.segmentList.last else {
+            return
+        }
+        
+        let departureDateTimeComponents = startSegment.departureDateTime.split(separator: " ")
+        if departureDateTimeComponents.count == 2 {
+            departureDate = String(departureDateTimeComponents[0])
+            departureTime = String(departureDateTimeComponents[1])
+        } else {
+            departureDate = startSegment.departureDateTime
+            departureTime = startSegment.departureDateTime
+        }
+
+        let arrivalDateTimeComponents = endSegment.arrivalDateTime.split(separator: " ")
+        if arrivalDateTimeComponents.count == 2 {
+            arrivalDate = String(arrivalDateTimeComponents[0])
+            arrivalTime = String(arrivalDateTimeComponents[1])
+        } else {
+            arrivalDate = endSegment.arrivalDateTime
+            arrivalTime = endSegment.arrivalDateTime
+        }
+
+        departureAirportCode = startSegment.departureAirportCode
+        arrivalAirportCode = endSegment.arrivalAirportCode
+        flightDuration = "Duration: \(startSegment.journeyDurationInMillis / 60000) mins"
+        if let price = selectedFlight.startingPrice {
+            flightPrice = price.amount
+            flightPriceCurrency = price.currencyCode
+        } else {
+            flightPrice = 0.0
+            flightPriceCurrency = "USD"
+        }
     }
 }
