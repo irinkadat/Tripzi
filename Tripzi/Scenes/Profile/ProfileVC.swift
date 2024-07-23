@@ -7,32 +7,30 @@
 
 import UIKit
 import FirebaseAuth
+import Combine
 
-class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    var imageView: UIImageView!
-    var nameLabel: UILabel!
-    var subtitleLabel: UILabel!
-    var editPhotoButton: UIButton!
-    private var profileViewModel = ProfileViewModel()
-    private var authManager = AuthenticationManager()
-    private var authStateListener: AuthStateDidChangeListenerHandle?
-
+final class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    var imageView = UIImageView()
+    var nameLabel = UILabel()
+    var subtitleLabel = UILabel()
+    var editPhotoButton = UIButton(type: .system)
+    private let profileViewModel = ProfileViewModel()
+    private var authButton: UIButton!
+    private var subscriptions = Set<AnyCancellable>()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
         setupUI()
-        setupAuthStateListener()
-        profileViewModel.updateUI = { [weak self] in
-            self?.displayUserInfo()
-        }
-        profileViewModel.fetchUserInfo()
+        setupBindings()
+        profileViewModel.fetchUserInfoIfNeeded(forceFetch: true)
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        profileViewModel.fetchUserInfo()
+        profileViewModel.fetchUserInfoIfNeeded()
     }
-
+    
     private func configureNavigationBar() {
         navigationItem.title = "Profile"
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -40,41 +38,40 @@ class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if let listener = authStateListener {
-            Auth.auth().removeStateDidChangeListener(listener)
-        }
+        profileViewModel.cleanup()
     }
-
-    private func setupAuthStateListener() {
-        authStateListener = Auth.auth().addStateDidChangeListener { [weak self] (_, user) in
-            self?.profileViewModel.fetchUserInfo()
-        }
+    
+    private func setupBindings() {
+        profileViewModel.bindProfileUI(nameLabel: nameLabel, imageView: imageView, authButton: authButton)
     }
-
+    
     private func setupUI() {
         view.backgroundColor = .white
-        
+        setupHeaderView()
+        setupSettingsView()
+        setupHeaderConstraints()
+        setupSettingsConstraints()
+    }
+    
+    private func setupHeaderView() {
         let headerView = UIView()
         headerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(headerView)
         
-        imageView = UIImageView()
         imageView.layer.cornerRadius = 30
         imageView.layer.masksToBounds = true
         imageView.backgroundColor = .lightGray
         imageView.contentMode = .scaleAspectFill
-        imageView.image = UIImage(systemName: "person.circle")
+        imageView.image = UIImage(named: "nouser")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         headerView.addSubview(imageView)
         
-        nameLabel = UILabel()
         nameLabel.font = UIFont.boldSystemFont(ofSize: 18)
         nameLabel.textAlignment = .left
         nameLabel.text = "Loading Name..."
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         headerView.addSubview(nameLabel)
         
-        subtitleLabel = UILabel()
         subtitleLabel.font = UIFont.systemFont(ofSize: 14)
         subtitleLabel.textAlignment = .left
         subtitleLabel.textColor = .gray
@@ -82,37 +79,61 @@ class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         headerView.addSubview(subtitleLabel)
         
-        editPhotoButton = UIButton(type: .system)
         editPhotoButton.setImage(UIImage(systemName: "pencil"), for: .normal)
-        editPhotoButton.addTarget(self, action: #selector(editPhotoTapped), for: .touchUpInside)
+        editPhotoButton.addAction(UIAction(handler: {_ in self.editPhotoTapped()}), for: .touchUpInside)
+        
         editPhotoButton.translatesAutoresizingMaskIntoConstraints = false
         headerView.addSubview(editPhotoButton)
+    }
+    
+    private func setupSettingsView() {
+        let settingsView = createSettingsViewContainer()
+        let settingsTitleLabel = createSettingsTitleLabel()
+        let settingsStackView = createSettingsStackView()
         
+        settingsView.addSubview(settingsTitleLabel)
+        settingsView.addSubview(settingsStackView)
+        view.addSubview(settingsView)
+    }
+    
+    private func createSettingsViewContainer() -> UIView {
         let settingsView = UIView()
         settingsView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(settingsView)
-        
+        return settingsView
+    }
+    
+    private func createSettingsTitleLabel() -> UILabel {
         let settingsTitleLabel = UILabel()
         settingsTitleLabel.text = "Settings"
         settingsTitleLabel.font = UIFont.boldSystemFont(ofSize: 18)
         settingsTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        settingsView.addSubview(settingsTitleLabel)
-        
+        return settingsTitleLabel
+    }
+    
+    private func createSettingsStackView() -> UIStackView {
         let personalInfoButton = createSettingsButton(title: "Personal information", icon: UIImage(systemName: "person.circle"))
-        personalInfoButton.addTarget(self, action: #selector(personalInfoButtonTapped), for: .touchUpInside)
+        personalInfoButton.addAction(UIAction(handler: { _ in self.personalInfoButtonTapped() }), for: .touchUpInside)
         
         let paymentsButton = createSettingsButton(title: "Payments and payouts", icon: UIImage(systemName: "creditcard"))
-        let aboutUs = createSettingsButton(title: "About Tripz", icon: UIImage(systemName: "doc.text"))
+        paymentsButton.addAction(UIAction(handler: { _ in self.paymentInfoButtonTapped() }), for: .touchUpInside)
+        
+        let aboutUsButton = createSettingsButton(title: "About Tripz", icon: UIImage(systemName: "doc.text"))
+        aboutUsButton.addAction(UIAction(handler: { _ in self.aboutUsButtonTapped() }), for: .touchUpInside)
+        
         let securityButton = createSettingsButton(title: "Login & security", icon: UIImage(systemName: "shield"))
         
-        let logoutButton = createSettingsButton(title: "Log out", icon: UIImage(systemName: "door.left.hand.open"))
-        logoutButton.addTarget(self, action: #selector(handleLogout), for: .touchUpInside)
-
-        let settingsStackView = UIStackView(arrangedSubviews: [personalInfoButton, paymentsButton, aboutUs, securityButton, logoutButton])
+        authButton = createSettingsButton(title: "Loading...", icon: UIImage(systemName: "door.left.hand.open"))
+        authButton.addAction(UIAction(handler: {_ in self.handleAuthButtonTapped()}), for: .touchUpInside)
+        
+        let settingsStackView = UIStackView(arrangedSubviews: [personalInfoButton, paymentsButton, aboutUsButton, securityButton, authButton])
         settingsStackView.axis = .vertical
         settingsStackView.spacing = 20
         settingsStackView.translatesAutoresizingMaskIntoConstraints = false
-        settingsView.addSubview(settingsStackView)
+        return settingsStackView
+    }
+    
+    private func setupHeaderConstraints() {
+        guard let headerView = view.subviews.first else { return }
         
         NSLayoutConstraint.activate([
             headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -137,11 +158,19 @@ class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
             editPhotoButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
             editPhotoButton.widthAnchor.constraint(equalToConstant: 20),
             editPhotoButton.heightAnchor.constraint(equalToConstant: 20),
-            
-            settingsView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 20),
+        ])
+    }
+    
+    private func setupSettingsConstraints() {
+        guard let settingsView = view.subviews.last,
+              let settingsTitleLabel = settingsView.subviews.first,
+              let settingsStackView = settingsView.subviews.last else { return }
+        
+        NSLayoutConstraint.activate([
+            settingsView.topAnchor.constraint(equalTo: view.subviews.first!.bottomAnchor, constant: 20),
             settingsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             settingsView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-
+            
             settingsTitleLabel.leadingAnchor.constraint(equalTo: settingsView.leadingAnchor, constant: 20),
             settingsTitleLabel.topAnchor.constraint(equalTo: settingsView.topAnchor),
             
@@ -151,80 +180,67 @@ class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
             settingsStackView.bottomAnchor.constraint(equalTo: settingsView.bottomAnchor, constant: -20)
         ])
     }
-
+    
     private func createSettingsButton(title: String, icon: UIImage?) -> UIButton {
-        let button = UIButton(type: .system)
-        button.setTitle(title, for: .normal)
-        button.setImage(icon, for: .normal)
-        button.tintColor = .black
+        var configuration = UIButton.Configuration.plain()
+        configuration.title = title
+        configuration.image = icon
+        configuration.imagePadding = 10
+        configuration.imagePlacement = .leading
+        configuration.baseForegroundColor = .black
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        
+        let button = UIButton(configuration: configuration, primaryAction: nil)
         button.contentHorizontalAlignment = .left
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.heightAnchor.constraint(equalToConstant: 40).isActive = true
         return button
     }
-
-    @objc private func personalInfoButtonTapped() {
+    
+    private func aboutUsButtonTapped() {
+        let aboutVC = AboutVC()
+        navigationController?.pushViewController(aboutVC, animated: true)
+    }
+    
+    private func paymentInfoButtonTapped() {
+        let paymentsVC = PaymentsVC()
+        navigationController?.pushViewController(paymentsVC, animated: true)
+    }
+    
+    private func personalInfoButtonTapped() {
         let personalInfoVC = PersonalInfoViewController()
         navigationController?.pushViewController(personalInfoVC, animated: true)
     }
-
-    private func displayUserInfo() {
-        if Auth.auth().currentUser != nil {
-            nameLabel.text = profileViewModel.userName ?? "No Name"
-            
-            if let userImage = profileViewModel.userImage {
-                imageView.image = userImage
-            } else {
-                imageView.image = UIImage(systemName: "person.circle")
-            }
-        } else {
-            nameLabel.text = "No User Logged In"
-            imageView.image = UIImage(systemName: "person.circle")
-        }
-    }
-
-    @objc func editPhotoTapped() {
+    
+    func editPhotoTapped() {
         let picker = UIImagePickerController()
         picker.delegate = self
         picker.allowsEditing = true
         present(picker, animated: true)
     }
-
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let editedImage = info[.editedImage] as? UIImage {
-            imageView.image = editedImage
-            profileViewModel.updateProfileImage(editedImage)
-        } else if let originalImage = info[.originalImage] as? UIImage {
-            imageView.image = originalImage
-            profileViewModel.updateProfileImage(originalImage)
+        self.dismiss(animated: true) { [weak self] in
+            if let image = self?.profileViewModel.handlePickedImage(info: info) {
+                self?.imageView.image = image
+            }
         }
-        dismiss(animated: true)
     }
-
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
-
-    @objc private func handleLogout() {
-        authManager.signOut()
-        let loginVC = AuthenticationVC()
-        loginVC.modalPresentationStyle = .popover
-        present(loginVC, animated: true)
-    }
     
-    func refreshUserInfo() {
-        profileViewModel.fetchUserInfo()
-    }
-
-    private func presentLoginScreen() {
-        if let sceneDelegate = UIApplication.shared.connectedScenes
-            .first(where: { $0.activationState == .foregroundActive })?.delegate as? SceneDelegate {
-            sceneDelegate.resetToLoginScreen()
+    private func handleAuthButtonTapped() {
+        profileViewModel.handleAuthButtonTap { [weak self] in
+            DispatchQueue.main.async {
+                let loginVC = AuthenticationVC()
+                loginVC.modalPresentationStyle = .popover
+                self?.present(loginVC, animated: true)
+            }
         }
     }
 }
-
 
 #Preview {
     ProfileVC()

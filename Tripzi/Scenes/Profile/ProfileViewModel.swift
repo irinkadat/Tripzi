@@ -8,41 +8,37 @@
 import FirebaseAuth
 import FirebaseStorage
 import FirebaseFirestore
+import Combine
 
-class ProfileViewModel: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    var userName: String? {
-        didSet {
-            self.updateUI?()
-        }
-    }
-    var userEmail: String? {
-        didSet {
-            self.updateUI?()
-        }
-    }
-    var userBirthDate: Date? {
-        didSet {
-            self.updateUI?()
-        }
-    }
-    var userImage: UIImage? {
-        didSet {
-            self.updateUI?()
-        }
-    }
-    var updateUI: (() -> Void)?
+final class ProfileViewModel: NSObject {
+    @Published var userName: String?
+    @Published var userEmail: String?
+    @Published var userBirthDate: Date?
+    @Published var userImage: UIImage?
+    @Published var authButtonTitle: String?
+    
+    private var isUserInfoFetched = false
+    private var subscriptions = Set<AnyCancellable>()
+    private var authStateListener: AuthStateDidChangeListenerHandle?
+    private let firestoreService = FirebaseFirestoreService.shared
     
     override init() {
         super.init()
-        fetchUserInfo()
+        fetchUserInfoIfNeeded(forceFetch: true)
+        setupAuthButtonTitle()
+        setupNotificationObservers()
+        setupAuthStateListener()
+    }
+    
+    func fetchUserInfoIfNeeded(forceFetch: Bool = false) {
+        if !isUserInfoFetched || forceFetch {
+            fetchUserInfo()
+        }
     }
     
     func fetchUserInfo() {
         guard let user = Auth.auth().currentUser else {
-            userName = "No User Logged In"
-            userEmail = "No Email"
-            userImage = UIImage(systemName: "person.circle")!
-            updateUI?()
+            updateStateForLoggedOutUser()
             return
         }
         
@@ -52,18 +48,14 @@ class ProfileViewModel: NSObject, UIImagePickerControllerDelegate, UINavigationC
             fetchProfileImage(from: photoURL)
         }
         
-        let db = Firestore.firestore()
-        db.collection("users").document(user.uid).getDocument { [weak self] document, error in
-            if let document = document, document.exists {
-                let data = document.data()
-                self?.userName = data?["fullName"] as? String ?? self?.userName
-                if let birthdateTimestamp = data?["birthDate"] as? Timestamp {
-                    self?.userBirthDate = birthdateTimestamp.dateValue()
-                }
-            } else {
-                print("No Firestore document for the user found")
+        firestoreService.fetchUserInfo(userId: user.uid) { [weak self] result in
+            switch result {
+            case .success(let data):
+                self?.updateStateWithFetchedData(data)
+            case .failure(let error):
+                print(error.localizedDescription)
             }
-            self?.updateUI?()
+            self?.isUserInfoFetched = true
         }
     }
     
@@ -78,71 +70,156 @@ class ProfileViewModel: NSObject, UIImagePickerControllerDelegate, UINavigationC
         task.resume()
     }
     
-    func updateProfileImage(_ image: UIImage) {
-        self.userImage = image
-        uploadImageToServer(image) { [weak self] url in
-            guard let url = url else { return }
-            self?.updateUserProfile(with: url)
+    private func updateStateForLoggedOutUser() {
+        userName = "No User Logged In"
+        userEmail = "No Email"
+        userImage = UIImage(named: "nouser")
+        authButtonTitle = "Log in"
+    }
+    
+    private func updateStateWithFetchedData(_ data: [String: Any]) {
+        userName = data["fullName"] as? String ?? userName
+        if let birthdateTimestamp = data["birthDate"] as? Timestamp {
+            userBirthDate = birthdateTimestamp.dateValue()
         }
     }
-
-    private func uploadImageToServer(_ image: UIImage, completion: @escaping (URL?) -> Void) {
-        guard let imageData = image.jpegData(compressionQuality: 0.75) else {
-            print("Failed to get JPEG representation of UIImage")
-            completion(nil)
-            return
-        }
-        
-        let storageRef = Storage.storage().reference().child("profile_images/\(UUID().uuidString).jpg")
-        storageRef.putData(imageData, metadata: nil) { metadata, error in
-            if let error = error {
-                print("Error uploading image: \(error.localizedDescription)")
-                completion(nil)
-                return
-            }
-            storageRef.downloadURL { url, error in
-                if let error = error {
-                    print("Error getting download URL: \(error.localizedDescription)")
-                    completion(nil)
-                    return
+    
+    func updateProfileImage(_ image: UIImage, completion: @escaping (Bool) -> Void) {
+        firestoreService.uploadImageToServer(image) { [weak self] result in
+            switch result {
+            case .success(let url):
+                self?.firestoreService.updateUserProfile(photoURL: url) { result in
+                    switch result {
+                    case .success:
+                        NotificationCenter.default.post(name: .AuthStateDidChange, object: nil)
+                        completion(true)
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                        completion(false)
+                    }
                 }
-                print("Image successfully uploaded with URL: \(url!.absoluteString)")
-                completion(url)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
             }
         }
     }
     
-    private func updateUserProfile(with photoURL: URL) {
-        if let user = Auth.auth().currentUser {
-            let changeRequest = user.createProfileChangeRequest()
-            changeRequest.photoURL = photoURL
-            changeRequest.commitChanges { error in
-                if let error = error {
-                    print("Error updating user profile: \(error.localizedDescription)")
-                } else {
-                    print("User profile updated successfully")
-                }
-            }
+    private func setupAuthButtonTitle() {
+        Auth.auth().addStateDidChangeListener { [weak self] _, user in
+            self?.authButtonTitle = user != nil ? "Log out" : "Log in"
+            self?.fetchUserInfoIfNeeded(forceFetch: true)
         }
     }
     
-    func presentImagePicker(from viewController: UIViewController) {
-        let picker = UIImagePickerController()
-        picker.delegate = self
-        picker.allowsEditing = true
-        viewController.present(picker, animated: true)
+    func handleAuthButtonTap(completion: @escaping () -> Void) {
+        if Auth.auth().currentUser != nil {
+            do {
+                try Auth.auth().signOut()
+                NotificationCenter.default.post(name: .AuthStateDidChange, object: nil)
+                isUserInfoFetched = false
+                updateStateForLoggedOutUser() //
+                fetchUserInfoIfNeeded(forceFetch: true)
+                completion()
+            } catch let signOutError as NSError {
+                print("Error signing out: %@", signOutError)
+            }
+        } else {
+            completion()
+        }
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func setupNotificationObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleAuthStateChange), name: .AuthStateDidChange, object: nil)
+    }
+    
+    @objc private func handleAuthStateChange() {
+        fetchUserInfoIfNeeded(forceFetch: true)
+    }
+    
+    private func setupAuthStateListener() {
+        authStateListener = Auth.auth().addStateDidChangeListener { [weak self] (_, user) in
+            self?.fetchUserInfoIfNeeded(forceFetch: true)
+        }
+    }
+    
+    func cleanup() {
+        if let listener = authStateListener {
+            Auth.auth().removeStateDidChangeListener(listener)
+        }
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    func handlePickedImage(info: [UIImagePickerController.InfoKey : Any]) -> UIImage? {
         if let editedImage = info[.editedImage] as? UIImage {
-            updateProfileImage(editedImage)
+            updateProfileImage(editedImage) { success in
+                if success {
+                    NotificationCenter.default.post(name: .AuthStateDidChange, object: nil)
+                }
+            }
+            return editedImage
         } else if let originalImage = info[.originalImage] as? UIImage {
-            updateProfileImage(originalImage)
+            updateProfileImage(originalImage) { success in
+                if success {
+                    NotificationCenter.default.post(name: .AuthStateDidChange, object: nil)
+                }
+            }
+            return originalImage
+        } else {
+            return nil
         }
-        picker.dismiss(animated: true)
     }
     
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
+    func bindProfileUI(nameLabel: UILabel, imageView: UIImageView, authButton: UIButton) {
+        $userName
+            .receive(on: RunLoop.main)
+            .sink { userName in
+                nameLabel.text = userName
+            }
+            .store(in: &subscriptions)
+        
+        $userImage
+            .receive(on: RunLoop.main)
+            .sink { userImage in
+                imageView.image = userImage
+            }
+            .store(in: &subscriptions)
+        
+        $authButtonTitle
+            .receive(on: RunLoop.main)
+            .sink { title in
+                authButton.setTitle(title, for: .normal)
+            }
+            .store(in: &subscriptions)
+    }
+    
+    func bindPersonalInfoUI(nameLabel: UILabel, emailLabel: UILabel, birthdateLabel: UILabel) {
+        $userName
+            .receive(on: RunLoop.main)
+            .sink { userName in
+                nameLabel.text = userName
+            }
+            .store(in: &subscriptions)
+        
+        $userEmail
+            .receive(on: RunLoop.main)
+            .sink { userEmail in
+                emailLabel.text = userEmail
+            }
+            .store(in: &subscriptions)
+        
+        $userBirthDate
+            .receive(on: RunLoop.main)
+            .sink { userBirthDate in
+                if let date = userBirthDate {
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateStyle = .medium
+                    dateFormatter.timeStyle = .none
+                    birthdateLabel.text = dateFormatter.string(from: date)
+                } else {
+                    birthdateLabel.text = "No Birthdate"
+                }
+            }
+            .store(in: &subscriptions)
     }
 }

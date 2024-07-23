@@ -17,10 +17,15 @@ class PersonalInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        profileViewModel.updateUI = { [weak self] in
-            self?.displayUserInfo()
-        }
+        setupNavigationBar()
+        profileViewModel.bindPersonalInfoUI(nameLabel: nameLabel, emailLabel: emailLabel, birthdateLabel: birthdateLabel)
         profileViewModel.fetchUserInfo()
+    }
+    
+    private func setupNavigationBar() {
+        navigationItem.title = "Personal Info"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
     }
     
     private func setupUI() {
@@ -70,26 +75,6 @@ class PersonalInfoViewController: UIViewController {
             labels.valueLabel.leadingAnchor.constraint(equalTo: labels.titleLabel.trailingAnchor, constant: 10),
             labels.valueLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
-    }
-    
-    private func displayUserInfo() {
-        if let user = Auth.auth().currentUser {
-            nameLabel.text = profileViewModel.userName ?? "No Name"
-            emailLabel.text = user.email ?? "No Email"
-            
-            if let birthDate = profileViewModel.userBirthDate {
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateStyle = .medium
-                dateFormatter.timeStyle = .none
-                birthdateLabel.text = dateFormatter.string(from: birthDate)
-            } else {
-                birthdateLabel.text = "No Birthdate"
-            }
-        } else {
-            nameLabel.text = "No User Logged In"
-            emailLabel.text = "No Email"
-            birthdateLabel.text = "No Birthdate"
-        }
     }
 }
 
