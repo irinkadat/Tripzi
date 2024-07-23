@@ -11,11 +11,8 @@ import Combine
 class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
     var viewModel: FlightsViewModel
     private var cancellables = Set<AnyCancellable>()
-    private var suggestions: [Port] = []
     
     private var selectedTextField: CustomTextField2?
-    private var selectedOriginPort: Port?
-    private var selectedDestinationPort: Port?
     
     private let datePicker = UIDatePicker()
     
@@ -23,6 +20,7 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
         let textField = CustomTextField2()
         textField.placeholder = "From"
         textField.borderStyle = .roundedRect
+        textField.tag = 1
         return textField
     }()
     
@@ -30,6 +28,7 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
         let textField = CustomTextField2()
         textField.placeholder = "To"
         textField.borderStyle = .roundedRect
+        textField.tag = 2
         return textField
     }()
     
@@ -78,6 +77,7 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
     init(viewModel: FlightsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        viewModel.portSelectionDelegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -177,7 +177,6 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
         seeAllDestinationsButton.isHidden = false
         suggestionTableView.isHidden = false
         updateSuggestionTableViewConstraints()
-        print("Origin field tapped")
     }
     
     @objc private func didTapDestinationField() {
@@ -185,11 +184,9 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
         seeAllDestinationsButton.isHidden = false
         suggestionTableView.isHidden = false
         updateSuggestionTableViewConstraints()
-        print("Destination field tapped")
     }
     
     @objc private func didTapSeeAllDestinationsButton() {
-        print("See all destinations button tapped")
         viewModel.fetchCountries { [weak self] countries in
             self?.showCountries()
         }
@@ -205,14 +202,12 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
     }
     
     private func performSearch(completion: @escaping () -> Void) {
-        guard let selectedOriginPort = selectedOriginPort,
-              let selectedDestinationPort = selectedDestinationPort,
-              let departureDate = departureDateField.text else {
-            showErrorAlert("Please select both origin and destination ports and enter a departure date.")
+        guard let departureDate = departureDateField.text else {
+            showErrorAlert("Please enter a departure date.")
             return
         }
         
-        viewModel.performSearch(originPort: selectedOriginPort, destinationPort: selectedDestinationPort, departureDate: departureDate, completion: completion)
+        viewModel.performSearch(originPort: viewModel.selectedOriginPort!, destinationPort: viewModel.selectedDestinationPort!, departureDate: departureDate, completion: completion)
     }
     
     private func showErrorAlert(_ message: String) {
@@ -223,7 +218,6 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
     
     private func showCountries() {
         guard let selectedTextField = selectedTextField else {
-            print("selectedTextField is nil in showCountries")
             return
         }
         let countriesViewController = CountriesViewController(viewModel: viewModel, delegate: self, selectedTextField: selectedTextField)
@@ -233,7 +227,6 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
     
     private func showPorts(for country: Country) {
         guard let selectedTextField = selectedTextField else {
-            print("selectedTextField is nil in showPorts")
             return
         }
         let portsViewController = PortsViewController(viewModel: viewModel, country: country, delegate: self, selectedTextField: selectedTextField)
@@ -275,8 +268,15 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
         viewModel.$ports
             .receive(on: RunLoop.main)
             .sink { [weak self] ports in
-                self?.suggestions = ports
+                self?.suggestionTableView.isHidden = ports.isEmpty
                 self?.suggestionTableView.reloadData()
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$errorMessage
+            .compactMap { $0 }
+            .sink { [weak self] errorMessage in
+                self?.showErrorAlert(errorMessage)
             }
             .store(in: &cancellables)
     }
@@ -296,48 +296,37 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
         let currentText = textField.text ?? ""
         let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
         
-        if newText.isEmpty {
-            suggestionTableView.isHidden = true
-        } else {
-            viewModel.fetchPortSuggestions(for: newText) { [weak self] ports in
-                self?.suggestions = ports
-                self?.suggestionTableView.isHidden = false
-                self?.suggestionTableView.reloadData()
-            }
-        }
+        viewModel.handleTextChange(newText: newText)
         
         return true
     }
     
     // MARK: - UITableViewDelegate and UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return suggestions.count
+        return viewModel.ports.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "suggestionCell", for: indexPath)
-        let port = suggestions[indexPath.row]
+        let port = viewModel.ports[indexPath.row]
         cell.textLabel?.text = port.name
         cell.backgroundColor = .clear
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedPort = suggestions[indexPath.row]
-        selectedTextField?.text = selectedPort.name
+        guard let selectedTextField = selectedTextField else { return }
+        viewModel.selectPort(at: indexPath.row, forField: selectedTextField)
         suggestionTableView.isHidden = true
-        if let selectedTextField = selectedTextField {
-            didChoosePort(port: selectedPort, forField: selectedTextField)
-        }
     }
     
     // MARK: - PortSelectionDelegate
-    func didChoosePort(port: Port, forField: CustomTextField2) {
-        forField.text = port.name
-        if forField == originField {
-            selectedOriginPort = port
-        } else if forField == destinationField {
-            selectedDestinationPort = port
-        }
+    func didChoosePort(portName: String, forField: CustomTextField2) {
+        forField.text = portName
+    }
+    
+    func didUpdateSuggestions() {
+        suggestionTableView.isHidden = viewModel.ports.isEmpty
+        suggestionTableView.reloadData()
     }
 }

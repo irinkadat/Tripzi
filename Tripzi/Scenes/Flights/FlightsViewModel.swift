@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import Combine
 
 protocol PortSelectionDelegate: AnyObject {
-    func didChoosePort(port: Port, forField: CustomTextField2)
+    func didChoosePort(portName: String, forField: CustomTextField2)
+    func didUpdateSuggestions()
 }
 
 protocol FlightsViewModelDelegate: AnyObject {
@@ -17,12 +19,28 @@ protocol FlightsViewModelDelegate: AnyObject {
 }
 
 class FlightsViewModel: ObservableObject {
-    @Published var searchedFlights: [FlightSegment] = []
-    var countries: [Country] = []
+    @Published var searchedFlights: [FlightOption] = []
     @Published var ports: [Port] = []
+    @Published var errorMessage: String?
+    @Published var selectedOriginPort: Port?
+    @Published var selectedDestinationPort: Port?
+    
+    @Published var flattenedFlights: [(FlightSegment, FlightPrice?)] = []
+
+    
+    func flattenFlights(flight: [FlightOption]) {
+        flattenedFlights = flight.flatMap { option in
+            option.segmentList.map { segment in
+                (segment, option.startingPrice)
+            }
+        }
+    }
+    
+    var countries: [Country] = []
     let currentTimeMillis = Int(Date().timeIntervalSince1970 * 1000)
     
     weak var flightsDelegate: FlightsViewModelDelegate?
+    weak var portSelectionDelegate: PortSelectionDelegate?
     
     func fetchCountries(completion: @escaping ([Country]) -> Void) {
         guard let url = URL(string: "https://www.turkishairlines.com/api/v1/booking/countries?\(currentTimeMillis)") else { return }
@@ -44,6 +62,8 @@ class FlightsViewModel: ObservableObject {
     }
     
     func fetchPorts(for countryCode: String, completion: @escaping ([Port]) -> Void) {
+        ports.removeAll()
+        
         guard let url = URL(string: "https://www.turkishairlines.com/api/v1/booking/countries/\(countryCode)/ports?\(currentTimeMillis)") else { return }
         
         URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
@@ -63,7 +83,9 @@ class FlightsViewModel: ObservableObject {
         }.resume()
     }
     
-    func fetchPortSuggestions(for query: String, completion: @escaping ([Port]) -> Void) {
+    func fetchPortSuggestions(for query: String) {
+        ports.removeAll()
+        
         guard let url = URL(string: "https://www.turkishairlines.com/api/v1/booking/locations/TK/en?searchText=\(query)") else { return }
         
         URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
@@ -75,7 +97,7 @@ class FlightsViewModel: ObservableObject {
                 let portsResponse = try JSONDecoder().decode(PortResponse.self, from: data)
                 DispatchQueue.main.async {
                     self?.ports = portsResponse.data.ports
-                    completion(portsResponse.data.ports)
+                    self?.portSelectionDelegate?.didUpdateSuggestions()
                 }
             } catch {
                 print("Error decoding port suggestions: \(error.localizedDescription)")
@@ -110,16 +132,20 @@ class FlightsViewModel: ObservableObject {
             switch result {
             case .success(let segments):
                 self?.searchedFlights = segments
+                self?.flattenFlights(flight: segments)
                 self?.flightsDelegate?.didUpdateFlightSegments()
                 print("Searched flights updated: \(self?.searchedFlights ?? [])")
+                print("flatened updated: \(self?.flattenedFlights ?? [])")
+
             case .failure(let error):
+                self?.errorMessage = error.localizedDescription
                 self?.flightsDelegate?.didFailWithError(error)
             }
         }
         completion()
     }
     
-    private func searchFlights(with payload: FlightSearchPayload, completion: @escaping (Result<[FlightSegment], Error>) -> Void) {
+    private func searchFlights(with payload: FlightSearchPayload, completion: @escaping (Result<[FlightOption], Error>) -> Void) {
         let networkManager = NetworkManager()
         
         networkManager.searchFlights(with: payload) { result in
@@ -127,5 +153,32 @@ class FlightsViewModel: ObservableObject {
                 completion(result)
             }
         }
+    }
+    
+    func didChoosePort(port: Port, forField: CustomTextField2) {
+        portSelectionDelegate?.didChoosePort(portName: port.name, forField: forField)
+        
+        switch forField.tag {
+        case 1:
+            selectedOriginPort = port
+        case 2:
+            selectedDestinationPort = port
+        default:
+            break
+        }
+    }
+    
+    func handleTextChange(newText: String) {
+        if newText.isEmpty {
+            ports.removeAll()
+            portSelectionDelegate?.didUpdateSuggestions()
+        } else {
+            fetchPortSuggestions(for: newText)
+        }
+    }
+    
+    func selectPort(at index: Int, forField field: CustomTextField2) {
+        let selectedPort = ports[index]
+        didChoosePort(port: selectedPort, forField: field)
     }
 }

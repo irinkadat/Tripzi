@@ -90,16 +90,20 @@ class FlightsTableViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let count = viewModel.searchedFlights.count
+        let count = viewModel.flattenedFlights.count
         noFlightsLabel.isHidden = count > 0
         return count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: FlightTableViewCell.identifier, for: indexPath) as! FlightTableViewCell
-        cell.configure(with: viewModel.searchedFlights[indexPath.row])
-        return cell
-    }
+         guard let cell = tableView.dequeueReusableCell(withIdentifier: FlightTableViewCell.identifier, for: indexPath) as? FlightTableViewCell else {
+              return UITableViewCell()
+          }
+          let (segment, price) = viewModel.flattenedFlights[indexPath.row]
+          cell.configure(with: segment, price: price ?? FlightPrice(currencyCode: "N/A", amount: 0.0, currencySign: nil, decimalPlaces: nil))
+          return cell
+     }
+     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150

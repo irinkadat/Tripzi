@@ -39,6 +39,14 @@ class FlightTableViewCell: UITableViewCell {
         return label
     }()
     
+    private let flightPriceLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.textColor = .gray
+        label.textAlignment = .center
+        return label
+    }()
+    
     private let flightImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "airplane"))
         imageView.contentMode = .scaleAspectFit
@@ -108,7 +116,7 @@ class FlightTableViewCell: UITableViewCell {
         arrivalStack.alignment = .trailing
         containerView.addSubview(arrivalStack)
         
-        let flightStack = UIStackView(arrangedSubviews: [flightImageView, flightDurationLabel])
+        let flightStack = UIStackView(arrangedSubviews: [flightImageView, flightDurationLabel, flightPriceLabel])
         flightStack.axis = .vertical
         flightStack.alignment = .center
         flightStack.spacing = 4
@@ -130,7 +138,6 @@ class FlightTableViewCell: UITableViewCell {
         ])
         layoutIfNeeded()
         startPlaneAnimation()
-        
     }
     
     func startPlaneAnimation() {
@@ -144,7 +151,7 @@ class FlightTableViewCell: UITableViewCell {
         }, completion: nil)
     }
     
-    func configure(with model: FlightSegment) {
+    func configure(with model: FlightSegment, price: FlightPrice) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
         
@@ -160,7 +167,10 @@ class FlightTableViewCell: UITableViewCell {
 
         departureTimezoneLabel.text = model.departureAirportCode
         flightDurationLabel.text = "Duration: \(model.journeyDurationInMillis / 60000) mins"
-        flightDetailLabel.text =  model.arrivalDateTime
+        flightPriceLabel.text = "Price: \(price.amount) \(price.currencyCode)"
+ 
+
+        flightDetailLabel.text = model.arrivalDateTime
 
         let arrivalTime = String(model.arrivalDateTime.suffix(5))
         arrivalTimeLabel.text = arrivalTime
