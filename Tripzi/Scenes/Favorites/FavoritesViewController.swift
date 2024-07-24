@@ -9,26 +9,30 @@ import UIKit
 import Combine
 import SwiftUI
 
-class FavoritesViewController: UIViewController {
+final class FavoritesViewController: UIViewController {
     private var collectionView: UICollectionView!
     private var viewModel = FavoritesViewModel()
+    private var cancellables = Set<AnyCancellable>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupNavigation()
         setupCollectionView()
+        setupBindings()
         viewModel.fetchFavorites()
-        
-        viewModel.$favorites.sink { [weak self] listings in
-            self?.collectionView.reloadData()
-        }.store(in: &cancellables)
     }
     
     private func setupNavigation() {
         title = "Favorites"
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationItem.largeTitleDisplayMode = .always
+        navigationItem.largeTitleDisplayMode = .always
+    }
+    
+    private func setupBindings() {
+        viewModel.onFavoritesUpdate = { [weak self] in
+            self?.collectionView.reloadData()
+        }
     }
     
     private func setupCollectionView() {
@@ -53,8 +57,6 @@ class FavoritesViewController: UIViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
-    
-    private var cancellables = Set<AnyCancellable>()
 }
 
 extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -66,19 +68,11 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CustomCell", for: indexPath) as! CustomCollectionViewCell
         let listing = viewModel.favorites[indexPath.row]
         
-        cell.configure(with: listing) { [weak self] in
+        viewModel.configureCell(cell, with: listing) { [weak self] destinationDetailsVC in
             guard let self = self else { return }
-            let detailVM = SearchViewModel()
-            detailVM.destinationDetails(for: listing.id) { detailedListing in
-                guard let detailedListing = detailedListing else { return }
-                DispatchQueue.main.async {
-                    let destinationDetailsVC = DestinationDetailsVC()
-                    destinationDetailsVC.listing = detailedListing
-                    destinationDetailsVC.imageUrls = listing.imageUrls
-                    self.navigationController?.pushViewController(destinationDetailsVC, animated: true)
-                }
-            }
+            self.navigationController?.pushViewController(destinationDetailsVC, animated: true)
         }
+        
         return cell
     }
     
@@ -86,14 +80,11 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
         return CGSize(width: view.frame.width, height: 450)
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let listing = viewModel.favorites[indexPath.row]
-        let destinationDetailsVC = DestinationDetailsVC()
-        destinationDetailsVC.listing = listing
-        navigationController?.pushViewController(destinationDetailsVC, animated: true)
+        viewModel.selectItem(at: indexPath) { [weak self] destinationDetailsVC in
+            guard let self = self else { return }
+            self.navigationController?.pushViewController(destinationDetailsVC, animated: true)
+        }
     }
-}
-
-#Preview {
-    FavoritesViewController()
 }

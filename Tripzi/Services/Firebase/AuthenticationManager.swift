@@ -29,6 +29,7 @@ class AuthenticationManager: ObservableObject {
                 return
             }
             self?.isSignedIn = true
+            NotificationCenter.default.post(name: .AuthStateDidChange, object: nil)
         }
     }
     
@@ -130,6 +131,7 @@ class AuthenticationManager: ObservableObject {
                     return
                 }
                 self?.isSignedIn = true
+                NotificationCenter.default.post(name: .AuthStateDidChange, object: nil)
             }
         }
     }
@@ -156,6 +158,7 @@ class AuthenticationManager: ObservableObject {
                         return
                     }
                     self?.isSignedIn = true
+                    NotificationCenter.default.post(name: .AuthStateDidChange, object: nil)
                 }
             case .cancelled:
                 self?.errorMessage = "User cancelled login."

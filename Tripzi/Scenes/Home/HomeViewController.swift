@@ -9,7 +9,7 @@ import UIKit
 import Combine
 import SwiftUI
 
-class HomeViewController: UIViewController {
+final class HomeViewController: UIViewController {
     private var collectionView: UICollectionView!
     private var categoriesCollectionView: UICollectionView!
     private var viewModel = SearchViewModel()
@@ -33,7 +33,8 @@ class HomeViewController: UIViewController {
         setupCategoriesCollectionView()
         setupCollectionView()
         addSearchBarTapGesture()
-        
+        setupCustomBackButtonStyle()
+
         viewModel.fetchDefaultListings()
         print(viewModel.listings.count)
         
@@ -173,8 +174,22 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let category = categories[indexPath.row].name
-        viewModel.fetchListings(for: category)
+        if collectionView == categoriesCollectionView {
+            let category = categories[indexPath.row].name
+            viewModel.fetchListings(for: category)
+        } else {
+            let listing = viewModel.listings[indexPath.row]
+            viewModel.destinationDetails(for: listing.id) {
+                detailedListing in
+                   guard let detailedListing = detailedListing else { return }
+                   DispatchQueue.main.async {
+                       let destinationDetailsVC = DestinationDetailsVC()
+                       destinationDetailsVC.listing = detailedListing
+                       destinationDetailsVC.imageUrls = listing.imageUrls
+                       self.navigationController?.pushViewController(destinationDetailsVC, animated: true)
+                   }
+            }
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

@@ -10,11 +10,13 @@ import FirebaseCore
 import GoogleSignIn
 import SwiftUI
 import FacebookLogin
+import Stripe
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        StripeAPI.defaultPublishableKey = "pk_test_51PfIh3DtMXGWpZybZ3vMKlDKiJXPvnpDC0Jsqagste5WtQiMkJzKRzKRsFg1PogbZm30S4jgjY37Liqz3JVYWBda00a7NQH2Pk"
         
         ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         

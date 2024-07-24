@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import FirebaseAuth
+import FirebaseFirestore
 
 struct Listing: Identifiable, Codable {
     let id: String
@@ -26,6 +28,8 @@ struct Listing: Identifiable, Codable {
     var isFavorited: Bool = false
     let tips: [TipItem]?
     let isOpen: Bool?
+//    var timestamp: Date?
+    var timestamp: Timestamp?
     
     init?(from result: PlaceResult) {
         guard let venue = result.venue else {
@@ -52,5 +56,7 @@ struct Listing: Identifiable, Codable {
         self.lat = venue.location.lat
         self.lng = venue.location.lng
         self.isOpen = venue.popular?.isOpen
+        self.timestamp = Timestamp(date: Date())
+        
     }
 }
