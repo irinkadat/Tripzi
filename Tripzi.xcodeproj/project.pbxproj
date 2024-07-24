@@ -61,6 +61,8 @@
 		8C8FFFBF2C2EE42C00079E8B /* FlightsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8FFFBE2C2EE42C00079E8B /* FlightsViewController.swift */; };
 		8C8FFFC22C2EE45900079E8B /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8FFFC12C2EE45900079E8B /* FavoritesViewController.swift */; };
 		8C91FA442C30616E00B6C52F /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 8C91FA432C30616E00B6C52F /* FacebookLogin */; };
+		8C9ED1A22C511D5200B7ECB3 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9ED1A12C511D5200B7ECB3 /* CategoryViewController.swift */; };
+		8C9ED1A42C511DE700B7ECB3 /* ListingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9ED1A32C511DE700B7ECB3 /* ListingsViewController.swift */; };
 		8CC3EFEF2C3D116800400A89 /* SecondaryTextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3EFEE2C3D116800400A89 /* SecondaryTextStyle.swift */; };
 		8CC3EFF32C3D6C7300400A89 /* ListingImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3EFF22C3D6C7300400A89 /* ListingImageCarouselView.swift */; };
 		8CC3EFF92C3D726D00400A89 /* Listing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3EFF82C3D726D00400A89 /* Listing.swift */; };
@@ -70,7 +72,6 @@
 		8CC3F0072C3E542F00400A89 /* FlightsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F0062C3E542F00400A89 /* FlightsTableViewController.swift */; };
 		8CC3F0092C3EC63900400A89 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F0082C3EC63900400A89 /* SearchViewController.swift */; };
 		8CC3F00B2C3ED2EF00400A89 /* DestinationDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F00A2C3ED2EF00400A89 /* DestinationDetailsVC.swift */; };
-		8CC3F00D2C3EEC8E00400A89 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F00C2C3EEC8E00400A89 /* ImageCollectionViewCell.swift */; };
 		8CC530252C3C677F00E020DD /* PlacesListingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC530242C3C677E00E020DD /* PlacesListingView.swift */; };
 		8CE7CCB42C4FDCE3006401D0 /* FlightDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7CCB32C4FDCE3006401D0 /* FlightDetailsViewController.swift */; };
 		8CE7CCB62C4FDCFD006401D0 /* CheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7CCB52C4FDCFD006401D0 /* CheckoutViewController.swift */; };
@@ -129,6 +130,8 @@
 		8C8FFFBC2C2EE3A500079E8B /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		8C8FFFBE2C2EE42C00079E8B /* FlightsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightsViewController.swift; sourceTree = "<group>"; };
 		8C8FFFC12C2EE45900079E8B /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
+		8C9ED1A12C511D5200B7ECB3 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
+		8C9ED1A32C511DE700B7ECB3 /* ListingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsViewController.swift; sourceTree = "<group>"; };
 		8CC3EFEE2C3D116800400A89 /* SecondaryTextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryTextStyle.swift; sourceTree = "<group>"; };
 		8CC3EFF22C3D6C7300400A89 /* ListingImageCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingImageCarouselView.swift; sourceTree = "<group>"; };
 		8CC3EFF82C3D726D00400A89 /* Listing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Listing.swift; sourceTree = "<group>"; };
@@ -138,7 +141,6 @@
 		8CC3F0062C3E542F00400A89 /* FlightsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightsTableViewController.swift; sourceTree = "<group>"; };
 		8CC3F0082C3EC63900400A89 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		8CC3F00A2C3ED2EF00400A89 /* DestinationDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationDetailsVC.swift; sourceTree = "<group>"; };
-		8CC3F00C2C3EEC8E00400A89 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		8CC530242C3C677E00E020DD /* PlacesListingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesListingView.swift; sourceTree = "<group>"; };
 		8CE7CCB32C4FDCE3006401D0 /* FlightDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightDetailsViewController.swift; sourceTree = "<group>"; };
 		8CE7CCB52C4FDCFD006401D0 /* CheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutViewController.swift; sourceTree = "<group>"; };
@@ -274,15 +276,10 @@
 		8C309DE42C2DB67100436F92 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				8C8FFFB52C2E9A8A00079E8B /* HomeViewController.swift */,
-				8CC530242C3C677E00E020DD /* PlacesListingView.swift */,
-				8CC3EFFC2C3DAE4A00400A89 /* CustomCollectionViewCell.swift */,
-				8CC3F0082C3EC63900400A89 /* SearchViewController.swift */,
-				8CC3F00C2C3EEC8E00400A89 /* ImageCollectionViewCell.swift */,
+				8C9ED1A02C51020900B7ECB3 /* SearchPlaces */,
+				8C9ED19F2C5101EA00B7ECB3 /* HomeViewController */,
+				8C9ED19E2C51005600B7ECB3 /* CustomCollectionViewCell */,
 				8C651D092C493D4600339BA3 /* Places.json */,
-				8C651D032C493CBB00339BA3 /* PlacesListingViewModel.swift */,
-				8C651D052C493CE000339BA3 /* SearchViewModel.swift */,
-				8C651D072C493D0A00339BA3 /* CategoryCell.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -394,6 +391,36 @@
 				8C651D012C493B2F00339BA3 /* FavoritesViewModel.swift */,
 			);
 			path = Favorites;
+			sourceTree = "<group>";
+		};
+		8C9ED19E2C51005600B7ECB3 /* CustomCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				8C651D072C493D0A00339BA3 /* CategoryCell.swift */,
+				8CC3EFFC2C3DAE4A00400A89 /* CustomCollectionViewCell.swift */,
+				8CC530242C3C677E00E020DD /* PlacesListingView.swift */,
+				8C651D032C493CBB00339BA3 /* PlacesListingViewModel.swift */,
+			);
+			path = CustomCollectionViewCell;
+			sourceTree = "<group>";
+		};
+		8C9ED19F2C5101EA00B7ECB3 /* HomeViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8C8FFFB52C2E9A8A00079E8B /* HomeViewController.swift */,
+				8C9ED1A12C511D5200B7ECB3 /* CategoryViewController.swift */,
+				8C9ED1A32C511DE700B7ECB3 /* ListingsViewController.swift */,
+			);
+			path = HomeViewController;
+			sourceTree = "<group>";
+		};
+		8C9ED1A02C51020900B7ECB3 /* SearchPlaces */ = {
+			isa = PBXGroup;
+			children = (
+				8C651D052C493CE000339BA3 /* SearchViewModel.swift */,
+				8CC3F0082C3EC63900400A89 /* SearchViewController.swift */,
+			);
+			path = SearchPlaces;
 			sourceTree = "<group>";
 		};
 		8CC3EFED2C3D115300400A89 /* Custom Modifiers */ = {
@@ -516,9 +543,9 @@
 				8C309DCB2C2DB46800436F92 /* SceneDelegate.swift in Sources */,
 				8CC530252C3C677F00E020DD /* PlacesListingView.swift in Sources */,
 				8C309E062C2DC7D100436F92 /* AuthenticationViewModel.swift in Sources */,
+				8C9ED1A22C511D5200B7ECB3 /* CategoryViewController.swift in Sources */,
 				8C651CEE2C49393200339BA3 /* CustomStyledView.swift in Sources */,
 				8C8FFFBD2C2EE3A500079E8B /* RootViewController.swift in Sources */,
-				8CC3F00D2C3EEC8E00400A89 /* ImageCollectionViewCell.swift in Sources */,
 				8C651CF22C49396200339BA3 /* CustomTextField2.swift in Sources */,
 				8C651CEC2C49391500339BA3 /* CustomSearchBar.swift in Sources */,
 				8CC3EFF92C3D726D00400A89 /* Listing.swift in Sources */,
@@ -529,6 +556,7 @@
 				8C651CDF2C4935D300339BA3 /* Port.swift in Sources */,
 				8C651CF02C49394900339BA3 /* CustomSearchButton.swift in Sources */,
 				8C309DEC2C2DB71800436F92 /* CustomTextField.swift in Sources */,
+				8C9ED1A42C511DE700B7ECB3 /* ListingsViewController.swift in Sources */,
 				8C651CE12C49362000339BA3 /* Place.swift in Sources */,
 				8C8FFFC22C2EE45900079E8B /* FavoritesViewController.swift in Sources */,
 				8CE7CCB82C4FDD1A006401D0 /* FlightDetailsViewModel.swift in Sources */,
