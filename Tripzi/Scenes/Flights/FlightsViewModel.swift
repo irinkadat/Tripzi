@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import NetService
 
 protocol PortSelectionDelegate: AnyObject {
     func didChoosePort(portName: String, forField: CustomTextField)
@@ -33,7 +34,6 @@ class FlightsViewModel: ObservableObject {
         }
     }
     
-    // Computed properties for cell data
     @Published var departureDate: String = ""
     @Published var departureTime: String = ""
     @Published var arrivalDate: String = ""
@@ -43,11 +43,13 @@ class FlightsViewModel: ObservableObject {
     @Published var flightDuration: String = ""
     @Published var flightPriceCurrency: String = ""
     @Published var flightPrice: Double = 0.0
-
+    
+    private var networkService = NetworkService()
+    
     func selectFlightOption(at index: Int) {
         selectedFlightOption = searchedFlights[index]
     }
-
+    
     func flattenFlights(flight: [FlightOption]) {
         flattenedFlights = searchedFlights.flatMap { option in
             option.segmentList.map { segment in
@@ -63,66 +65,55 @@ class FlightsViewModel: ObservableObject {
     weak var portSelectionDelegate: PortSelectionDelegate?
     
     func fetchCountries(completion: @escaping ([Country]) -> Void) {
-        guard let url = URL(string: "https://www.turkishairlines.com/api/v1/booking/countries?\(currentTimeMillis)") else { return }
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data, error == nil else {
-                print("Error fetching countries: \(error?.localizedDescription ?? "Unknown error")")
-                return
-            }
-            do {
-                let countryResponse = try JSONDecoder().decode(CountryResponse.self, from: data)
+        let urlString = "https://www.turkishairlines.com/api/v1/booking/countries?\(currentTimeMillis)"
+        
+        networkService.getData(urlString: urlString) { (result: Result<CountryResponse, Error>) in
+            switch result {
+            case .success(let response):
                 DispatchQueue.main.async {
-                    self.countries = countryResponse.data.countries.flatMap { $0 }
+                    self.countries = response.data.countries.flatMap { $0 }
                     completion(self.countries)
                 }
-            } catch {
-                print("Error decoding countries: \(error.localizedDescription)")
+            case .failure(let error):
+                print("Error fetching countries: \(error.localizedDescription)")
             }
-        }.resume()
+        }
     }
     
     func fetchPorts(for countryCode: String, completion: @escaping ([Port]) -> Void) {
         ports.removeAll()
         
-        guard let url = URL(string: "https://www.turkishairlines.com/api/v1/booking/countries/\(countryCode)/ports?\(currentTimeMillis)") else { return }
+        let urlString = "https://www.turkishairlines.com/api/v1/booking/countries/\(countryCode)/ports?\(currentTimeMillis)"
         
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let data = data, error == nil else {
-                print("Error fetching ports: \(error?.localizedDescription ?? "Unknown error")")
-                return
-            }
-            do {
-                let portsResponse = try JSONDecoder().decode(PportResponse.self, from: data)
+        networkService.getData(urlString: urlString) { (result: Result<PportResponse, Error>) in
+            switch result {
+            case .success(let response):
                 DispatchQueue.main.async {
-                    self?.ports = portsResponse.data
-                    completion(portsResponse.data)
+                    self.ports = response.data
+                    completion(response.data)
                 }
-            } catch {
-                print("Error decoding ports: \(error.localizedDescription)")
+            case .failure(let error):
+                print("Error fetching ports: \(error.localizedDescription)")
             }
-        }.resume()
+        }
     }
     
     func fetchPortSuggestions(for query: String) {
         ports.removeAll()
         
-        guard let url = URL(string: "https://www.turkishairlines.com/api/v1/booking/locations/TK/en?searchText=\(query)") else { return }
+        let urlString = "https://www.turkishairlines.com/api/v1/booking/locations/TK/en?searchText=\(query)"
         
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let data = data, error == nil else {
-                print("Error fetching port suggestions: \(error?.localizedDescription ?? "Unknown error")")
-                return
-            }
-            do {
-                let portsResponse = try JSONDecoder().decode(PortResponse.self, from: data)
+        networkService.getData(urlString: urlString) { [weak self] (result: Result<PortResponse, Error>) in
+            switch result {
+            case .success(let response):
                 DispatchQueue.main.async {
-                    self?.ports = portsResponse.data.ports
+                    self?.ports = response.data.ports
                     self?.portSelectionDelegate?.didUpdateSuggestions()
                 }
-            } catch {
-                print("Error decoding port suggestions: \(error.localizedDescription)")
+            case .failure(let error):
+                print("Error fetching port suggestions: \(error.localizedDescription)")
             }
-        }.resume()
+        }
     }
     
     func performSearch(originPort: Port, destinationPort: Port, departureDate: String, completion: @escaping () -> Void) {
@@ -156,8 +147,7 @@ class FlightsViewModel: ObservableObject {
                 self?.flattenFlights(flight: segments)
                 self?.flightsDelegate?.didUpdateFlightSegments()
                 print("Searched flights updated: \(self?.searchedFlights ?? [])")
-                print("flatened updated: \(self?.flattenedFlights ?? [])")
-
+                print("Flattened flights updated: \(self?.flattenedFlights ?? [])")
             case .failure(let error):
                 self?.errorMessage = error.localizedDescription
                 self?.flightsDelegate?.didFailWithError(error)
@@ -167,7 +157,7 @@ class FlightsViewModel: ObservableObject {
     }
     
     private func searchFlights(with payload: FlightSearchPayload, completion: @escaping (Result<[FlightOption], Error>) -> Void) {
-        let networkManager = NetworkManager()
+        let networkManager = FlightNetworkManager()
         
         networkManager.searchFlights(with: payload) { result in
             DispatchQueue.main.async {
@@ -202,7 +192,7 @@ class FlightsViewModel: ObservableObject {
         let selectedPort = ports[index]
         didChoosePort(port: selectedPort, forField: field)
     }
-
+    
     private func updateFlightDetails() {
         guard let selectedFlight = selectedFlightOption,
               let startSegment = selectedFlight.segmentList.first,
@@ -218,7 +208,7 @@ class FlightsViewModel: ObservableObject {
             departureDate = startSegment.departureDateTime
             departureTime = startSegment.departureDateTime
         }
-
+        
         let arrivalDateTimeComponents = endSegment.arrivalDateTime.split(separator: " ")
         if arrivalDateTimeComponents.count == 2 {
             arrivalDate = String(arrivalDateTimeComponents[0])
@@ -227,7 +217,7 @@ class FlightsViewModel: ObservableObject {
             arrivalDate = endSegment.arrivalDateTime
             arrivalTime = endSegment.arrivalDateTime
         }
-
+        
         departureAirportCode = startSegment.departureAirportCode
         arrivalAirportCode = endSegment.arrivalAirportCode
         flightDuration = "Duration: \(startSegment.journeyDurationInMillis / 60000) mins"

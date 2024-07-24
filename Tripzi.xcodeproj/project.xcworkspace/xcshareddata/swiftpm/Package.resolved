@@ -1,5 +1,5 @@
 {
-  "originHash" : "81515eb69770cf35c4c0f04e2629a7906f7809631822266140b3ac53636a1b2c",
+  "originHash" : "c9daf1a8b8ee02eea90dd088529af26d0dee4b4abd71dc9113483551e2d62d65",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -137,6 +137,15 @@
       }
     },
     {
+      "identity" : "netservice",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/irinkadat/NetService.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "a9a928dc81fb949e10954d4af749b20ba376d7cc"
+      }
+    },
+    {
       "identity" : "promises",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/promises.git",
@@ -151,7 +160,7 @@
       "location" : "https://github.com/stripe/stripe-ios",
       "state" : {
         "branch" : "master",
-        "revision" : "e94b5ff1e40c19d0583c40012d54a3ba68aac2ab"
+        "revision" : "d7f01a43219a9f55d6c267ab6ad9f1acfbc50e17"
       }
     },
     {

@@ -7,12 +7,14 @@
 
 import Combine
 import Foundation
+import NetService
 
 final class SearchViewModel: ObservableObject {
     @Published var listings: [Listing] = []
     private var cancellables: Set<AnyCancellable> = []
     @Published var detailedPlace: Listing?
     var onListingsUpdate: (() -> Void)?
+    private let networkService = NetworkService()
     
     init() {
         bindUI()
@@ -90,23 +92,9 @@ final class SearchViewModel: ObservableObject {
         
         print("Request URL: \(url)")
         
-        let request = URLRequest(url: url)
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error occurred: \(error)")
-                return
-            }
-            
-            guard let data = data else {
-                print("No data received")
-                return
-            }
-            
-            print("Raw response data: \(String(data: data, encoding: .utf8) ?? "No readable data")")
-            
-            do {
-                let decodedData = try JSONDecoder().decode(PlacesResponse.self, from: data)
+        networkService.getData(urlString: url.absoluteString) { (result: Result<PlacesResponse, Error>) in
+            switch result {
+            case .success(let decodedData):
                 let results = decodedData.response.group?.results ?? decodedData.response.results ?? []
                 DispatchQueue.main.async {
                     self.listings = results.compactMap { result in
@@ -117,10 +105,10 @@ final class SearchViewModel: ObservableObject {
                     }
                     print("Search results fetched: \(self.listings.count)")
                 }
-            } catch {
-                print("Failed to decode JSON: \(error)")
+            case .failure(let error):
+                print("Error occurred: \(error)")
             }
-        }.resume()
+        }
     }
     
     func configureCategoryCell(at indexPath: IndexPath, completion: @escaping (SearchCategory) -> Void) {
@@ -170,29 +158,9 @@ final class SearchViewModel: ObservableObject {
     func destinationDetails(for id: String, completion: @escaping (Listing?) -> Void) {
         let urlString = "https://api.foursquare.com/v2/venues/\(id)?v=20231010&oauth_token=QEJ4AQPTMMNB413HGNZ5YDMJSHTOHZHMLZCAQCCLXIX41OMP"
         
-        guard let url = URL(string: urlString) else {
-            print("Failed to construct URL")
-            completion(nil)
-            return
-        }
-        
-        let request = URLRequest(url: url)
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error occurred: \(error)")
-                completion(nil)
-                return
-            }
-            
-            guard let data = data else {
-                print("No data received")
-                completion(nil)
-                return
-            }
-            
-            do {
-                let decodedData = try JSONDecoder().decode(DetailedVenueResponse.self, from: data)
+        networkService.getData(urlString: urlString) { (result: Result<DetailedVenueResponse, Error>) in
+            switch result {
+            case .success(let decodedData):
                 if let venueDetail = decodedData.response.venue {
                     let placeResult = PlaceResult(displayType: "venue", venue: venueDetail, photos: venueDetail.photos)
                     let listing = Listing(from: placeResult)
@@ -204,10 +172,10 @@ final class SearchViewModel: ObservableObject {
                 } else {
                     completion(nil)
                 }
-            } catch {
-                print("Failed to decode JSON \(error)")
+            case .failure(let error):
+                print("Failed to decode JSON: \(error)")
                 completion(nil)
             }
-        }.resume()
+        }
     }
 }

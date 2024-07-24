@@ -7,14 +7,19 @@
 
 import Foundation
 import Stripe
+import NetService
 
-class FlightDetailsViewModel: NSObject {
+struct PaymentIntentResponse: Decodable {
+    let clientSecret: String?
+}
+
+final class FlightDetailsViewModel: NSObject {
     weak var authenticationContextProvider: AuthenticationContextProvider?
     
     var updateUIForPaymentResult: ((Bool) -> Void)?
     var showAlert: ((String, String) -> Void)?
     var requestApplePay: (() -> Void)?
-    
+    private var networkService = NetworkService()
     var paymentIntentClientSecret: String?
     var price: Double
     
@@ -25,37 +30,24 @@ class FlightDetailsViewModel: NSObject {
     }
     
     private func fetchPaymentIntentClientSecret() {
-        let backendUrl = URL(string: "https://tripzi.glitch.me/create-payment-intent")!
-        var request = URLRequest(url: backendUrl)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let backendUrl = "https://tripzi.glitch.me/create-payment-intent"
         let body: [String: Any] = [
             "amount": Int(price) * 100,
             "currency": "usd"
         ]
-        request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
         
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error fetching payment intent client secret: \(error)")
-                return
-            }
-            guard let data = data else {
-                print("No data received")
-                return
-            }
-            do {
-                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                   let clientSecret = json["clientSecret"] as? String {
+        networkService.postData(urlString: backendUrl, body: body, headers: ["Content-Type": "application/json"]) { (result: Result<PaymentIntentResponse, Error>) in
+            switch result {
+            case .success(let response):
+                if let clientSecret = response.clientSecret {
                     self.paymentIntentClientSecret = clientSecret
                 } else {
                     print("Invalid response from server")
                 }
-            } catch {
-                print("Error parsing JSON response: \(error)")
+            case .failure(let error):
+                print("Error fetching payment intent client secret: \(error)")
             }
         }
-        task.resume()
     }
     
     func didTapPayButton(cardParams: STPPaymentMethodCardParams, email: String?, country: String?) {

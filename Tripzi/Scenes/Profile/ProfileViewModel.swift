@@ -9,6 +9,7 @@ import FirebaseAuth
 import FirebaseStorage
 import FirebaseFirestore
 import Combine
+import NetService
 
 final class ProfileViewModel: NSObject {
     @Published var userName: String?
@@ -16,6 +17,8 @@ final class ProfileViewModel: NSObject {
     @Published var userBirthDate: Date?
     @Published var userImage: UIImage?
     @Published var authButtonTitle: String?
+    private let networkService = NetworkService()
+    
     
     private var isUserInfoFetched = false
     private var subscriptions = Set<AnyCancellable>()
@@ -60,14 +63,18 @@ final class ProfileViewModel: NSObject {
     }
     
     private func fetchProfileImage(from url: URL) {
-        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            if let data = data, let image = UIImage(data: data) {
-                DispatchQueue.main.async {
-                    self?.userImage = image
+        networkService.fetchData(urlString: url.absoluteString) { [weak self] result in
+            switch result {
+            case .success(let data):
+                if let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        self?.userImage = image
+                    }
                 }
+            case .failure(let error):
+                print("Error fetching profile image: \(error)")
             }
         }
-        task.resume()
     }
     
     private func updateStateForLoggedOutUser() {
@@ -118,7 +125,7 @@ final class ProfileViewModel: NSObject {
                 try Auth.auth().signOut()
                 NotificationCenter.default.post(name: .AuthStateDidChange, object: nil)
                 isUserInfoFetched = false
-                updateStateForLoggedOutUser() //
+                updateStateForLoggedOutUser()
                 fetchUserInfoIfNeeded(forceFetch: true)
                 completion()
             } catch let signOutError as NSError {
