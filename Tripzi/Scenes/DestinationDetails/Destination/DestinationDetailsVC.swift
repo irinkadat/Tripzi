@@ -24,11 +24,7 @@ class DestinationDetailsVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let prefersLargeTitles = navigationController?.navigationBar.prefersLargeTitles
         navigationController?.navigationBar.prefersLargeTitles = false
-        UIView.performWithoutAnimation {
-            navigationController?.navigationBar.prefersLargeTitles = prefersLargeTitles ?? true
-        }
     }
     
     private func setupScrollView() {
@@ -55,18 +51,17 @@ class DestinationDetailsVC: UIViewController {
     }
     
     private func setupUI() {
-        guard let listing = viewModel.listing else { return }
         addImageCarousel()
-        addBasicInfo(with: listing)
-        addInfoStatsView(with: listing)
-        addLocationSection(with: listing)
+        addBasicInfo()
+        addInfoStatsView()
+        addLocationSection()
         addDivider()
-        addWebsiteSection(with: listing.description)
-        addContactSection(with: listing)
-        addSection(title: "Cost", content: viewModel.paymentDescription(listing.price))
+        addWebsiteSection()
+        addContactSection()
+        addSection(title: "Cost", content: viewModel.paymentDescription())
         addDivider()
         addTipCollectionView()
-        addMapView(lat: listing.lat ?? 0.0, long: listing.lng ?? 0.0, locationName: listing.name)
+        addMapView(lat: viewModel.listingLatitude, long: viewModel.listingLongitude, locationName: viewModel.listingName)
         
         if let lastAddedView = lastAddedView {
             NSLayoutConstraint.activate([
@@ -92,14 +87,14 @@ class DestinationDetailsVC: UIViewController {
         lastAddedView = hostingController.view
     }
     
-    private func addBasicInfo(with listing: Listing) {
+    private func addBasicInfo() {
         let nameLabel = UILabel()
-        nameLabel.text = listing.name
+        nameLabel.text = viewModel.listingName
         nameLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let locationLabel = CustomLabel(style: .title, fontSize: 17)
-        locationLabel.text = listing.location
+        locationLabel.text = viewModel.listingLocation
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
         
         contentView.addSubview(nameLabel)
@@ -154,14 +149,13 @@ class DestinationDetailsVC: UIViewController {
     }
     
     @objc private func mapViewTapped() {
-        guard let listing = viewModel.listing else { return }
-        let fullScreenMapVC = FullScreenMapViewController(latitude: listing.lat ?? 0.0, longitude: listing.lng ?? 0.0, locationName: listing.name)
+        let fullScreenMapVC = FullScreenMapViewController(latitude: viewModel.listingLatitude, longitude: viewModel.listingLongitude, locationName: viewModel.listingName)
         fullScreenMapVC.modalPresentationStyle = .fullScreen
         present(fullScreenMapVC, animated: true, completion: nil)
     }
     
-    private func addWebsiteSection(with website: String?) {
-        guard let website = website else { return }
+    private func addWebsiteSection() {
+        guard let website = viewModel.listingWebsite else { return }
         
         let sectionTitle = CustomLabel(style: .title, fontSize: 16)
         sectionTitle.text = "Website"
@@ -206,16 +200,18 @@ class DestinationDetailsVC: UIViewController {
         lastAddedView = contentLabel
     }
     
-    private func addInfoStatsView(with listing: Listing) {
+    private func addInfoStatsView() {
         let infoStatsView = InfoStatsView()
         infoStatsView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(infoStatsView)
         
+        let openStatusColor: UIColor = viewModel.listingOpenStatus == "Open Now" ? .systemGreen.withAlphaComponent(0.7) : .systemRed
+        
         infoStatsView.configure(
-            rating: String(format: "%.2f", listing.rating),
-            openStatus: listing.isOpen == true ? "Closed" : "Open Now",
-            openStatusColor: listing.isOpen == true ? .systemRed : .systemGreen.withAlphaComponent(0.7),
-            checkins: "\(listing.stats?.checkinsCount ?? 0)"
+            rating: viewModel.listingRating,
+            openStatus: viewModel.listingOpenStatus,
+            openStatusColor: openStatusColor,
+            checkins: viewModel.listingCheckins
         )
         
         NSLayoutConstraint.activate([
@@ -243,12 +239,12 @@ class DestinationDetailsVC: UIViewController {
         lastAddedView = divider
     }
     
-    private func addLocationSection(with listing: Listing) {
-        addSection(title: "Location", content: "\(listing.location ?? ""), \(listing.address)")
+    private func addLocationSection() {
+        addSection(title: "Location", content: viewModel.listingLocationAddress)
     }
     
-    private func addContactSection(with listing: Listing) {
-        guard let contact = listing.contact else { return }
+    private func addContactSection() {
+        guard let contact = viewModel.listingContact else { return }
         
         let sectionTitle = CustomLabel(style: .title, fontSize: 16)
         sectionTitle.text = "Contact Information"
