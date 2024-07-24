@@ -8,7 +8,7 @@
 import UIKit
 import SwiftUI
 
-class CustomCollectionViewCell: UICollectionViewCell {
+final class CustomCollectionViewCell: UICollectionViewCell {
     private var hostingController: UIHostingController<PlacesListingView>?
 
     override init(frame: CGRect) {

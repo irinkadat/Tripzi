@@ -10,7 +10,7 @@ import FirebaseFirestore
 import FirebaseAuth
 import Combine
 
-class PlacesListingViewModel: ObservableObject {
+final class PlacesListingViewModel: ObservableObject {
     @Published var isFavorited: Bool = false
     let listing: Listing
     private var cancellables = Set<AnyCancellable>()

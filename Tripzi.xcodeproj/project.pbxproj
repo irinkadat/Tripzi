@@ -50,6 +50,9 @@
 		8C651D102C496AA100339BA3 /* TipCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651D0F2C496AA100339BA3 /* TipCardCollectionViewCell.swift */; };
 		8C651D382C4ABCF300339BA3 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651D372C4ABCF300339BA3 /* MapView.swift */; };
 		8C651D5C2C4AE60300339BA3 /* FullScreenMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651D5B2C4AE60300339BA3 /* FullScreenMapViewController.swift */; };
+		8C6B07612C5042180030413E /* FirebaseFirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6B07602C5042180030413E /* FirebaseFirestoreService.swift */; };
+		8C6B07632C5058130030413E /* AboutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6B07622C5058130030413E /* AboutVC.swift */; };
+		8C6B07652C505DEC0030413E /* PaymentsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6B07642C505DEC0030413E /* PaymentsVC.swift */; };
 		8C8FFFB12C2E8D0F00079E8B /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8FFFB02C2E8D0F00079E8B /* AuthenticationManager.swift */; };
 		8C8FFFB62C2E9A8A00079E8B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8FFFB52C2E9A8A00079E8B /* HomeViewController.swift */; };
 		8C8FFFB82C2EACD600079E8B /* AuthenticationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8FFFB72C2EACD600079E8B /* AuthenticationVC.swift */; };
@@ -69,6 +72,12 @@
 		8CC3F00B2C3ED2EF00400A89 /* DestinationDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F00A2C3ED2EF00400A89 /* DestinationDetailsVC.swift */; };
 		8CC3F00D2C3EEC8E00400A89 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F00C2C3EEC8E00400A89 /* ImageCollectionViewCell.swift */; };
 		8CC530252C3C677F00E020DD /* PlacesListingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC530242C3C677E00E020DD /* PlacesListingView.swift */; };
+		8CE7CCB42C4FDCE3006401D0 /* FlightDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7CCB32C4FDCE3006401D0 /* FlightDetailsViewController.swift */; };
+		8CE7CCB62C4FDCFD006401D0 /* CheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7CCB52C4FDCFD006401D0 /* CheckoutViewController.swift */; };
+		8CE7CCB82C4FDD1A006401D0 /* FlightDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7CCB72C4FDD1A006401D0 /* FlightDetailsViewModel.swift */; };
+		8CE7CCBA2C4FDD6D006401D0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7CCB92C4FDD6D006401D0 /* Extensions.swift */; };
+		8CE7CCBD2C4FDDF4006401D0 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 8CE7CCBC2C4FDDF4006401D0 /* Stripe */; };
+		8CE7CCBF2C4FDDF4006401D0 /* StripeApplePay in Frameworks */ = {isa = PBXBuildFile; productRef = 8CE7CCBE2C4FDDF4006401D0 /* StripeApplePay */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -110,6 +119,9 @@
 		8C651D0F2C496AA100339BA3 /* TipCardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipCardCollectionViewCell.swift; sourceTree = "<group>"; };
 		8C651D372C4ABCF300339BA3 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		8C651D5B2C4AE60300339BA3 /* FullScreenMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenMapViewController.swift; sourceTree = "<group>"; };
+		8C6B07602C5042180030413E /* FirebaseFirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFirestoreService.swift; sourceTree = "<group>"; };
+		8C6B07622C5058130030413E /* AboutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutVC.swift; sourceTree = "<group>"; };
+		8C6B07642C505DEC0030413E /* PaymentsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsVC.swift; sourceTree = "<group>"; };
 		8C8FFFB02C2E8D0F00079E8B /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
 		8C8FFFB52C2E9A8A00079E8B /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		8C8FFFB72C2EACD600079E8B /* AuthenticationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationVC.swift; sourceTree = "<group>"; };
@@ -128,6 +140,10 @@
 		8CC3F00A2C3ED2EF00400A89 /* DestinationDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationDetailsVC.swift; sourceTree = "<group>"; };
 		8CC3F00C2C3EEC8E00400A89 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		8CC530242C3C677E00E020DD /* PlacesListingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesListingView.swift; sourceTree = "<group>"; };
+		8CE7CCB32C4FDCE3006401D0 /* FlightDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightDetailsViewController.swift; sourceTree = "<group>"; };
+		8CE7CCB52C4FDCFD006401D0 /* CheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutViewController.swift; sourceTree = "<group>"; };
+		8CE7CCB72C4FDD1A006401D0 /* FlightDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightDetailsViewModel.swift; sourceTree = "<group>"; };
+		8CE7CCB92C4FDD6D006401D0 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,9 +156,11 @@
 				8C91FA442C30616E00B6C52F /* FacebookLogin in Frameworks */,
 				8C309E092C2DCDB800436F92 /* GoogleSignIn in Frameworks */,
 				8C309E042C2DC5E300436F92 /* FirebaseAuth in Frameworks */,
+				8CE7CCBF2C4FDDF4006401D0 /* StripeApplePay in Frameworks */,
 				8C651CDD2C49359400339BA3 /* FirebaseStorage in Frameworks */,
 				8C309DFF2C2DC0A200436F92 /* FirebaseAnalytics in Frameworks */,
 				8C64D63F2C31B9E90050780C /* FirebaseFirestore in Frameworks */,
+				8CE7CCBD2C4FDDF4006401D0 /* Stripe in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,6 +311,9 @@
 				8C651CF72C493A7600339BA3 /* CountriesViewController.swift */,
 				8C651CF92C493A9000339BA3 /* FlightsViewModel.swift */,
 				8C651CFB2C493AAB00339BA3 /* PortsViewController.swift */,
+				8CE7CCB32C4FDCE3006401D0 /* FlightDetailsViewController.swift */,
+				8CE7CCB52C4FDCFD006401D0 /* CheckoutViewController.swift */,
+				8CE7CCB72C4FDD1A006401D0 /* FlightDetailsViewModel.swift */,
 			);
 			path = Flights;
 			sourceTree = "<group>";
@@ -303,6 +324,8 @@
 				8C8FFFB92C2EBB5400079E8B /* ProfileVC.swift */,
 				8C651CE72C4937F100339BA3 /* ProfileViewModel.swift */,
 				8C651CE92C49380F00339BA3 /* PersonalInfoViewController.swift */,
+				8C6B07622C5058130030413E /* AboutVC.swift */,
+				8C6B07642C505DEC0030413E /* PaymentsVC.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -320,6 +343,7 @@
 			isa = PBXGroup;
 			children = (
 				8C8FFFB02C2E8D0F00079E8B /* AuthenticationManager.swift */,
+				8C6B07602C5042180030413E /* FirebaseFirestoreService.swift */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -335,6 +359,7 @@
 			isa = PBXGroup;
 			children = (
 				8C651CE52C4936A800339BA3 /* NetworkManager.swift */,
+				8CE7CCB92C4FDD6D006401D0 /* Extensions.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -404,6 +429,8 @@
 				8C91FA432C30616E00B6C52F /* FacebookLogin */,
 				8C64D63E2C31B9E90050780C /* FirebaseFirestore */,
 				8C651CDC2C49359400339BA3 /* FirebaseStorage */,
+				8CE7CCBC2C4FDDF4006401D0 /* Stripe */,
+				8CE7CCBE2C4FDDF4006401D0 /* StripeApplePay */,
 			);
 			productName = Tripzi;
 			productReference = 8C309DC52C2DB46800436F92 /* Tripzi.app */;
@@ -437,6 +464,7 @@
 				8C309DFD2C2DC0A200436F92 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				8C309E072C2DCDB800436F92 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				8C91FA422C30616E00B6C52F /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
+				8CE7CCBB2C4FDDF4006401D0 /* XCRemoteSwiftPackageReference "stripe-ios" */,
 			);
 			productRefGroup = 8C309DC62C2DB46800436F92 /* Products */;
 			projectDirPath = "";
@@ -466,7 +494,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C6B07612C5042180030413E /* FirebaseFirestoreService.swift in Sources */,
 				8C651CE62C4936A800339BA3 /* NetworkManager.swift in Sources */,
+				8CE7CCBA2C4FDD6D006401D0 /* Extensions.swift in Sources */,
 				8CC3EFF32C3D6C7300400A89 /* ListingImageCarouselView.swift in Sources */,
 				8C651CF62C493A4F00339BA3 /* FlightsSearchVC.swift in Sources */,
 				8C651CFC2C493AAB00339BA3 /* PortsViewController.swift in Sources */,
@@ -477,6 +507,7 @@
 				8C651D102C496AA100339BA3 /* TipCardCollectionViewCell.swift in Sources */,
 				8C309DEA2C2DB70A00436F92 /* CustomButton.swift in Sources */,
 				8CC3EFFD2C3DAE4A00400A89 /* CustomCollectionViewCell.swift in Sources */,
+				8CE7CCB42C4FDCE3006401D0 /* FlightDetailsViewController.swift in Sources */,
 				8C309DC92C2DB46800436F92 /* AppDelegate.swift in Sources */,
 				8C651D002C493AF600339BA3 /* IconTextStackView.swift in Sources */,
 				8C309DF62C2DB82C00436F92 /* LoginView.swift in Sources */,
@@ -491,6 +522,7 @@
 				8C651CF22C49396200339BA3 /* CustomTextField2.swift in Sources */,
 				8C651CEC2C49391500339BA3 /* CustomSearchBar.swift in Sources */,
 				8CC3EFF92C3D726D00400A89 /* Listing.swift in Sources */,
+				8C6B07632C5058130030413E /* AboutVC.swift in Sources */,
 				8C8FFFB62C2E9A8A00079E8B /* HomeViewController.swift in Sources */,
 				8C651D5C2C4AE60300339BA3 /* FullScreenMapViewController.swift in Sources */,
 				8C651D082C493D0A00339BA3 /* CategoryCell.swift in Sources */,
@@ -499,12 +531,15 @@
 				8C309DEC2C2DB71800436F92 /* CustomTextField.swift in Sources */,
 				8C651CE12C49362000339BA3 /* Place.swift in Sources */,
 				8C8FFFC22C2EE45900079E8B /* FavoritesViewController.swift in Sources */,
+				8CE7CCB82C4FDD1A006401D0 /* FlightDetailsViewModel.swift in Sources */,
 				8C309DFA2C2DB84800436F92 /* ResetPasswordView.swift in Sources */,
 				8C8FFFB12C2E8D0F00079E8B /* AuthenticationManager.swift in Sources */,
 				8C651D022C493B2F00339BA3 /* FavoritesViewModel.swift in Sources */,
 				8CC3EFEF2C3D116800400A89 /* SecondaryTextStyle.swift in Sources */,
 				8C651CFA2C493A9000339BA3 /* FlightsViewModel.swift in Sources */,
+				8C6B07652C505DEC0030413E /* PaymentsVC.swift in Sources */,
 				8C309DF82C2DB83A00436F92 /* RegistrationView.swift in Sources */,
+				8CE7CCB62C4FDCFD006401D0 /* CheckoutViewController.swift in Sources */,
 				8C651D042C493CBB00339BA3 /* PlacesListingViewModel.swift in Sources */,
 				8C8FFFB82C2EACD600079E8B /* AuthenticationVC.swift in Sources */,
 				8C651CF42C49397B00339BA3 /* CustomLabel.swift in Sources */,
@@ -756,6 +791,14 @@
 				minimumVersion = 14.1.0;
 			};
 		};
+		8CE7CCBB2C4FDDF4006401D0 /* XCRemoteSwiftPackageReference "stripe-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stripe/stripe-ios";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -798,6 +841,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8C91FA422C30616E00B6C52F /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
 			productName = FacebookLogin;
+		};
+		8CE7CCBC2C4FDDF4006401D0 /* Stripe */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8CE7CCBB2C4FDDF4006401D0 /* XCRemoteSwiftPackageReference "stripe-ios" */;
+			productName = Stripe;
+		};
+		8CE7CCBE2C4FDDF4006401D0 /* StripeApplePay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8CE7CCBB2C4FDDF4006401D0 /* XCRemoteSwiftPackageReference "stripe-ios" */;
+			productName = StripeApplePay;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

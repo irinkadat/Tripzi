@@ -14,7 +14,7 @@ protocol SearchViewControllerDelegate: AnyObject {
     func didPerformSearch(results: [Listing])
 }
 
-class SearchViewController: UIViewController {
+final class SearchViewController: UIViewController {
     private let searchField: CustomTextField2 = {
         let textField = CustomTextField2()
         textField.placeholder = "Search destinations"

@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-class SearchViewModel: ObservableObject {
+final class SearchViewModel: ObservableObject {
     @Published var listings: [Listing] = []
     private var cancellables: Set<AnyCancellable> = []
     @Published var detailedPlace: Listing?

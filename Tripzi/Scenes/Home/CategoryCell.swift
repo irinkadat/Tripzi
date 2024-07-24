@@ -12,7 +12,7 @@ struct SearchCategory {
     let icon: UIImage
 }
 
-class CategoryCell: UICollectionViewCell {
+final class CategoryCell: UICollectionViewCell {
     static let reuseIdentifier = "CategoryCell"
     
     let iconImageView: UIImageView = {

@@ -8,7 +8,7 @@
 import UIKit
 import SwiftUI
 
-class FullScreenMapViewController: UIViewController {
+final class FullScreenMapViewController: UIViewController {
     var latitude: Double
     var longitude: Double
     var locationName: String
