@@ -12,6 +12,26 @@ final class SearchViewModel: ObservableObject {
     @Published var listings: [Listing] = []
     private var cancellables: Set<AnyCancellable> = []
     @Published var detailedPlace: Listing?
+    var onListingsUpdate: (() -> Void)?
+    
+    init() {
+        bindUI()
+    }
+    
+    private func bindUI() {
+        $listings
+            .sink { [weak self] listings in
+                self?.onListingsUpdate?()
+                self?.postSearchNotification(with: listings)
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func postSearchNotification(with listings: [Listing]) {
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .searchPerformed, object: nil, userInfo: ["results": listings])
+        }
+    }
     
     func fetchDefaultListings() {
         guard let url = Bundle.main.url(forResource: "Places", withExtension: "json") else {
@@ -102,6 +122,24 @@ final class SearchViewModel: ObservableObject {
                 print("Failed to decode JSON: \(error)")
             }
         }.resume()
+    }
+    
+    func configureCell(_ cell: CustomCollectionViewCell, with listing: Listing, completion: @escaping (Listing, [String]) -> Void) {
+        cell.configure(with: listing) { [weak self] in
+            guard let self = self else { return }
+            self.destinationDetails(for: listing.id) { detailedListing in
+                guard let detailedListing = detailedListing else { return }
+                completion(detailedListing, listing.imageUrls)
+            }
+        }
+    }
+    
+    func selectItem(at indexPath: IndexPath, completion: @escaping (Listing, [String]) -> Void) {
+        let listing = listings[indexPath.row]
+        destinationDetails(for: listing.id) { detailedListing in
+            guard let detailedListing = detailedListing else { return }
+            completion(detailedListing, listing.imageUrls)
+        }
     }
     
     func fetchListings(for category: String?) {

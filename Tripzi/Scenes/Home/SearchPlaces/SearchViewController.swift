@@ -9,7 +9,6 @@ import UIKit
 import Combine
 import SwiftUI
 
-
 protocol SearchViewControllerDelegate: AnyObject {
     func didPerformSearch(results: [Listing])
 }
@@ -60,7 +59,7 @@ final class SearchViewController: UIViewController {
     
     private let latLongField: CustomTextField2 = {
         let textField = CustomTextField2()
-        textField.placeholder = "niar"
+        textField.placeholder = "near"
         textField.isHidden = true
         return textField
     }()
@@ -82,6 +81,7 @@ final class SearchViewController: UIViewController {
         view.backgroundColor = .white
         setupUI()
         setupActions()
+        setupBindings()
     }
     
     private func setupUI() {
@@ -139,6 +139,15 @@ final class SearchViewController: UIViewController {
         latLongButton.addTarget(self, action: #selector(didTapLatLongButton), for: .touchUpInside)
     }
     
+    private func setupBindings() {
+        viewModel.onListingsUpdate = { [weak self] in
+            guard let self = self else { return }
+            self.dismiss(animated: true) {
+                self.delegate?.didPerformSearch(results: self.viewModel.listings)
+            }
+        }
+    }
+    
     @objc private func didTapCloseButton() {
         dismiss(animated: true, completion: nil)
     }
@@ -164,14 +173,6 @@ final class SearchViewController: UIViewController {
         let ll = latLongField.text
         
         viewModel.searchPlaces(query: query, radius: radius, near: ll)
-        
-        viewModel.$listings.sink { [weak self] results in
-            DispatchQueue.main.async {
-                self?.dismiss(animated: true) {
-                    NotificationCenter.default.post(name: .searchPerformed, object: nil, userInfo: ["results": results])
-                }
-            }
-        }.store(in: &cancellables)
     }
 }
 

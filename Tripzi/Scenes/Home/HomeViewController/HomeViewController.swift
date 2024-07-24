@@ -12,7 +12,7 @@ import SwiftUI
 final class HomeViewController: UIViewController {
     private var collectionView: UICollectionView!
     private var categoriesCollectionView: UICollectionView!
-    private var viewModel = SearchViewModel()
+    private let viewModel = SearchViewModel()
     private let customSearchBar = CustomSearchBar()
     
     private var categories: [SearchCategory] = [
@@ -36,14 +36,8 @@ final class HomeViewController: UIViewController {
         setupCustomBackButtonStyle()
 
         viewModel.fetchDefaultListings()
-        print(viewModel.listings.count)
+        bindViewModel()
         
-        viewModel.$listings.sink { [weak self] listings in
-            print("Listings updated: \(listings.count)")
-            self?.collectionView.reloadData()
-        }.store(in: &cancellables)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(handleSearchNotification(_:)), name: .searchPerformed, object: nil)
     }
     
     private func setupCustomSearchBar() {
@@ -110,6 +104,12 @@ final class HomeViewController: UIViewController {
         customSearchBar.addGestureRecognizer(tapGesture)
     }
     
+    private func bindViewModel() {
+        viewModel.onListingsUpdate = { [weak self] in
+            self?.collectionView.reloadData()
+        }
+    }
+    
     @objc private func didTapSearchBar() {
         let searchVC = SearchViewController()
         searchVC.delegate = self
@@ -117,18 +117,10 @@ final class HomeViewController: UIViewController {
         present(searchVC, animated: true, completion: nil)
     }
     
-    @objc private func handleSearchNotification(_ notification: Notification) {
-        if let results = notification.userInfo?["results"] as? [Listing] {
-            updateListings(with: results)
-        }
-    }
-    
     private func updateListings(with results: [Listing]) {
         viewModel.listings = results
         collectionView.reloadData()
     }
-    
-    private var cancellables = Set<AnyCancellable>()
 }
 
 extension HomeViewController: SearchViewControllerDelegate {
@@ -142,8 +134,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         if collectionView == categoriesCollectionView {
             return categories.count
         } else {
-            let itemCount = viewModel.listings.count
-            return itemCount
+            return viewModel.listings.count
         }
     }
     
@@ -155,20 +146,16 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             return cell
         } else {
             let listing = viewModel.listings[indexPath.row]
-            
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CustomCell", for: indexPath) as! CustomCollectionViewCell
-            cell.configure(with: listing) { [weak self] in
+            
+            viewModel.configureCell(cell, with: listing) { [weak self] detailedListing, imageUrls in
                 guard let self = self else { return }
-                self.viewModel.destinationDetails(for: listing.id) { detailedListing in
-                    guard let detailedListing = detailedListing else { return }
-                    DispatchQueue.main.async {
-                        let destinationDetailsVC = DestinationDetailsVC()
-                        destinationDetailsVC.listing = detailedListing
-                        destinationDetailsVC.imageUrls = listing.imageUrls
-                        self.navigationController?.pushViewController(destinationDetailsVC, animated: true)
-                    }
-                }
+                let destinationDetailsVC = DestinationDetailsVC()
+                destinationDetailsVC.listing = detailedListing
+                destinationDetailsVC.imageUrls = imageUrls
+                self.navigationController?.pushViewController(destinationDetailsVC, animated: true)
             }
+            
             return cell
         }
     }
@@ -178,16 +165,12 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             let category = categories[indexPath.row].name
             viewModel.fetchListings(for: category)
         } else {
-            let listing = viewModel.listings[indexPath.row]
-            viewModel.destinationDetails(for: listing.id) {
-                detailedListing in
-                   guard let detailedListing = detailedListing else { return }
-                   DispatchQueue.main.async {
-                       let destinationDetailsVC = DestinationDetailsVC()
-                       destinationDetailsVC.listing = detailedListing
-                       destinationDetailsVC.imageUrls = listing.imageUrls
-                       self.navigationController?.pushViewController(destinationDetailsVC, animated: true)
-                   }
+            viewModel.selectItem(at: indexPath) { [weak self] detailedListing, imageUrls in
+                guard let self = self else { return }
+                let destinationDetailsVC = DestinationDetailsVC()
+                destinationDetailsVC.listing = detailedListing
+                destinationDetailsVC.imageUrls = imageUrls
+                self.navigationController?.pushViewController(destinationDetailsVC, animated: true)
             }
         }
     }
