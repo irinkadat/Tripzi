@@ -27,7 +27,7 @@
 		8C651CDD2C49359400339BA3 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 8C651CDC2C49359400339BA3 /* FirebaseStorage */; };
 		8C651CDF2C4935D300339BA3 /* Port.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CDE2C4935D300339BA3 /* Port.swift */; };
 		8C651CE12C49362000339BA3 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CE02C49362000339BA3 /* Place.swift */; };
-		8C651CE62C4936A800339BA3 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CE52C4936A800339BA3 /* NetworkManager.swift */; };
+		8C651CE62C4936A800339BA3 /* FlightNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CE52C4936A800339BA3 /* FlightNetworkManager.swift */; };
 		8C651CE82C4937F100339BA3 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CE72C4937F100339BA3 /* ProfileViewModel.swift */; };
 		8C651CEA2C49380F00339BA3 /* PersonalInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CE92C49380F00339BA3 /* PersonalInfoViewController.swift */; };
 		8C651CEC2C49391500339BA3 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CEB2C49391500339BA3 /* CustomSearchBar.swift */; };
@@ -64,6 +64,7 @@
 		8C9ED1A22C511D5200B7ECB3 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9ED1A12C511D5200B7ECB3 /* CategoryViewController.swift */; };
 		8C9ED1A42C511DE700B7ECB3 /* ListingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9ED1A32C511DE700B7ECB3 /* ListingsViewController.swift */; };
 		8C9ED1A92C51321300B7ECB3 /* DetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9ED1A82C51321300B7ECB3 /* DetailsViewModel.swift */; };
+		8C9ED1B02C51874600B7ECB3 /* NetService in Frameworks */ = {isa = PBXBuildFile; productRef = 8C9ED1AF2C51874600B7ECB3 /* NetService */; };
 		8CC3EFEF2C3D116800400A89 /* SecondaryTextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3EFEE2C3D116800400A89 /* SecondaryTextStyle.swift */; };
 		8CC3EFF32C3D6C7300400A89 /* ListingImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3EFF22C3D6C7300400A89 /* ListingImageCarouselView.swift */; };
 		8CC3EFF92C3D726D00400A89 /* Listing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3EFF82C3D726D00400A89 /* Listing.swift */; };
@@ -98,7 +99,7 @@
 		8C309E0C2C2DD01C00436F92 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8C651CDE2C4935D300339BA3 /* Port.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Port.swift; sourceTree = "<group>"; };
 		8C651CE02C49362000339BA3 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
-		8C651CE52C4936A800339BA3 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		8C651CE52C4936A800339BA3 /* FlightNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightNetworkManager.swift; sourceTree = "<group>"; };
 		8C651CE72C4937F100339BA3 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		8C651CE92C49380F00339BA3 /* PersonalInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoViewController.swift; sourceTree = "<group>"; };
 		8C651CEB2C49391500339BA3 /* CustomSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
@@ -160,6 +161,7 @@
 				8C91FA442C30616E00B6C52F /* FacebookLogin in Frameworks */,
 				8C309E092C2DCDB800436F92 /* GoogleSignIn in Frameworks */,
 				8C309E042C2DC5E300436F92 /* FirebaseAuth in Frameworks */,
+				8C9ED1B02C51874600B7ECB3 /* NetService in Frameworks */,
 				8CE7CCBF2C4FDDF4006401D0 /* StripeApplePay in Frameworks */,
 				8C651CDD2C49359400339BA3 /* FirebaseStorage in Frameworks */,
 				8C309DFF2C2DC0A200436F92 /* FirebaseAnalytics in Frameworks */,
@@ -353,7 +355,7 @@
 		8C651CE42C49369200339BA3 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				8C651CE52C4936A800339BA3 /* NetworkManager.swift */,
+				8C651CE52C4936A800339BA3 /* FlightNetworkManager.swift */,
 				8CE7CCB92C4FDD6D006401D0 /* Extensions.swift */,
 			);
 			path = Utilities;
@@ -517,6 +519,7 @@
 				8C651CDC2C49359400339BA3 /* FirebaseStorage */,
 				8CE7CCBC2C4FDDF4006401D0 /* Stripe */,
 				8CE7CCBE2C4FDDF4006401D0 /* StripeApplePay */,
+				8C9ED1AF2C51874600B7ECB3 /* NetService */,
 			);
 			productName = Tripzi;
 			productReference = 8C309DC52C2DB46800436F92 /* Tripzi.app */;
@@ -551,6 +554,7 @@
 				8C309E072C2DCDB800436F92 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				8C91FA422C30616E00B6C52F /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 				8CE7CCBB2C4FDDF4006401D0 /* XCRemoteSwiftPackageReference "stripe-ios" */,
+				8C9ED1AE2C51874600B7ECB3 /* XCRemoteSwiftPackageReference "NetService" */,
 			);
 			productRefGroup = 8C309DC62C2DB46800436F92 /* Products */;
 			projectDirPath = "";
@@ -581,7 +585,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C6B07612C5042180030413E /* FirebaseFirestoreService.swift in Sources */,
-				8C651CE62C4936A800339BA3 /* NetworkManager.swift in Sources */,
+				8C651CE62C4936A800339BA3 /* FlightNetworkManager.swift in Sources */,
 				8CE7CCBA2C4FDD6D006401D0 /* Extensions.swift in Sources */,
 				8CC3EFF32C3D6C7300400A89 /* ListingImageCarouselView.swift in Sources */,
 				8C651CF62C493A4F00339BA3 /* FlightsSearchVC.swift in Sources */,
@@ -879,6 +883,14 @@
 				minimumVersion = 14.1.0;
 			};
 		};
+		8C9ED1AE2C51874600B7ECB3 /* XCRemoteSwiftPackageReference "NetService" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/irinkadat/NetService.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		8CE7CCBB2C4FDDF4006401D0 /* XCRemoteSwiftPackageReference "stripe-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/stripe/stripe-ios";
@@ -929,6 +941,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8C91FA422C30616E00B6C52F /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
 			productName = FacebookLogin;
+		};
+		8C9ED1AF2C51874600B7ECB3 /* NetService */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8C9ED1AE2C51874600B7ECB3 /* XCRemoteSwiftPackageReference "NetService" */;
+			productName = NetService;
 		};
 		8CE7CCBC2C4FDDF4006401D0 /* Stripe */ = {
 			isa = XCSwiftPackageProductDependency;
