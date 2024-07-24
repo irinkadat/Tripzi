@@ -12,7 +12,7 @@
 		8C309DD22C2DB46A00436F92 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C309DD12C2DB46A00436F92 /* Assets.xcassets */; };
 		8C309DD52C2DB46A00436F92 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 8C309DD42C2DB46A00436F92 /* Base */; };
 		8C309DEA2C2DB70A00436F92 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C309DE92C2DB70A00436F92 /* CustomButton.swift */; };
-		8C309DEC2C2DB71800436F92 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C309DEB2C2DB71800436F92 /* CustomTextField.swift */; };
+		8C309DEC2C2DB71800436F92 /* CustomUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C309DEB2C2DB71800436F92 /* CustomUITextField.swift */; };
 		8C309DF62C2DB82C00436F92 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C309DF52C2DB82C00436F92 /* LoginView.swift */; };
 		8C309DF82C2DB83A00436F92 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C309DF72C2DB83A00436F92 /* RegistrationView.swift */; };
 		8C309DFA2C2DB84800436F92 /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C309DF92C2DB84800436F92 /* ResetPasswordView.swift */; };
@@ -33,7 +33,7 @@
 		8C651CEC2C49391500339BA3 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CEB2C49391500339BA3 /* CustomSearchBar.swift */; };
 		8C651CEE2C49393200339BA3 /* CustomStyledView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CED2C49393200339BA3 /* CustomStyledView.swift */; };
 		8C651CF02C49394900339BA3 /* CustomSearchButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CEF2C49394900339BA3 /* CustomSearchButton.swift */; };
-		8C651CF22C49396200339BA3 /* CustomTextField2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CF12C49396200339BA3 /* CustomTextField2.swift */; };
+		8C651CF22C49396200339BA3 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CF12C49396200339BA3 /* CustomTextField.swift */; };
 		8C651CF42C49397B00339BA3 /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CF32C49397B00339BA3 /* CustomLabel.swift */; };
 		8C651CF62C493A4F00339BA3 /* FlightsSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CF52C493A4F00339BA3 /* FlightsSearchVC.swift */; };
 		8C651CF82C493A7600339BA3 /* CountriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651CF72C493A7600339BA3 /* CountriesViewController.swift */; };
@@ -90,7 +90,7 @@
 		8C309DD42C2DB46A00436F92 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8C309DD62C2DB46A00436F92 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8C309DE92C2DB70A00436F92 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
-		8C309DEB2C2DB71800436F92 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		8C309DEB2C2DB71800436F92 /* CustomUITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomUITextField.swift; sourceTree = "<group>"; };
 		8C309DF52C2DB82C00436F92 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		8C309DF72C2DB83A00436F92 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
 		8C309DF92C2DB84800436F92 /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
@@ -104,7 +104,7 @@
 		8C651CEB2C49391500339BA3 /* CustomSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
 		8C651CED2C49393200339BA3 /* CustomStyledView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomStyledView.swift; sourceTree = "<group>"; };
 		8C651CEF2C49394900339BA3 /* CustomSearchButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchButton.swift; sourceTree = "<group>"; };
-		8C651CF12C49396200339BA3 /* CustomTextField2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField2.swift; sourceTree = "<group>"; };
+		8C651CF12C49396200339BA3 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		8C651CF32C49397B00339BA3 /* CustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabel.swift; sourceTree = "<group>"; };
 		8C651CF52C493A4F00339BA3 /* FlightsSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightsSearchVC.swift; sourceTree = "<group>"; };
 		8C651CF72C493A7600339BA3 /* CountriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesViewController.swift; sourceTree = "<group>"; };
@@ -362,14 +362,10 @@
 		8C8DA2882C4B776300D42E1A /* Custom Components */ = {
 			isa = PBXGroup;
 			children = (
-				8C309DEB2C2DB71800436F92 /* CustomTextField.swift */,
-				8C651CEB2C49391500339BA3 /* CustomSearchBar.swift */,
-				8C651CED2C49393200339BA3 /* CustomStyledView.swift */,
-				8C651CF12C49396200339BA3 /* CustomTextField2.swift */,
-				8C651CEF2C49394900339BA3 /* CustomSearchButton.swift */,
-				8C651CF32C49397B00339BA3 /* CustomLabel.swift */,
-				8CC3EFF22C3D6C7300400A89 /* ListingImageCarouselView.swift */,
-				8C309DE92C2DB70A00436F92 /* CustomButton.swift */,
+				8C9ED1AD2C515F3F00B7ECB3 /* CustomViews */,
+				8C9ED1AC2C515F3400B7ECB3 /* Buttons */,
+				8C9ED1AB2C515F1A00B7ECB3 /* TextStyle */,
+				8C9ED1AA2C515EF400B7ECB3 /* SearchStyle */,
 			);
 			path = "Custom Components";
 			sourceTree = "<group>";
@@ -448,6 +444,42 @@
 				8C9ED1A82C51321300B7ECB3 /* DetailsViewModel.swift */,
 			);
 			path = Destination;
+			sourceTree = "<group>";
+		};
+		8C9ED1AA2C515EF400B7ECB3 /* SearchStyle */ = {
+			isa = PBXGroup;
+			children = (
+				8C651CEB2C49391500339BA3 /* CustomSearchBar.swift */,
+				8C651CEF2C49394900339BA3 /* CustomSearchButton.swift */,
+			);
+			path = SearchStyle;
+			sourceTree = "<group>";
+		};
+		8C9ED1AB2C515F1A00B7ECB3 /* TextStyle */ = {
+			isa = PBXGroup;
+			children = (
+				8C651CF32C49397B00339BA3 /* CustomLabel.swift */,
+				8C309DEB2C2DB71800436F92 /* CustomUITextField.swift */,
+				8C651CF12C49396200339BA3 /* CustomTextField.swift */,
+			);
+			path = TextStyle;
+			sourceTree = "<group>";
+		};
+		8C9ED1AC2C515F3400B7ECB3 /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				8C309DE92C2DB70A00436F92 /* CustomButton.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
+		8C9ED1AD2C515F3F00B7ECB3 /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				8CC3EFF22C3D6C7300400A89 /* ListingImageCarouselView.swift */,
+				8C651CED2C49393200339BA3 /* CustomStyledView.swift */,
+			);
+			path = CustomViews;
 			sourceTree = "<group>";
 		};
 		8CC3EFED2C3D115300400A89 /* Custom Modifiers */ = {
@@ -573,7 +605,7 @@
 				8C9ED1A22C511D5200B7ECB3 /* CategoryViewController.swift in Sources */,
 				8C651CEE2C49393200339BA3 /* CustomStyledView.swift in Sources */,
 				8C8FFFBD2C2EE3A500079E8B /* RootViewController.swift in Sources */,
-				8C651CF22C49396200339BA3 /* CustomTextField2.swift in Sources */,
+				8C651CF22C49396200339BA3 /* CustomTextField.swift in Sources */,
 				8C651CEC2C49391500339BA3 /* CustomSearchBar.swift in Sources */,
 				8CC3EFF92C3D726D00400A89 /* Listing.swift in Sources */,
 				8C6B07632C5058130030413E /* AboutVC.swift in Sources */,
@@ -582,7 +614,7 @@
 				8C651D082C493D0A00339BA3 /* CategoryCell.swift in Sources */,
 				8C651CDF2C4935D300339BA3 /* Port.swift in Sources */,
 				8C651CF02C49394900339BA3 /* CustomSearchButton.swift in Sources */,
-				8C309DEC2C2DB71800436F92 /* CustomTextField.swift in Sources */,
+				8C309DEC2C2DB71800436F92 /* CustomUITextField.swift in Sources */,
 				8C9ED1A42C511DE700B7ECB3 /* ListingsViewController.swift in Sources */,
 				8C651CE12C49362000339BA3 /* Place.swift in Sources */,
 				8C8FFFC22C2EE45900079E8B /* FavoritesViewController.swift in Sources */,

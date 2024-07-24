@@ -12,28 +12,28 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
     var viewModel: FlightsViewModel
     private var cancellables = Set<AnyCancellable>()
     
-    private var selectedTextField: CustomTextField2?
+    private var selectedTextField: CustomTextField?
     
     private let datePicker = UIDatePicker()
     
-    private let originField: CustomTextField2 = {
-        let textField = CustomTextField2()
+    private let originField: CustomTextField = {
+        let textField = CustomTextField()
         textField.placeholder = "From"
         textField.borderStyle = .roundedRect
         textField.tag = 1
         return textField
     }()
     
-    private let destinationField: CustomTextField2 = {
-        let textField = CustomTextField2()
+    private let destinationField: CustomTextField = {
+        let textField = CustomTextField()
         textField.placeholder = "To"
         textField.borderStyle = .roundedRect
         textField.tag = 2
         return textField
     }()
     
-    private let departureDateField: CustomTextField2 = {
-        let textField = CustomTextField2()
+    private let departureDateField: CustomTextField = {
+        let textField = CustomTextField()
         textField.placeholder = "Departure Date (dd-MM-yyyy)"
         textField.borderStyle = .roundedRect
         return textField
@@ -321,7 +321,7 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
     }
     
     // MARK: - PortSelectionDelegate
-    func didChoosePort(portName: String, forField: CustomTextField2) {
+    func didChoosePort(portName: String, forField: CustomTextField) {
         forField.text = portName
     }
     

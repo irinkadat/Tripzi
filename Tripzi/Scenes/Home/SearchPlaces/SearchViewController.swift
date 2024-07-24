@@ -14,8 +14,8 @@ protocol SearchViewControllerDelegate: AnyObject {
 }
 
 final class SearchViewController: UIViewController {
-    private let searchField: CustomTextField2 = {
-        let textField = CustomTextField2()
+    private let searchField: CustomTextField = {
+        let textField = CustomTextField()
         textField.placeholder = "Search destinations"
         return textField
     }()
@@ -35,8 +35,8 @@ final class SearchViewController: UIViewController {
         return button
     }()
     
-    private let radiusField: CustomTextField2 = {
-        let textField = CustomTextField2()
+    private let radiusField: CustomTextField = {
+        let textField = CustomTextField()
         textField.placeholder = "Enter radius"
         textField.isHidden = true
         return textField
@@ -57,8 +57,8 @@ final class SearchViewController: UIViewController {
         return button
     }()
     
-    private let latLongField: CustomTextField2 = {
-        let textField = CustomTextField2()
+    private let latLongField: CustomTextField = {
+        let textField = CustomTextField()
         textField.placeholder = "near"
         textField.isHidden = true
         return textField
