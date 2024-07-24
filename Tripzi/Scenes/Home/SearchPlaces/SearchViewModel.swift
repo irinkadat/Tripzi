@@ -111,7 +111,6 @@ final class SearchViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.listings = results.compactMap { result in
                         guard result.displayType == "venue", let venue = result.venue else {
-                            print("Skipping result with displayType: \(result.displayType)")
                             return nil
                         }
                         return Listing(from: result)
@@ -124,17 +123,25 @@ final class SearchViewModel: ObservableObject {
         }.resume()
     }
     
-    func configureCell(_ cell: CustomCollectionViewCell, with listing: Listing, completion: @escaping (Listing, [String]) -> Void) {
-        cell.configure(with: listing) { [weak self] in
-            guard let self = self else { return }
-            self.destinationDetails(for: listing.id) { detailedListing in
-                guard let detailedListing = detailedListing else { return }
-                completion(detailedListing, listing.imageUrls)
-            }
+    func configureCategoryCell(at indexPath: IndexPath, completion: @escaping (SearchCategory) -> Void) {
+        let category = CategoryViewController.categories[indexPath.row]
+        completion(category)
+    }
+    
+    func configureListingCell(at indexPath: IndexPath, completion: @escaping (Listing, Listing, [String]) -> Void) {
+        let listing = listings[indexPath.row]
+        destinationDetails(for: listing.id) { detailedListing in
+            guard let detailedListing = detailedListing else { return }
+            completion(listing, detailedListing, listing.imageUrls)
         }
     }
     
-    func selectItem(at indexPath: IndexPath, completion: @escaping (Listing, [String]) -> Void) {
+    func didSelectCategory(at indexPath: IndexPath) {
+        let category = CategoryViewController.categories[indexPath.row].name
+        fetchListings(for: category)
+    }
+    
+    func didSelectListing(at indexPath: IndexPath, completion: @escaping (Listing, [String]) -> Void) {
         let listing = listings[indexPath.row]
         destinationDetails(for: listing.id) { detailedListing in
             guard let detailedListing = detailedListing else { return }
