@@ -55,7 +55,6 @@ struct PlacesListingView: View {
 
                     VStack(alignment: .leading) {
                         Text("Address \(viewModel.listing.address)")
-//                        Text("check in's \(String(viewModel.listing.stats?.checkinsCount ?? 0))")
                         Text(viewModel.listing.contextLine)
                     }
                     .secondaryTextStyle()
