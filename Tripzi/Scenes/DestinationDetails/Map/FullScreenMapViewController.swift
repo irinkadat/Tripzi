@@ -44,8 +44,8 @@ final class FullScreenMapViewController: UIViewController {
         let backImage = UIImage(systemName: "arrow.backward")
         backButton.setImage(backImage, for: .normal)
         backButton.tintColor = .black
-        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-        
+        backButton.addAction(UIAction(handler: {_ in self.backButtonTapped() }), for: .touchUpInside)
+
         view.addSubview(backButton)
         backButton.translatesAutoresizingMaskIntoConstraints = false
         
@@ -55,7 +55,7 @@ final class FullScreenMapViewController: UIViewController {
         ])
     }
     
-    @objc private func backButtonTapped() {
+    private func backButtonTapped() {
         dismiss(animated: true, completion: nil)
     }
 }

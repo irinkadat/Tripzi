@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 protocol PortSelectionDelegate: AnyObject {
-    func didChoosePort(portName: String, forField: CustomTextField2)
+    func didChoosePort(portName: String, forField: CustomTextField)
     func didUpdateSuggestions()
 }
 
@@ -176,7 +176,7 @@ class FlightsViewModel: ObservableObject {
         }
     }
     
-    func didChoosePort(port: Port, forField: CustomTextField2) {
+    func didChoosePort(port: Port, forField: CustomTextField) {
         portSelectionDelegate?.didChoosePort(portName: port.name, forField: forField)
         
         switch forField.tag {
@@ -198,7 +198,7 @@ class FlightsViewModel: ObservableObject {
         }
     }
     
-    func selectPort(at index: Int, forField field: CustomTextField2) {
+    func selectPort(at index: Int, forField field: CustomTextField) {
         let selectedPort = ports[index]
         didChoosePort(port: selectedPort, forField: field)
     }

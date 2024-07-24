@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CustomTextField2: UITextField {
+class CustomTextField: UITextField {
     
     private let styledView = CustomStyledView()
     

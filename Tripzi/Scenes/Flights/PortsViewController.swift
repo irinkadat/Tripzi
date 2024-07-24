@@ -13,9 +13,9 @@ class PortsViewController: UIViewController, UITableViewDataSource, UITableViewD
     private var selectedPort: Port?
     private var tableView: UITableView!
     weak var delegate: PortSelectionDelegate?
-    private var selectedTextField: CustomTextField2
+    private var selectedTextField: CustomTextField
         
-    init(viewModel: FlightsViewModel, country: Country, delegate: PortSelectionDelegate?, selectedTextField: CustomTextField2) {
+    init(viewModel: FlightsViewModel, country: Country, delegate: PortSelectionDelegate?, selectedTextField: CustomTextField) {
         self.viewModel = viewModel
         self.country = country
         self.delegate = delegate

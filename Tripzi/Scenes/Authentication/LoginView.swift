@@ -21,9 +21,9 @@ struct LoginView: View {
                 Spacer()
                     .frame(height: 50)
                 
-                CustomTextField(placeholder: "Enter your email", text: $email, isSecure: false)
+                CustomUITextField(placeholder: "Enter your email", text: $email, isSecure: false)
                 
-                CustomTextField(placeholder: "Enter your password", text: $password, isSecure: true)
+                CustomUITextField(placeholder: "Enter your password", text: $password, isSecure: true)
                 
                 Spacer()
                     .frame(height: 20)

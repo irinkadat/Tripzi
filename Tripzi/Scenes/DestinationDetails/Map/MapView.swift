@@ -30,5 +30,5 @@ struct MapView: View {
 }
 
 #Preview {
-    MapView(latitude: 41.1, longitude: 41.1, locationName: "xodasheni")
+    MapView(latitude: 41.1, longitude: 41.1, locationName: "khodasheni")
 }

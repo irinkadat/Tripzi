@@ -14,7 +14,7 @@ struct ResetPasswordView: View {
     
     var body: some View {
         VStack {
-            CustomTextField(placeholder: "Enter your email", text: $email)
+            CustomUITextField(placeholder: "Enter your email", text: $email)
             
             CustomButton(title: "Send Reset Link", backgroundColor: .green, textColor: .white, action: {
                 action(email)

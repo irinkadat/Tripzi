@@ -75,8 +75,8 @@ final class HomeViewController: UIViewController {
         listingsViewController.didSelectListing = { [weak self] detailedListing, imageUrls in
             guard let self = self else { return }
             let destinationDetailsVC = DestinationDetailsVC()
-            destinationDetailsVC.listing = detailedListing
-            destinationDetailsVC.imageUrls = imageUrls
+            let detailsViewModel = DetailsViewModel(listing: detailedListing, imageUrls: imageUrls)
+            destinationDetailsVC.viewModel = detailsViewModel
             self.navigationController?.pushViewController(destinationDetailsVC, animated: true)
         }
     }

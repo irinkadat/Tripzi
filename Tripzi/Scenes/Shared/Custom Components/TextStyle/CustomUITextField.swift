@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CustomTextField: View {
+struct CustomUITextField: View {
     var placeholder: String
     @Binding var text: String
     var isSecure: Bool = false
@@ -53,5 +53,5 @@ struct CustomTextField: View {
 }
 
 #Preview {
-    CustomTextField(placeholder: "Enter your email", text: .constant(""), isSecure: false)
+    CustomUITextField(placeholder: "Enter your email", text: .constant(""), isSecure: false)
 }

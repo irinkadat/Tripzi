@@ -70,8 +70,8 @@ final class FavoritesViewModel: ObservableObject {
                 guard let detailedListing = detailedListing else { return }
                 DispatchQueue.main.async {
                     let destinationDetailsVC = DestinationDetailsVC()
-                    destinationDetailsVC.listing = detailedListing
-                    destinationDetailsVC.imageUrls = listing.imageUrls
+                    let detailsViewModel = DetailsViewModel(listing: detailedListing, imageUrls: listing.imageUrls)
+                    destinationDetailsVC.viewModel = detailsViewModel
                     completion(destinationDetailsVC)
                 }
             }
@@ -102,13 +102,13 @@ final class FavoritesViewModel: ObservableObject {
             guard let detailedListing = detailedListing else { return }
             DispatchQueue.main.async {
                 let destinationDetailsVC = DestinationDetailsVC()
-                destinationDetailsVC.listing = detailedListing
-                destinationDetailsVC.imageUrls = listing.imageUrls
+                let detailsViewModel = DetailsViewModel(listing: detailedListing, imageUrls: listing.imageUrls)
+                destinationDetailsVC.viewModel = detailsViewModel
                 completion(destinationDetailsVC)
             }
         }
     }
-    
+ 
     private func stopListeningToFavorites() {
         listener?.remove()
         listener = nil
@@ -119,3 +119,4 @@ final class FavoritesViewModel: ObservableObject {
         NotificationCenter.default.removeObserver(self)
     }
 }
+

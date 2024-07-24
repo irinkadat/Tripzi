@@ -26,7 +26,7 @@ struct RegistrationView: View {
                 Spacer()
                     .frame(height: 20)
                 
-                CustomTextField(placeholder: "Full Name", text: $fullName)
+                CustomUITextField(placeholder: "Full Name", text: $fullName)
                 
                 DatePicker("Date of Birth", selection: $birthDate, displayedComponents: .date)
                     .padding()
@@ -38,11 +38,11 @@ struct RegistrationView: View {
                     .cornerRadius(18)
                     .padding()
                 
-                CustomTextField(placeholder: "Email", text: $email)
+                CustomUITextField(placeholder: "Email", text: $email)
                 
-                CustomTextField(placeholder: "Password", text: $password, isSecure: true)
+                CustomUITextField(placeholder: "Password", text: $password, isSecure: true)
                 
-                CustomTextField(placeholder: "Repeat Password", text: $repeatPassword, isSecure: true)
+                CustomUITextField(placeholder: "Repeat Password", text: $repeatPassword, isSecure: true)
                 
                 Spacer()
                     .frame(height: 30)
