@@ -16,11 +16,21 @@ final class FavoritesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupCustomBackButtonStyle()
         setupNavigation()
         setupCollectionView()
         setupBindings()
         viewModel.fetchFavorites()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.prefersLargeTitles = false
     }
     
     private func setupNavigation() {
@@ -70,7 +80,7 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
         
         viewModel.configureCell(cell, with: listing) { [weak self] destinationDetailsVC in
             guard let self = self else { return }
-            self.navigationController?.pushViewController(destinationDetailsVC, animated: true)
+            self.navigationController?.pushViewController(destinationDetailsVC, animated: false)
         }
         
         return cell
@@ -84,7 +94,7 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.selectItem(at: indexPath) { [weak self] destinationDetailsVC in
             guard let self = self else { return }
-            self.navigationController?.pushViewController(destinationDetailsVC, animated: true)
+            self.navigationController?.pushViewController(destinationDetailsVC, animated: false)
         }
     }
 }
