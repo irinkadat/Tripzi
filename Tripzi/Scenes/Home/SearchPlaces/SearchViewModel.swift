@@ -154,6 +154,19 @@ final class SearchViewModel: ObservableObject {
         searchPlaces(query: category, radius: nil, near: defaultCity)
     }
     
+    func tierDescription(for tier: Int) -> String {
+        switch tier {
+        case 1:
+            return "Affordable"
+        case 2:
+            return "Moderate"
+        case 3:
+            return "Expensive"
+        default:
+            return "Unknown"
+        }
+    }
+    
     func destinationDetails(for id: String, completion: @escaping (Listing?) -> Void) {
         let urlString = "https://api.foursquare.com/v2/venues/\(id)?v=20231010&oauth_token=QEJ4AQPTMMNB413HGNZ5YDMJSHTOHZHMLZCAQCCLXIX41OMP"
         

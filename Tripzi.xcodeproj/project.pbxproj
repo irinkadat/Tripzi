@@ -63,6 +63,7 @@
 		8C91FA442C30616E00B6C52F /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 8C91FA432C30616E00B6C52F /* FacebookLogin */; };
 		8C9ED1A22C511D5200B7ECB3 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9ED1A12C511D5200B7ECB3 /* CategoryViewController.swift */; };
 		8C9ED1A42C511DE700B7ECB3 /* ListingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9ED1A32C511DE700B7ECB3 /* ListingsViewController.swift */; };
+		8C9ED1A92C51321300B7ECB3 /* DetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9ED1A82C51321300B7ECB3 /* DetailsViewModel.swift */; };
 		8CC3EFEF2C3D116800400A89 /* SecondaryTextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3EFEE2C3D116800400A89 /* SecondaryTextStyle.swift */; };
 		8CC3EFF32C3D6C7300400A89 /* ListingImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3EFF22C3D6C7300400A89 /* ListingImageCarouselView.swift */; };
 		8CC3EFF92C3D726D00400A89 /* Listing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3EFF82C3D726D00400A89 /* Listing.swift */; };
@@ -132,6 +133,7 @@
 		8C8FFFC12C2EE45900079E8B /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		8C9ED1A12C511D5200B7ECB3 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		8C9ED1A32C511DE700B7ECB3 /* ListingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsViewController.swift; sourceTree = "<group>"; };
+		8C9ED1A82C51321300B7ECB3 /* DetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewModel.swift; sourceTree = "<group>"; };
 		8CC3EFEE2C3D116800400A89 /* SecondaryTextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryTextStyle.swift; sourceTree = "<group>"; };
 		8CC3EFF22C3D6C7300400A89 /* ListingImageCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingImageCarouselView.swift; sourceTree = "<group>"; };
 		8CC3EFF82C3D726D00400A89 /* Listing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Listing.swift; sourceTree = "<group>"; };
@@ -235,7 +237,7 @@
 				8C309DE82C2DB6EE00436F92 /* Shared */,
 				8C309DE72C2DB6B400436F92 /* Profile */,
 				8C309DE62C2DB6A100436F92 /* Flights */,
-				8C309DE52C2DB69900436F92 /* Destination */,
+				8C309DE52C2DB69900436F92 /* DestinationDetails */,
 				8C8FFFC02C2EE44400079E8B /* Favorites */,
 				8C309DE42C2DB67100436F92 /* Home */,
 			);
@@ -284,18 +286,14 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
-		8C309DE52C2DB69900436F92 /* Destination */ = {
+		8C309DE52C2DB69900436F92 /* DestinationDetails */ = {
 			isa = PBXGroup;
 			children = (
-				8CC3F00A2C3ED2EF00400A89 /* DestinationDetailsVC.swift */,
-				8C651CFD2C493ADF00339BA3 /* InfoStatsView.swift */,
-				8C651CFF2C493AF600339BA3 /* IconTextStackView.swift */,
-				8C651D0B2C49578A00339BA3 /* TipCardView.swift */,
-				8C651D0F2C496AA100339BA3 /* TipCardCollectionViewCell.swift */,
-				8C651D372C4ABCF300339BA3 /* MapView.swift */,
-				8C651D5B2C4AE60300339BA3 /* FullScreenMapViewController.swift */,
+				8C9ED1A72C5127A800B7ECB3 /* Destination */,
+				8C9ED1A62C51278800B7ECB3 /* Map */,
+				8C9ED1A52C51278200B7ECB3 /* Tips */,
 			);
-			path = Destination;
+			path = DestinationDetails;
 			sourceTree = "<group>";
 		};
 		8C309DE62C2DB6A100436F92 /* Flights */ = {
@@ -421,6 +419,35 @@
 				8CC3F0082C3EC63900400A89 /* SearchViewController.swift */,
 			);
 			path = SearchPlaces;
+			sourceTree = "<group>";
+		};
+		8C9ED1A52C51278200B7ECB3 /* Tips */ = {
+			isa = PBXGroup;
+			children = (
+				8C651D0F2C496AA100339BA3 /* TipCardCollectionViewCell.swift */,
+				8C651D0B2C49578A00339BA3 /* TipCardView.swift */,
+			);
+			path = Tips;
+			sourceTree = "<group>";
+		};
+		8C9ED1A62C51278800B7ECB3 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				8C651D5B2C4AE60300339BA3 /* FullScreenMapViewController.swift */,
+				8C651D372C4ABCF300339BA3 /* MapView.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		8C9ED1A72C5127A800B7ECB3 /* Destination */ = {
+			isa = PBXGroup;
+			children = (
+				8C651CFF2C493AF600339BA3 /* IconTextStackView.swift */,
+				8C651CFD2C493ADF00339BA3 /* InfoStatsView.swift */,
+				8CC3F00A2C3ED2EF00400A89 /* DestinationDetailsVC.swift */,
+				8C9ED1A82C51321300B7ECB3 /* DetailsViewModel.swift */,
+			);
+			path = Destination;
 			sourceTree = "<group>";
 		};
 		8CC3EFED2C3D115300400A89 /* Custom Modifiers */ = {
@@ -569,6 +596,7 @@
 				8C309DF82C2DB83A00436F92 /* RegistrationView.swift in Sources */,
 				8CE7CCB62C4FDCFD006401D0 /* CheckoutViewController.swift in Sources */,
 				8C651D042C493CBB00339BA3 /* PlacesListingViewModel.swift in Sources */,
+				8C9ED1A92C51321300B7ECB3 /* DetailsViewModel.swift in Sources */,
 				8C8FFFB82C2EACD600079E8B /* AuthenticationVC.swift in Sources */,
 				8C651CF42C49397B00339BA3 /* CustomLabel.swift in Sources */,
 				8C8FFFBF2C2EE42C00079E8B /* FlightsViewController.swift in Sources */,
