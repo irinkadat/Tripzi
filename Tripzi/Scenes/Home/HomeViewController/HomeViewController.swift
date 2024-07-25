@@ -24,7 +24,6 @@ final class HomeViewController: UIViewController {
         setupListingsViewController()
         addSearchBarTapGesture()
         setupCustomBackButtonStyle()
-        
         viewModel.fetchLocalListings()
     }
     
