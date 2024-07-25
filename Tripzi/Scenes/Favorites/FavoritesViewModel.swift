@@ -10,18 +10,28 @@ import FirebaseAuth
 import Combine
 
 final class FavoritesViewModel: ObservableObject {
-    @Published var favorites: [Listing] = [] {
-        didSet {
-            onFavoritesUpdate?()
-        }
-    }
     private var db = Firestore.firestore()
     private var listener: ListenerRegistration?
     private var cancellables = Set<AnyCancellable>()
+    var onFavoritesUpdate: (() -> Void)?
+    var onFavoritesStateChange: ((Bool) -> Void)?
+    
+    @Published var hasFavorites: Bool = false {
+        didSet {
+            onFavoritesStateChange?(hasFavorites)
+        }
+    }
+    
+    @Published var favorites: [Listing] = [] {
+        didSet {
+            onFavoritesUpdate?()
+            hasFavorites = !favorites.isEmpty
+        }
+    }
+    
     private var userId: String? {
         return Auth.auth().currentUser?.uid
     }
-    var onFavoritesUpdate: (() -> Void)?
     
     init() {
         listenToFavorites()
@@ -62,19 +72,26 @@ final class FavoritesViewModel: ObservableObject {
         }
     }
     
-    func configureCell(_ cell: CustomCollectionViewCell, with listing: Listing, completion: @escaping (UIViewController) -> Void) {
-        cell.configure(with: listing) { [weak self] in
-            guard self != nil else { return }
-            let detailVM = SearchViewModel()
-            detailVM.destinationDetails(for: listing.id) { detailedListing in
-                guard let detailedListing = detailedListing else { return }
-                DispatchQueue.main.async {
-                    let destinationDetailsVC = DestinationDetailsVC()
-                    let detailsViewModel = DetailsViewModel(listing: detailedListing, imageUrls: listing.imageUrls)
-                    destinationDetailsVC.viewModel = detailsViewModel
-                    completion(destinationDetailsVC)
-                }
-            }
+    func fetchDetailedListing(for listingId: String, completion: @escaping (Listing?) -> Void) {
+        let detailVM = SearchViewModel()
+        detailVM.destinationDetails(for: listingId) { detailedListing in
+            completion(detailedListing)
+        }
+    }
+    
+    func configureCell(at indexPath: IndexPath, completion: @escaping (Listing, Listing, [String]) -> Void) {
+        let listing = favorites[indexPath.row]
+        fetchDetailedListing(for: listing.id) { detailedListing in
+            guard let detailedListing = detailedListing else { return }
+            completion(listing, detailedListing, listing.imageUrls)
+        }
+    }
+    
+    func selectItem(at indexPath: IndexPath, completion: @escaping (Listing, Listing, [String]) -> Void) {
+        let listing = favorites[indexPath.row]
+        fetchDetailedListing(for: listing.id) { detailedListing in
+            guard let detailedListing = detailedListing else { return }
+            completion(listing, detailedListing, listing.imageUrls)
         }
     }
     
@@ -95,20 +112,6 @@ final class FavoritesViewModel: ObservableObject {
         }
     }
     
-    func selectItem(at indexPath: IndexPath, completion: @escaping (UIViewController) -> Void) {
-        let listing = favorites[indexPath.row]
-        let detailVM = SearchViewModel()
-        detailVM.destinationDetails(for: listing.id) { detailedListing in
-            guard let detailedListing = detailedListing else { return }
-            DispatchQueue.main.async {
-                let destinationDetailsVC = DestinationDetailsVC()
-                let detailsViewModel = DetailsViewModel(listing: detailedListing, imageUrls: listing.imageUrls)
-                destinationDetailsVC.viewModel = detailsViewModel
-                completion(destinationDetailsVC)
-            }
-        }
-    }
- 
     private func stopListeningToFavorites() {
         listener?.remove()
         listener = nil
@@ -119,4 +122,3 @@ final class FavoritesViewModel: ObservableObject {
         NotificationCenter.default.removeObserver(self)
     }
 }
-

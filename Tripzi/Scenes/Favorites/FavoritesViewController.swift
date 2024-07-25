@@ -12,13 +12,17 @@ import SwiftUI
 final class FavoritesViewController: UIViewController {
     private var collectionView: UICollectionView!
     private var viewModel = FavoritesViewModel()
-    private var cancellables = Set<AnyCancellable>()
+    private let emptyStateView = UIView()
+    private let emptyStateLabel = UILabel()
+    private let goToHomePageButton = UIButton(type: .system)
+    private let illustrationImageView = UIImageView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCustomBackButtonStyle()
         setupNavigation()
         setupCollectionView()
+        setupEmptyStateView()
         setupBindings()
         viewModel.fetchFavorites()
     }
@@ -42,6 +46,11 @@ final class FavoritesViewController: UIViewController {
     private func setupBindings() {
         viewModel.onFavoritesUpdate = { [weak self] in
             self?.collectionView.reloadData()
+        }
+        
+        viewModel.onFavoritesStateChange = { [weak self] hasFavorites in
+            self?.emptyStateView.isHidden = hasFavorites
+            self?.collectionView.isHidden = !hasFavorites
         }
     }
     
@@ -67,6 +76,64 @@ final class FavoritesViewController: UIViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
+    
+    private func setupEmptyStateView() {
+        emptyStateView.isHidden = true
+        emptyStateLabel.text = "Oops! No favorites. Go to Explore."
+        emptyStateLabel.textAlignment = .center
+        emptyStateLabel.textColor = .gray
+        emptyStateLabel.font = UIFont.systemFont(ofSize: 18)
+        
+        illustrationImageView.image = UIImage(named: "favempty")
+        illustrationImageView.contentMode = .scaleAspectFit
+        
+        goToHomePageButton.setTitle("Go to Explore", for: .normal)
+        goToHomePageButton.addAction(UIAction(handler: { _ in self.goToHomePage() }), for: .touchUpInside)
+        goToHomePageButton.tintColor = UIColor(named: "GreenPrimary")
+        
+        emptyStateView.addSubview(emptyStateLabel)
+        emptyStateView.addSubview(illustrationImageView)
+        emptyStateView.addSubview(goToHomePageButton)
+        
+        view.addSubview(emptyStateView)
+        
+        emptyStateView.translatesAutoresizingMaskIntoConstraints = false
+        emptyStateLabel.translatesAutoresizingMaskIntoConstraints = false
+        illustrationImageView.translatesAutoresizingMaskIntoConstraints = false
+        goToHomePageButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            emptyStateView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyStateView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            illustrationImageView.topAnchor.constraint(equalTo: emptyStateView.topAnchor),
+            illustrationImageView.leadingAnchor.constraint(equalTo: emptyStateView.leadingAnchor),
+            illustrationImageView.trailingAnchor.constraint(equalTo: emptyStateView.trailingAnchor),
+            illustrationImageView.widthAnchor.constraint(equalToConstant: 200),
+            illustrationImageView.heightAnchor.constraint(equalToConstant: 200),
+            
+            emptyStateLabel.topAnchor.constraint(equalTo: illustrationImageView.bottomAnchor, constant: 20),
+            emptyStateLabel.leadingAnchor.constraint(equalTo: emptyStateView.leadingAnchor),
+            emptyStateLabel.trailingAnchor.constraint(equalTo: emptyStateView.trailingAnchor),
+            
+            goToHomePageButton.topAnchor.constraint(equalTo: emptyStateLabel.bottomAnchor, constant: 10),
+            goToHomePageButton.centerXAnchor.constraint(equalTo: emptyStateView.centerXAnchor),
+            goToHomePageButton.bottomAnchor.constraint(equalTo: emptyStateView.bottomAnchor)
+        ])
+    }
+    
+    @objc private func goToHomePage() {
+        if let tabBarController = self.tabBarController {
+            tabBarController.selectedIndex = 0
+        }
+    }
+    
+    private func presentDetailViewController(listing: Listing, detailedListing: Listing, imageUrls: [String]) {
+        let destinationDetailsVC = DestinationDetailsVC()
+        let detailsViewModel = DetailsViewModel(listing: detailedListing, imageUrls: imageUrls)
+        destinationDetailsVC.viewModel = detailsViewModel
+        navigationController?.pushViewController(destinationDetailsVC, animated: false)
+    }
 }
 
 extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -76,25 +143,21 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CustomCell", for: indexPath) as! CustomCollectionViewCell
-        let listing = viewModel.favorites[indexPath.row]
-        
-        viewModel.configureCell(cell, with: listing) { [weak self] destinationDetailsVC in
-            guard let self = self else { return }
-            self.navigationController?.pushViewController(destinationDetailsVC, animated: false)
+        viewModel.configureCell(at: indexPath) { [weak self] listing, detailedListing, imageUrls in
+            cell.configure(with: listing) {
+                self?.presentDetailViewController(listing: listing, detailedListing: detailedListing, imageUrls: imageUrls)
+            }
         }
-        
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.selectItem(at: indexPath) { [weak self] listing, detailedListing, imageUrls in
+            self?.presentDetailViewController(listing: listing, detailedListing: detailedListing, imageUrls: imageUrls)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: 450)
-    }
-    
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.selectItem(at: indexPath) { [weak self] destinationDetailsVC in
-            guard let self = self else { return }
-            self.navigationController?.pushViewController(destinationDetailsVC, animated: false)
-        }
     }
 }
