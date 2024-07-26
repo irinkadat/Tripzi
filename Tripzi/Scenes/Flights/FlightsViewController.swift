@@ -9,7 +9,7 @@
 import Combine
 import UIKit
 
-class FlightsViewController: UIViewController {
+final class FlightsViewController: UIViewController {
     private let searchFlights = CustomSearchBar()
     private let viewModel = FlightsViewModel()
     private let containerView = UIView()

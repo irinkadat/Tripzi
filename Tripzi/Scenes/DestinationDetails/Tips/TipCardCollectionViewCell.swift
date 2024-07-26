@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TipCardCollectionViewCell: UICollectionViewCell {
+final class TipCardCollectionViewCell: UICollectionViewCell {
     static let identifier = "TipCardCollectionViewCell"
     
     private let starsLabel: UILabel = {

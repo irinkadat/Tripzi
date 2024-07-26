@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CountriesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+final class CountriesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private let viewModel: FlightsViewModel
     private var tableView: UITableView!
     private var selectedCountry: Country?

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CustomSearchBar: UIView {
+final class CustomSearchBar: UIView {
 
     private let borderLayer = CALayer()
 
@@ -98,24 +98,24 @@ class CustomSearchBar: UIView {
     }
 }
 
-class ViewController: UIViewController {
+//class ViewController: UIViewController {
+//
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        
+//        let searchBar = CustomSearchBar()
+//        searchBar.translatesAutoresizingMaskIntoConstraints = false
+//        view.addSubview(searchBar)
+//        
+//        NSLayoutConstraint.activate([
+//            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+//            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+//            searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+//            searchBar.heightAnchor.constraint(equalToConstant: 52)
+//        ])
+//    }
+//}
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        let searchBar = CustomSearchBar()
-        searchBar.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(searchBar)
-        
-        NSLayoutConstraint.activate([
-            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            searchBar.heightAnchor.constraint(equalToConstant: 52)
-        ])
-    }
-}
-
-#Preview {
-    ViewController()
-}
+//#Preview {
+//    ViewController()
+//}

@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
+final class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
     var viewModel: FlightsViewModel
     private var cancellables = Set<AnyCancellable>()
     

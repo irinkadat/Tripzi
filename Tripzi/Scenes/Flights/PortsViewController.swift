@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PortsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+final class PortsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private let viewModel: FlightsViewModel
     private var country: Country
     private var selectedPort: Port?

@@ -42,8 +42,6 @@ final class SearchViewModel: ObservableObject {
     init(locationManager: LocationManager = LocationManager()) {
         self.locationManager = locationManager
         bindUI()
-//                observeLocationAuthorization()
-//                checkLocationAuthorization()
     }
     
     private func bindUI() {
@@ -113,6 +111,26 @@ final class SearchViewModel: ObservableObject {
         }
     }
     
+    func handleAuthorizationStatus(manager: CLLocationManager) {
+            switch manager.authorizationStatus {
+            case .authorizedWhenInUse, .authorizedAlways:
+                checkLocationAuthorization()
+                if let location = manager.location {
+                    searchNearbyPlaces(location: location)
+                }
+            case .denied, .restricted, .notDetermined:
+                break
+            @unknown default:
+                break
+            }
+        }
+    
+    func searchNearbyPlaces(location: CLLocation) {
+        let latitude = location.coordinate.latitude
+        let longitude = location.coordinate.longitude
+        searchPlaces(query: "hotel", radius: nil, near: "\(latitude),\(longitude)")
+    }
+    
     func fetchCurrentLocation() {
         locationManager.requestCurrentLocation { [weak self] result in
             switch result {
@@ -161,9 +179,7 @@ final class SearchViewModel: ObservableObject {
             print("Failed to construct URL")
             return
         }
-        
-        print("Request URL: \(url)")
-        
+                
         networkService.getData(urlString: url.absoluteString) { (result: Result<PlacesResponse, Error>) in
             switch result {
             case .success(let decodedData):
@@ -178,7 +194,6 @@ final class SearchViewModel: ObservableObject {
                     self.listings = sortedResults.compactMap { place in
                         return Listing(from: place)
                     }
-                    print("Search results fetched: \(self.listings.count)")
                 }
             case .failure(let error):
                 print("Error occurred: \(error)")
@@ -219,7 +234,7 @@ final class SearchViewModel: ObservableObject {
         if usingDefaultLocation {
             searchPlaces(query: nil, radius: nil, near: "\(defaultLatitude), \(defaultLongitude)")
         } else {
-            searchPlaces(query: nil, radius: nil, near: "\(self.latitude ?? defaultLatitude), \(self.longitude ?? defaultLongitude)")
+            searchPlaces(query: "hotel", radius: nil, near: "\(self.latitude ?? defaultLatitude), \(self.longitude ?? defaultLongitude)")
         }
     }
     

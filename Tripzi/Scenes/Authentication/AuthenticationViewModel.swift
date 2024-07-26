@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class AuthenticationViewModel: ObservableObject {
+final class AuthenticationViewModel: ObservableObject {
     @Published var isSignedIn = false
     @Published var errorMessage: String?
     @Published var currentAuthView: AuthView = .login

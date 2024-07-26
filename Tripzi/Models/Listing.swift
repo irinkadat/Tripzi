@@ -20,7 +20,7 @@ struct Listing: Identifiable, Codable {
     let rating: Double
     let contextLine: String
     let lat: Double?
-    let lng: Double?
+    let long: Double?
     var imageUrls: [String]
     let description: String?
     let contact: Contact?
@@ -28,7 +28,6 @@ struct Listing: Identifiable, Codable {
     var isFavorited: Bool = false
     let tips: [TipItem]?
     let isOpen: Bool?
-//    var timestamp: Date?
     var timestamp: Timestamp?
     
     init?(from result: PlaceResult) {
@@ -41,7 +40,13 @@ struct Listing: Identifiable, Codable {
         self.name = venue.name
         self.price = venue.price
         self.location = venue.location.city
-        self.categorieName = venue.categories[0].name
+        
+        if let firstCategory = venue.categories.first?.name {
+            self.categorieName = firstCategory
+        } else {
+            self.categorieName = "hotel"
+        }
+        
         self.address = venue.location.address ?? ""
         self.rating = venue.rating ?? 0.0
         self.contextLine = venue.location.contextLine
@@ -54,9 +59,8 @@ struct Listing: Identifiable, Codable {
             group.items ?? []
         }
         self.lat = venue.location.lat
-        self.lng = venue.location.lng
+        self.long = venue.location.lng
         self.isOpen = venue.popular?.isOpen
         self.timestamp = Timestamp(date: Date())
-        
     }
 }

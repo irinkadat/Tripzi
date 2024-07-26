@@ -8,7 +8,7 @@
 import Foundation
 import NetService
 
-class FlightNetworkManager {
+final class FlightNetworkManager {
     private let url = "https://www.turkishairlines.com/api/v1/availability"
     private let headers = [
         "Accept": "application/json, text/plain, */*",

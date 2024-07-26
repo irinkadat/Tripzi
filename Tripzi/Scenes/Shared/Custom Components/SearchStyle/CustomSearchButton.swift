@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CustomSearchButton: UIButton {
+final class CustomSearchButton: UIButton {
     
     private let styledView = CustomStyledView()
     

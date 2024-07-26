@@ -19,7 +19,7 @@ protocol FlightsViewModelDelegate: AnyObject {
     func didFailWithError(_ error: Error)
 }
 
-class FlightsViewModel: ObservableObject {
+final class FlightsViewModel: ObservableObject {
     @Published var searchedFlights: [FlightOption] = []
     @Published var ports: [Port] = []
     @Published var errorMessage: String?
@@ -85,7 +85,7 @@ class FlightsViewModel: ObservableObject {
         
         let urlString = "https://www.turkishairlines.com/api/v1/booking/countries/\(countryCode)/ports?\(currentTimeMillis)"
         
-        networkService.getData(urlString: urlString) { (result: Result<PportResponse, Error>) in
+        networkService.getData(urlString: urlString) { (result: Result<SuggestedPortResponse, Error>) in
             switch result {
             case .success(let response):
                 DispatchQueue.main.async {
@@ -100,6 +100,7 @@ class FlightsViewModel: ObservableObject {
     
     func fetchPortSuggestions(for query: String) {
         ports.removeAll()
+        
         let urlString = "https://www.turkishairlines.com/api/v1/booking/locations/TK/en?searchText=\(query)"
         
         networkService.getData(urlString: urlString) { [weak self] (result: Result<PortResponse, Error>) in
@@ -145,8 +146,6 @@ class FlightsViewModel: ObservableObject {
                 self?.hasSearchedFlights = !segments.isEmpty
                 self?.flattenFlights(flight: segments)
                 self?.flightsDelegate?.didUpdateFlightSegments()
-                print("Searched flights updated: \(self?.searchedFlights ?? [])")
-                print("Flattened flights updated: \(self?.flattenedFlights ?? [])")
             case .failure(let error):
                 self?.errorMessage = error.localizedDescription
                 self?.flightsDelegate?.didFailWithError(error)
@@ -186,8 +185,12 @@ class FlightsViewModel: ObservableObject {
             fetchPortSuggestions(for: newText)
         }
     }
-    
+
     func selectPort(at index: Int, forField field: CustomTextField) {
+        guard index >= 0 && index < ports.count else {
+            print("Index out of range. Index: \(index), Ports count: \(ports.count)")
+            return
+        }
         let selectedPort = ports[index]
         didChoosePort(port: selectedPort, forField: field)
     }

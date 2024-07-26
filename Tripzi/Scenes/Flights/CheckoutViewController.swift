@@ -11,7 +11,7 @@ import PassKit
 
 protocol AuthenticationContextProvider: AnyObject {}
 
-class CheckoutViewController: UIViewController, STPApplePayContextDelegate, STPAuthenticationContext, AuthenticationContextProvider {
+final class CheckoutViewController: UIViewController, STPApplePayContextDelegate, STPAuthenticationContext, AuthenticationContextProvider {
     var viewModel: FlightDetailsViewModel
     let paymentButton = PKPaymentButton(paymentButtonType: .checkout, paymentButtonStyle: .black)
     let orPayWithCardLabel = UILabel()

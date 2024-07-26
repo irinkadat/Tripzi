@@ -8,7 +8,7 @@
 import UIKit
 
 final class ListingsViewController: UIViewController {
-    private var collectionView: UICollectionView!
+    var collectionView: UICollectionView!
     var viewModel: SearchViewModel!
     var didSelectListing: ((Listing, [String]) -> Void)?
     

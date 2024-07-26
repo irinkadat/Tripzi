@@ -8,7 +8,7 @@
 import UIKit
 import SwiftUI
 
-class DestinationDetailsVC: UIViewController {
+final class DestinationDetailsVC: UIViewController {
     var viewModel: DetailsViewModel!
     private var scrollView: UIScrollView!
     private var contentView: UIView!

@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-class LocationManager: NSObject, CLLocationManagerDelegate {
+final class LocationManager: NSObject, CLLocationManagerDelegate {
     
     private let locationManager = CLLocationManager()
     private var locationCompletion: ((Result<CLLocationCoordinate2D, Error>) -> Void)?

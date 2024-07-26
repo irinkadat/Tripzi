@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TipCardView: UIView {
+final class TipCardView: UIView {
     
     private let starsLabel: UILabel = {
         let label = UILabel()
