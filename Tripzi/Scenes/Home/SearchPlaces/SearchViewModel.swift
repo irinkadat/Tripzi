@@ -8,6 +8,7 @@
 import Combine
 import Foundation
 import NetService
+import CoreLocation
 
 protocol SearchViewModelDelegate: AnyObject {
     func didReceiveValidationMessage(_ message: String)
@@ -27,12 +28,22 @@ final class SearchViewModel: ObservableObject {
     
     private var cancellables: Set<AnyCancellable> = []
     @Published var detailedPlace: Listing?
+    @Published var latitude: Double?
+    @Published var longitude: Double?
+    @Published var locationError: String?
     var onListingsUpdate: (() -> Void)?
     var onCategoryIndexChanged: ((Int?) -> Void)?
     private let networkService = NetworkService()
+    var locationManager: LocationManager
     
-    init() {
+    private let defaultLatitude = 45.464664
+    private let defaultLongitude = 9.188540
+    
+    init(locationManager: LocationManager = LocationManager()) {
+        self.locationManager = locationManager
         bindUI()
+//                observeLocationAuthorization()
+//                checkLocationAuthorization()
     }
     
     private func bindUI() {
@@ -48,6 +59,71 @@ final class SearchViewModel: ObservableObject {
                 self?.postSearchNotification(with: listings)
             }
             .store(in: &cancellables)
+        
+        $latitude
+            .combineLatest($longitude)
+            .sink { [weak self] latitude, longitude in
+                guard longitude != nil else { return }
+                self?.fetchLocalListings(usingDefaultLocation: false)
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func observeLocationAuthorization() {
+        locationManager.authorizationChanged = { [weak self] status in
+            self?.handleLocationAuthorization(status: status)
+        }
+    }
+    
+    func checkLocationAuthorization() {
+        DispatchQueue.global(qos: .background).async {
+            if CLLocationManager.locationServicesEnabled() {
+                DispatchQueue.main.async {
+                    self.handleLocationAuthorization(status: LocationManager.authorizationStatus())
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.locationError = "Location services are not enabled."
+                    self.fetchLocalListings(usingDefaultLocation: true)
+                }
+            }
+        }
+    }
+    
+    func handleLocationAuthorization(status: CLAuthorizationStatus) {
+        switch status {
+        case .notDetermined:
+            locationManager.requestCurrentLocation { [weak self] result in
+                switch result {
+                case .success(let coordinate):
+                    self?.latitude = coordinate.latitude
+                    self?.longitude = coordinate.longitude
+                case .failure(let error):
+                    self?.locationError = error.localizedDescription
+                    self?.fetchLocalListings(usingDefaultLocation: true)
+                }
+            }
+        case .restricted, .denied:
+            locationError = "Location services are disabled."
+            fetchLocalListings(usingDefaultLocation: true)
+        case .authorizedAlways, .authorizedWhenInUse:
+            fetchCurrentLocation()
+        @unknown default:
+            break
+        }
+    }
+    
+    func fetchCurrentLocation() {
+        locationManager.requestCurrentLocation { [weak self] result in
+            switch result {
+            case .success(let coordinate):
+                self?.latitude = coordinate.latitude
+                self?.longitude = coordinate.longitude
+            case .failure(let error):
+                self?.locationError = error.localizedDescription
+                self?.fetchLocalListings(usingDefaultLocation: true)
+            }
+        }
     }
     
     private func postSearchNotification(with listings: [Listing]) {
@@ -136,13 +212,15 @@ final class SearchViewModel: ObservableObject {
     }
     
     func fetchListings(for category: String?) {
-        let defaultCity = "Milan"
-        searchPlaces(query: category, radius: nil, near: defaultCity)
+        searchPlaces(query: category, radius: nil, near: "\(self.latitude ?? defaultLatitude), \(self.longitude ?? defaultLongitude)")
     }
     
-    func fetchLocalListings() {
-        let defaultCity = "Milan"
-        searchPlaces(query: "stores", radius: nil, near: defaultCity)
+    func fetchLocalListings(usingDefaultLocation: Bool = false) {
+        if usingDefaultLocation {
+            searchPlaces(query: nil, radius: nil, near: "\(defaultLatitude), \(defaultLongitude)")
+        } else {
+            searchPlaces(query: nil, radius: nil, near: "\(self.latitude ?? defaultLatitude), \(self.longitude ?? defaultLongitude)")
+        }
     }
     
     func tierDescription(for tier: Int) -> String {

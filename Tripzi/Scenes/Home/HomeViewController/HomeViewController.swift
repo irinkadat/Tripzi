@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 import SwiftUI
+import CoreLocation
 
 final class HomeViewController: UIViewController {
     private var categoryViewController: CategoryViewController!
@@ -24,7 +25,13 @@ final class HomeViewController: UIViewController {
         setupListingsViewController()
         addSearchBarTapGesture()
         setupCustomBackButtonStyle()
-        viewModel.fetchLocalListings()
+        
+        viewModel.onListingsUpdate = { [weak self] in
+            guard let self = self else { return }
+            self.listingsViewController.collectionView.reloadData()
+        }
+        
+        viewModel.checkLocationAuthorization()
     }
     
     private func setupCustomSearchBar() {
@@ -92,6 +99,12 @@ final class HomeViewController: UIViewController {
 extension HomeViewController: SearchViewControllerDelegate {
     func didPerformSearch(results: [Listing]) {
         viewModel.listings = results
+    }
+}
+
+extension HomeViewController: CLLocationManagerDelegate {
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        viewModel.checkLocationAuthorization()
     }
 }
 

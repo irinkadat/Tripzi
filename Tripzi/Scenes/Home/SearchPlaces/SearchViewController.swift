@@ -201,3 +201,4 @@ extension Notification.Name {
 #Preview {
     SearchViewController()
 }
+
