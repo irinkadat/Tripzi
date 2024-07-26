@@ -9,7 +9,7 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
-struct Listing: Identifiable, Codable {
+struct PlaceListing: Identifiable, Decodable {
     let id: String
     let categories: [Category]
     let categorieName: String
