@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class AuthenticationViewModel: ObservableObject {
+final class AuthenticationViewModel: ObservableObject {
     @Published var isSignedIn = false
     @Published var errorMessage: String?
     @Published var currentAuthView: AuthView = .login
@@ -53,7 +53,7 @@ class AuthenticationViewModel: ObservableObject {
     }
     
     func register(email: String, password: String, fullName: String, birthDate: Date) {
-        authenticationManager.registerUser(withEmail: email, password: password, fullName: fullName, birthDate: birthDate)
+        authenticationManager.registerUser(withEmail: email, password: password, fullName: fullName, birthDate: birthDate, profileImage: nil)
     }
     
     func signInWithGoogle() {
@@ -102,7 +102,10 @@ class AuthenticationViewModel: ObservableObject {
     
     func validatePassword(password: String) -> Bool {
         let hasUpperCase = password.range(of: "[A-Z]", options: .regularExpression) != nil
+        let hasLowerCase = password.range(of: "[a-z]", options: .regularExpression) != nil
         let hasDigits = password.range(of: "\\d", options: .regularExpression) != nil
-        return hasUpperCase && hasDigits
+        let isLongEnough = password.count >= 6
+        let isValid = hasUpperCase && hasLowerCase && hasDigits && isLongEnough
+        return isValid
     }
 }

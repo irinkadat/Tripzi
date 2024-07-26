@@ -9,8 +9,8 @@ import UIKit
 import SwiftUI
 import Combine
 
-class AuthenticationVC: UIViewController {
-    private var viewModel = AuthenticationViewModel()
+final class AuthenticationVC: UIViewController {
+    private let viewModel = AuthenticationViewModel()
     private var hostingController: UIHostingController<AnyView>? = nil
     private var cancellables: Set<AnyCancellable> = []
     @Published var email: String = ""

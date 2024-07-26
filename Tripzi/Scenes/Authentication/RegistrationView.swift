@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import SwiftUI
+
 struct RegistrationView: View {
     @EnvironmentObject var viewModel: AuthenticationViewModel
     @State private var email: String = ""
@@ -15,7 +17,6 @@ struct RegistrationView: View {
     @State private var fullName: String = ""
     @State private var birthDate: Date = Date()
     @State private var showError: Bool = false
-    //    @State private var errorMessage: String = ""
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
@@ -24,7 +25,7 @@ struct RegistrationView: View {
                 Spacer()
                     .frame(height: 20)
                 
-                CustomTextField(placeholder: "Full Name", text: $fullName)
+                CustomUITextField(placeholder: "Full Name", text: $fullName)
                 
                 DatePicker("Date of Birth", selection: $birthDate, displayedComponents: .date)
                     .padding()
@@ -36,17 +37,17 @@ struct RegistrationView: View {
                     .cornerRadius(18)
                     .padding()
                 
-                CustomTextField(placeholder: "Email", text: $email)
+                CustomUITextField(placeholder: "Email", text: $email)
                 
-                CustomTextField(placeholder: "Password", text: $password, isSecure: true)
+                CustomUITextField(placeholder: "Password", text: $password, isSecure: true)
                 
-                CustomTextField(placeholder: "Repeat Password", text: $repeatPassword, isSecure: true)
+                CustomUITextField(placeholder: "Repeat Password", text: $repeatPassword, isSecure: true)
                 
                 Spacer()
                     .frame(height: 30)
                 
-                CustomButton(title: "Sign Up", backgroundColor: .green, textColor: .white, action: {
-                    if (viewModel.passwordsMatch(password, repeatPassword) && viewModel.isPasswordValid) {
+                CustomButton(title: "Sign Up", backgroundColor: .green, textColor: .uniCo, action: {
+                    if viewModel.passwordsMatch(password, repeatPassword) && viewModel.validatePassword(password: password) {
                         viewModel.register(email: email, password: password, fullName: fullName, birthDate: birthDate)
                     } else {
                         viewModel.errorMessage = "Passwords do not match or password is invalid"

@@ -1,5 +1,5 @@
 {
-  "originHash" : "d8931f210190392b23b35cccf39e4d9bd5ad9f945d9c15d46ad939778a31bfe7",
+  "originHash" : "c9daf1a8b8ee02eea90dd088529af26d0dee4b4abd71dc9113483551e2d62d65",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/firebase-ios-sdk.git",
       "state" : {
-        "revision" : "e57841b296d04370ea23580f908881b0ccab17b9",
-        "version" : "10.28.1"
+        "revision" : "eca84fd638116dd6adb633b5a3f31cc7befcbb7d",
+        "version" : "10.29.0"
       }
     },
     {
@@ -137,6 +137,15 @@
       }
     },
     {
+      "identity" : "netservice",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/irinkadat/NetService.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "a9a928dc81fb949e10954d4af749b20ba376d7cc"
+      }
+    },
+    {
       "identity" : "promises",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/promises.git",
@@ -146,12 +155,21 @@
       }
     },
     {
+      "identity" : "stripe-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/stripe/stripe-ios",
+      "state" : {
+        "branch" : "master",
+        "revision" : "8a462b54e8b3ac7ba9a0316d19c29fe51b50cd38"
+      }
+    },
+    {
       "identity" : "swift-protobuf",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-protobuf.git",
       "state" : {
-        "revision" : "9f0c76544701845ad98716f3f6a774a892152bcb",
-        "version" : "1.26.0"
+        "revision" : "e17d61f26df0f0e06f58f6977ba05a097a720106",
+        "version" : "1.27.1"
       }
     }
   ],
