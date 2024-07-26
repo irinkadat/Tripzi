@@ -123,6 +123,7 @@ final class SearchViewController: UIViewController {
         ])
         
         view.addSubview(searchButton)
+        searchButton.addAction(UIAction(handler: { _ in self.performSearch() }), for: .touchUpInside)
         
         searchButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
