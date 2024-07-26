@@ -7,17 +7,17 @@
 
 import Foundation
 
-struct FlightResponse: Codable {
+struct FlightResponse: Decodable {
     let data: FlightResponseData?
     let success: Bool
     let message: ResponseMessage?
 }
 
-struct FlightResponseData: Codable {
+struct FlightResponseData: Decodable {
     let originDestinationInformationList: [OriginDestinationOption]
 }
 
-struct OriginDestinationOption: Codable {
+struct OriginDestinationOption: Decodable {
     let outboundFlightId: String?
     let departureDate: String
     let arrivalDate: String?
@@ -28,7 +28,7 @@ struct OriginDestinationOption: Codable {
     let originDestinationOptionList: [FlightOption]
 }
 
-struct FilterAndSortParameters: Codable {
+struct FilterAndSortParameters: Decodable {
     let minFlightCountForSorting: Int
     let minFlightCountForTimeRangeFiltering: Int
     let minFlightCountForOptionsFiltering: Int
@@ -36,54 +36,16 @@ struct FilterAndSortParameters: Codable {
     let maximumDaysForAvailability: Int
 }
 
-struct FlightOption: Codable {
-    let optionId: Int
-    let segmentList: [FlightSegment]
-    let startingPrice: FlightPrice?
-}
-
-struct FlightPrice: Codable {
-    let currencyCode: String
-    let amount: Double
-    let currencySign: String?
-    let decimalPlaces: Int?
-}
-
-struct FlightSegment: Codable {
-    let departureAirportCode: String
-    let arrivalAirportCode: String
-    let departureDateTime: String
-    let arrivalDateTime: String
-    let flightCode: FlightCode
-    let connected: Bool
-    let rph: String?
-    let codeShareInd: String?
-    let journeyDurationInMillis: Int
-    let carrierAirline: CarrierAirline
-    let containsTransitVisaRequiredPort: Bool
-}
-
-struct FlightCode: Codable {
-    let airlineCode: String
-    let flightNumber: String
-    let leaseCode: String?
-}
-
-struct CarrierAirline: Codable {
-    let airlineName: String?
-    let airlineCode: String
-}
-
-struct ResponseMessage: Codable {
+struct ResponseMessage: Decodable {
     let detail: [ResponseDetail]
 }
 
-struct ResponseDetail: Codable {
+struct ResponseDetail: Decodable {
     let code: String
     let args: [String]?
 }
 
-struct FlightSearchPayload: Codable {
+struct FlightSearchPayload: Encodable {
     let moduleType: String
     let originDestinationInformationList: [OriginDestinationInformation]
     let passengerTypeList: [PassengerType]
@@ -91,14 +53,14 @@ struct FlightSearchPayload: Codable {
     let selectedCabinClass: String
 }
 
-struct OriginDestinationInformation: Codable {
+struct OriginDestinationInformation: Encodable {
     let destinationAirportCode: String
     let destinationMultiPort: Bool
     let originAirportCode: String
     let departureDate: String
 }
 
-struct PassengerType: Codable {
+struct PassengerType: Encodable {
     let quantity: Int
     let code: String
 }

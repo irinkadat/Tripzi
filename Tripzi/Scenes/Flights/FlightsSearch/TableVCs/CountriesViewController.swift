@@ -8,11 +8,16 @@
 import UIKit
 
 final class CountriesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    // MARK: - Properties
+
     private let viewModel: FlightsViewModel
     private var tableView: UITableView!
     private var selectedCountry: Country?
     weak var delegate: PortSelectionDelegate?
     private var selectedTextField: CustomTextField
+    
+    // MARK: - Initialisers
 
     init(viewModel: FlightsViewModel, delegate: PortSelectionDelegate?, selectedTextField: CustomTextField) {
         self.viewModel = viewModel
@@ -24,6 +29,8 @@ final class CountriesViewController: UIViewController, UITableViewDataSource, UI
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +38,8 @@ final class CountriesViewController: UIViewController, UITableViewDataSource, UI
         setupTableView()
         fetchCountries()
     }
+    
+    // MARK: - UI Setup
 
     private func setupTableView() {
         tableView = UITableView(frame: view.bounds, style: .plain)
@@ -45,6 +54,8 @@ final class CountriesViewController: UIViewController, UITableViewDataSource, UI
             self?.tableView.reloadData()
         }
     }
+    
+    // MARK: - UITableViewDataSource
 
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1

@@ -10,10 +10,15 @@ import Combine
 import UIKit
 
 final class FlightsViewController: UIViewController {
+    
+    // MARK: - Properties
+
     private let searchFlights = CustomSearchBar()
     private let viewModel = FlightsViewModel()
     private let containerView = UIView()
     private var cancellables = Set<AnyCancellable>()
+    
+    // MARK: - UI Elements
     
     private let noFlightsLabel: UILabel = {
         let label = UILabel()
@@ -21,7 +26,7 @@ final class FlightsViewController: UIViewController {
         label.textColor = .gray
         label.font = UIFont.systemFont(ofSize: 18)
         label.textAlignment = .center
-        label.isHidden = true
+        label.isHidden = false
         return label
     }()
     
@@ -29,20 +34,32 @@ final class FlightsViewController: UIViewController {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "noFlights")
         imageView.contentMode = .scaleAspectFit
-        imageView.isHidden = true
+        imageView.isHidden = false
         return imageView
     }()
     
+    private let loader: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.hidesWhenStopped = true
+        return activityIndicator
+    }()
+    
+    // MARK: - View Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCustomSearchBar()
         setupContainerView()
         setupIllustrationAndNoFlightsLabel()
+        setupLoader()
         addSearchBarTapGesture()
         embedFlightsTableViewController()
         setupBindings()
     }
     
+    // MARK: - Setup Methods
+
     private func setupCustomSearchBar() {
         searchFlights.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(searchFlights)
@@ -85,6 +102,15 @@ final class FlightsViewController: UIViewController {
         ])
     }
     
+    private func setupLoader() {
+        view.addSubview(loader)
+        
+        NSLayoutConstraint.activate([
+            loader.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loader.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+    }
+    
     private func addSearchBarTapGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapSearchBar))
         searchFlights.addGestureRecognizer(tapGesture)
@@ -114,13 +140,23 @@ final class FlightsViewController: UIViewController {
     }
     
     private func setupBindings() {
-        viewModel.$hasSearchedFlights
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] hasSearchedFlights in
+        viewModel.hasSearchedFlightsChanged = { [weak self] hasSearchedFlights in
+            DispatchQueue.main.async {
+                print("Updating UI for hasSearchedFlights: \(hasSearchedFlights)")  // Debug print
                 self?.noFlightsLabel.isHidden = hasSearchedFlights
                 self?.illustrationImageView.isHidden = hasSearchedFlights
             }
-            .store(in: &cancellables)
+        }
+        
+        viewModel.isLoadingChanged = { [weak self] isLoading in
+            DispatchQueue.main.async {
+                if isLoading {
+                    self?.loader.startAnimating()
+                } else {
+                    self?.loader.stopAnimating()
+                }
+            }
+        }
     }
 }
 

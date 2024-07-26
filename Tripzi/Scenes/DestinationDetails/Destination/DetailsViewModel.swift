@@ -8,14 +8,19 @@
 import Foundation
 
 final class DetailsViewModel {
-    let listing: Listing
+    
+    // MARK: - Properties
+
+    let listing: PlaceListing
     let imageUrls: [String]
     
-    init(listing: Listing, imageUrls: [String]) {
+    init(listing: PlaceListing, imageUrls: [String]) {
         self.listing = listing
         self.imageUrls = imageUrls
     }
     
+    // MARK: - Computed Properties
+
     var listingName: String {
         return listing.name
     }
@@ -59,6 +64,8 @@ final class DetailsViewModel {
     var tips: [TipItem] {
         return listing.tips ?? []
     }
+    
+    // MARK: - Methods
     
     func paymentDescription() -> String {
         guard let payment = listing.price else { return "No cost information available." }

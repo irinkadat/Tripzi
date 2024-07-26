@@ -35,16 +35,6 @@ struct Port: Codable, Hashable {
     let type: String
 }
 
-struct City: Codable, Hashable {
-    let code: String
-    let name: String
-}
-
-struct Country: Codable, Hashable {
-    let code: String
-    let name: String
-}
-
 struct PortDetail: Codable, Hashable {
     let code: String?
     let name: String?
@@ -55,10 +45,4 @@ struct Region: Codable, Hashable {
     let name: String?
 }
 
-struct CountryResponse: Hashable, Codable {
-    let data: CountryData
-}
 
-struct CountryData: Hashable, Codable {
-    let countries: [[Country]]
-}

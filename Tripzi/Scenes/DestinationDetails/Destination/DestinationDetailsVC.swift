@@ -9,6 +9,9 @@ import UIKit
 import SwiftUI
 
 final class DestinationDetailsVC: UIViewController {
+    
+    // MARK: - Properties
+
     var viewModel: DetailsViewModel!
     private var scrollView: UIScrollView!
     private var contentView: UIView!
@@ -27,6 +30,8 @@ final class DestinationDetailsVC: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = false
     }
     
+    // MARK: - Setup
+
     private func setupScrollView() {
         scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -60,8 +65,8 @@ final class DestinationDetailsVC: UIViewController {
         addContactSection()
         addSection(title: "Cost", content: viewModel.paymentDescription())
         addDivider()
-        addTipCollectionView()
         addMapView(lat: viewModel.listingLatitude, long: viewModel.listingLongitude, locationName: viewModel.listingName)
+        addTipCollectionView()
         
         if let lastAddedView = lastAddedView {
             NSLayoutConstraint.activate([
@@ -70,6 +75,8 @@ final class DestinationDetailsVC: UIViewController {
         }
     }
     
+    // MARK: - UI Components
+
     private func addImageCarousel() {
         let hostingController = UIHostingController(rootView: ListingImageCarouselView(imageUrls: viewModel.imageUrls))
         addChild(hostingController)
@@ -274,6 +281,20 @@ final class DestinationDetailsVC: UIViewController {
     }
     
     private func addTipCollectionView() {
+        let titleLabel = UILabel()
+        titleLabel.text = "Tips & Reviews"
+        titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(titleLabel)
+        
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: lastAddedView?.bottomAnchor ?? contentView.topAnchor, constant: 26),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20)
+        ])
+        
+        lastAddedView = titleLabel
+        
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 26

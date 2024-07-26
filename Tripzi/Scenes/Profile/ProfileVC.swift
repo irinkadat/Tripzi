@@ -18,6 +18,8 @@ final class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavi
     private var authButton: UIButton!
     private var subscriptions = Set<AnyCancellable>()
     
+    // MARK: - View Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
@@ -31,6 +33,8 @@ final class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavi
         profileViewModel.fetchUserInfoIfNeeded()
     }
     
+    // MARK: - Configuration
+
     private func configureNavigationBar() {
         navigationItem.title = "Profile"
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -52,6 +56,8 @@ final class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavi
         setupHeaderConstraints()
         setupSettingsConstraints()
     }
+    
+    // MARK: - Header View
     
     private func setupHeaderView() {
         let headerView = UIView()
@@ -85,6 +91,8 @@ final class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavi
         editPhotoButton.translatesAutoresizingMaskIntoConstraints = false
         headerView.addSubview(editPhotoButton)
     }
+    
+    // MARK: - Settings View
     
     private func setupSettingsView() {
         let settingsView = createSettingsViewContainer()
@@ -130,6 +138,8 @@ final class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavi
         return settingsStackView
     }
     
+    // MARK: - Constraints
+
     private func setupHeaderConstraints() {
         guard let headerView = view.subviews.first else { return }
         
@@ -179,6 +189,8 @@ final class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavi
         ])
     }
     
+    // MARK: - Helper Methods
+
     private func createSettingsButton(title: String, icon: UIImage?) -> UIButton {
         var configuration = UIButton.Configuration.plain()
         configuration.title = title

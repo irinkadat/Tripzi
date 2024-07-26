@@ -8,13 +8,18 @@
 import UIKit
 
 final class PortsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    // MARK: - Properties
+    
     private let viewModel: FlightsViewModel
     private var country: Country
     private var selectedPort: Port?
     private var tableView: UITableView!
     weak var delegate: PortSelectionDelegate?
     private var selectedTextField: CustomTextField
-        
+    
+    // MARK: - Initialisers
+    
     init(viewModel: FlightsViewModel, country: Country, delegate: PortSelectionDelegate?, selectedTextField: CustomTextField) {
         self.viewModel = viewModel
         self.country = country
@@ -27,6 +32,8 @@ final class PortsViewController: UIViewController, UITableViewDataSource, UITabl
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - View Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .uniModal
@@ -35,7 +42,8 @@ final class PortsViewController: UIViewController, UITableViewDataSource, UITabl
         fetchPorts()
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneTapped))
     }
-
+    
+    // MARK: - Actions
     
     @objc private func doneTapped() {
         if let selectedPort = selectedPort {
@@ -45,6 +53,8 @@ final class PortsViewController: UIViewController, UITableViewDataSource, UITabl
         }
     }
     
+    // MARK: - UI Setup
+    
     private func setupTableView() {
         tableView = UITableView(frame: view.bounds, style: .plain)
         tableView.dataSource = self
@@ -53,11 +63,15 @@ final class PortsViewController: UIViewController, UITableViewDataSource, UITabl
         view.addSubview(tableView)
     }
     
+    // MARK: - Fetching Data
+    
     private func fetchPorts() {
-         viewModel.fetchPorts(for: country.code) { [weak self] _ in
-             self?.tableView.reloadData()
-         }
-     }
+        viewModel.fetchPorts(for: country.code) { [weak self] _ in
+            self?.tableView.reloadData()
+        }
+    }
+    
+    // MARK: - UITableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.ports.count
@@ -70,6 +84,8 @@ final class PortsViewController: UIViewController, UITableViewDataSource, UITabl
         cell.accessoryType = (selectedPort?.name == port.name) ? .checkmark : .none
         return cell
     }
+    
+    // MARK: - UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedPort = viewModel.ports[indexPath.row]

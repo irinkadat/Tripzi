@@ -10,6 +10,9 @@ import FirebaseAuth
 import Combine
 
 final class FavoritesViewModel: ObservableObject {
+    
+    // MARK: - Properties
+    
     private var db = Firestore.firestore()
     private var listener: ListenerRegistration?
     private var cancellables = Set<AnyCancellable>()
@@ -22,7 +25,7 @@ final class FavoritesViewModel: ObservableObject {
         }
     }
     
-    @Published var favorites: [Listing] = [] {
+    @Published var favorites: [PlaceListing] = [] {
         didSet {
             onFavoritesUpdate?()
             hasFavorites = !favorites.isEmpty
@@ -38,6 +41,8 @@ final class FavoritesViewModel: ObservableObject {
         setupNotificationObservers()
     }
     
+    // MARK: - Setup Methods
+    
     private func setupNotificationObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleAuthStateChange), name: .AuthStateDidChange, object: nil)
     }
@@ -50,10 +55,14 @@ final class FavoritesViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
+    // MARK: - Notification Handlers
+    
     @objc private func handleAuthStateChange() {
         stopListeningToFavorites()
         listenToFavorites()
     }
+    
+    // MARK: - Data Fetching Methods
     
     func fetchFavorites() {
         guard let userId = userId else {
@@ -67,19 +76,19 @@ final class FavoritesViewModel: ObservableObject {
             }
             
             self?.favorites = documents.compactMap { document in
-                try? document.data(as: Listing.self)
+                try? document.data(as: PlaceListing.self)
             }
         }
     }
     
-    func fetchDetailedListing(for listingId: String, completion: @escaping (Listing?) -> Void) {
+    func fetchDetailedListing(for listingId: String, completion: @escaping (PlaceListing?) -> Void) {
         let detailVM = SearchViewModel()
         detailVM.destinationDetails(for: listingId) { detailedListing in
             completion(detailedListing)
         }
     }
     
-    func configureCell(at indexPath: IndexPath, completion: @escaping (Listing, Listing, [String]) -> Void) {
+    func configureCell(at indexPath: IndexPath, completion: @escaping (PlaceListing, PlaceListing, [String]) -> Void) {
         let listing = favorites[indexPath.row]
         fetchDetailedListing(for: listing.id) { detailedListing in
             guard let detailedListing = detailedListing else { return }
@@ -87,13 +96,15 @@ final class FavoritesViewModel: ObservableObject {
         }
     }
     
-    func selectItem(at indexPath: IndexPath, completion: @escaping (Listing, Listing, [String]) -> Void) {
+    func selectItem(at indexPath: IndexPath, completion: @escaping (PlaceListing, PlaceListing, [String]) -> Void) {
         let listing = favorites[indexPath.row]
         fetchDetailedListing(for: listing.id) { detailedListing in
             guard let detailedListing = detailedListing else { return }
             completion(listing, detailedListing, listing.imageUrls)
         }
     }
+    
+    // MARK: - Listener Methods
     
     func listenToFavorites() {
         guard let userId = userId else {
@@ -107,7 +118,7 @@ final class FavoritesViewModel: ObservableObject {
             }
             
             self?.favorites = documents.compactMap { document in
-                try? document.data(as: Listing.self)
+                try? document.data(as: PlaceListing.self)
             }
         }
     }
@@ -116,7 +127,7 @@ final class FavoritesViewModel: ObservableObject {
         listener?.remove()
         listener = nil
     }
-    
+        
     deinit {
         stopListeningToFavorites()
         NotificationCenter.default.removeObserver(self)

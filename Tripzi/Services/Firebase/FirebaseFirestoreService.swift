@@ -16,6 +16,8 @@ final class FirebaseFirestoreService {
     
     private init() {}
     
+    // MARK: - Fetch User Info
+    
     func fetchUserInfo(userId: String, completion: @escaping (Result<[String: Any], Error>) -> Void) {
         let db = Firestore.firestore()
         db.collection("users").document(userId).getDocument { document, error in
@@ -33,6 +35,8 @@ final class FirebaseFirestoreService {
         }
     }
     
+    // MARK: - Upload Image
+
     func uploadImageToServer(_ image: UIImage, completion: @escaping (Result<URL, Error>) -> Void) {
         guard let imageData = image.jpegData(compressionQuality: 0.75) else {
             let error = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to get JPEG representation of UIImage"])
@@ -60,6 +64,8 @@ final class FirebaseFirestoreService {
             }
         }
     }
+    
+    // MARK: - Update User Profile
     
     func updateUserProfile(photoURL: URL, completion: @escaping (Result<Void, Error>) -> Void) {
         if let user = Auth.auth().currentUser {

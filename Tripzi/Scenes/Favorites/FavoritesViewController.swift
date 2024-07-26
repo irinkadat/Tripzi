@@ -10,6 +10,9 @@ import Combine
 import SwiftUI
 
 final class FavoritesViewController: UIViewController {
+    
+    // MARK: -  Properties
+    
     private var collectionView: UICollectionView!
     private var viewModel = FavoritesViewModel()
     private let emptyStateView = UIView()
@@ -31,12 +34,6 @@ final class FavoritesViewController: UIViewController {
         super.viewWillAppear(animated)
         setupNavigation()
     }
-
-    private func setupNavigation() {
-        title = "Favorites"
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .always
-    }
     
     private func setupBindings() {
         viewModel.onFavoritesUpdate = { [weak self] in
@@ -47,6 +44,14 @@ final class FavoritesViewController: UIViewController {
             self?.emptyStateView.isHidden = hasFavorites
             self?.collectionView.isHidden = !hasFavorites
         }
+    }
+    
+    // MARK: - Setup Methods
+    
+    private func setupNavigation() {
+        title = "Favorites"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
     }
     
     private func setupCollectionView() {
@@ -97,6 +102,10 @@ final class FavoritesViewController: UIViewController {
         illustrationImageView.translatesAutoresizingMaskIntoConstraints = false
         goToHomePageButton.translatesAutoresizingMaskIntoConstraints = false
         
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             emptyStateView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             emptyStateView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -125,13 +134,15 @@ final class FavoritesViewController: UIViewController {
         }
     }
     
-    private func presentDetailViewController(listing: Listing, detailedListing: Listing, imageUrls: [String]) {
+    private func presentDetailViewController(listing: PlaceListing, detailedListing: PlaceListing, imageUrls: [String]) {
         let destinationDetailsVC = DestinationDetailsVC()
         let detailsViewModel = DetailsViewModel(listing: detailedListing, imageUrls: imageUrls)
         destinationDetailsVC.viewModel = detailsViewModel
         navigationController?.pushViewController(destinationDetailsVC, animated: false)
     }
 }
+
+// MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 
 extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

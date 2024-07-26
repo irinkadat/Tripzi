@@ -14,8 +14,9 @@ struct PaymentIntentResponse: Decodable {
 }
 
 final class FlightDetailsViewModel: NSObject {
+    // MARK: - Properties
+
     weak var authenticationContextProvider: AuthenticationContextProvider?
-    
     var updateUIForPaymentResult: ((Bool) -> Void)?
     var showAlert: ((String, String) -> Void)?
     var requestApplePay: (() -> Void)?
@@ -29,6 +30,8 @@ final class FlightDetailsViewModel: NSObject {
         fetchPaymentIntentClientSecret()
     }
     
+    // MARK: - Fetch Payment Intent Client Secret
+
     private func fetchPaymentIntentClientSecret() {
         let backendUrl = "https://tripzi.glitch.me/create-payment-intent"
         let body: [String: Any] = [
@@ -50,6 +53,8 @@ final class FlightDetailsViewModel: NSObject {
         }
     }
     
+    // MARK: - Payment Handling
+
     func didTapPayButton(cardParams: STPPaymentMethodCardParams, email: String?, country: String?) {
         guard let clientSecret = paymentIntentClientSecret else {
             print("Missing payment intent client secret")

@@ -18,6 +18,9 @@ struct LoginView: View {
     var body: some View {
         NavigationView {
             VStack {
+                
+                // MARK: - Email and Password Fields
+                
                 Spacer()
                     .frame(height: 50)
                 
@@ -28,14 +31,18 @@ struct LoginView: View {
                 Spacer()
                     .frame(height: 20)
                 
+                // MARK: - Login Button
+                
                 CustomButton(
                     title: "Log in",
-                    backgroundColor: .green,
+                    backgroundColor: .greenPrimary,
                     textColor: .uniCo,
                     action: {
                         viewModel.login(email: email, password: password)
                     }
                 )
+                
+                // MARK: - Forgot Password Button
                 
                 CustomButton(
                     title: "Forgot password?",
@@ -56,45 +63,52 @@ struct LoginView: View {
                     .padding(.horizontal)
                 
                 Spacer()
-                    .frame(height: 30)
+                    .frame(height: 14)
+                
+                // MARK: - Sign In with Google Button
                 
                 CustomButton(
-                    title: "Sign Up With Email",
-                    backgroundColor: .uniBackground,
-                    textColor: .uniCo,
+                    title: "Sign in with Google",
+                    backgroundColor: .uniSecBtn,
+                    textColor: .white,
+                    action: {
+                        viewModel.signInWithGoogle()
+                    }, icon: "googlef"
+                )
+                
+                Spacer()
+                    .frame(height: 14)
+                
+                // MARK: - Sign In with Facebook Button
+                
+                CustomButton(
+                    title: "Sign in with Facebook",
+                    backgroundColor: .uniSecBtn,
+                    textColor: .white,
+                    action: {
+                        viewModel.signInWithFacebook()
+                    }, icon: "facef"
+                )
+                
+                Spacer()
+                    .frame(height: 30)
+                
+                // MARK: - Sign Up Button
+                
+                CustomButton(
+                    title: "Sign Up",
+                    backgroundColor: .uniSecBtn,
+                    textColor: .white,
                     action: {
                         showingRegister.toggle()
-                    }, icon: "envelope"
-                )
+                    }                )
                 .sheet(isPresented: $showingRegister) {
                     RegistrationView().environmentObject(viewModel)
                 }
                 
                 Spacer()
-                    .frame(height: 14)
                 
-                CustomButton(
-                    title: "Sign in with Google",
-                    backgroundColor: .uniBackground,
-                    textColor: .uniCo,
-                    action: {
-                        viewModel.signInWithGoogle()
-                    }, icon: "globe"
-                )
-                
-                Spacer()
-                    .frame(height: 14)
-                
-                CustomButton(
-                    title: "Sign in with Facebook",
-                    backgroundColor: .uniBackground,
-                    textColor: .uniCo,
-                    action: {
-                        viewModel.signInWithFacebook()
-                    }, icon: "f.circle"
-                )
-                
-                Spacer()
+                // MARK: - Error and Success Messages
                 
                 if let errorMessage = viewModel.errorMessage {
                     Text(errorMessage)

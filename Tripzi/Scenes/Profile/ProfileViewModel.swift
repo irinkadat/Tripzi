@@ -33,6 +33,8 @@ final class ProfileViewModel: NSObject {
         setupAuthStateListener()
     }
     
+    // MARK: - Fetch User Info
+
     func fetchUserInfoIfNeeded(forceFetch: Bool = false) {
         if !isUserInfoFetched || forceFetch {
             fetchUserInfo()
@@ -62,6 +64,8 @@ final class ProfileViewModel: NSObject {
         }
     }
     
+    // MARK: - Update Profile Image
+
     private func fetchProfileImage(from url: URL) {
         networkService.fetchData(urlString: url.absoluteString) { [weak self] result in
             switch result {
@@ -112,6 +116,8 @@ final class ProfileViewModel: NSObject {
         }
     }
     
+    // MARK: - Setup Methods
+    
     private func setupAuthButtonTitle() {
         Auth.auth().addStateDidChangeListener { [weak self] _, user in
             self?.authButtonTitle = user != nil ? "Log out" : "Log in"
@@ -157,6 +163,8 @@ final class ProfileViewModel: NSObject {
         NotificationCenter.default.removeObserver(self)
     }
     
+    // MARK: - Handle Picked Image
+
     func handlePickedImage(info: [UIImagePickerController.InfoKey : Any]) -> UIImage? {
         if let editedImage = info[.editedImage] as? UIImage {
             updateProfileImage(editedImage) { success in
@@ -177,6 +185,8 @@ final class ProfileViewModel: NSObject {
         }
     }
     
+    // MARK: - Bind UI
+
     func bindProfileUI(nameLabel: UILabel, imageView: UIImageView, authButton: UIButton) {
         $userName
             .receive(on: RunLoop.main)

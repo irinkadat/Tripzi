@@ -15,22 +15,26 @@ protocol SearchViewModelDelegate: AnyObject {
 }
 
 final class SearchViewModel: ObservableObject {
-    @Published var listings: [Listing] = []
+    
+    // MARK: - Published Properties
+    
+    @Published var listings: [PlaceListing] = []
     @Published var selectedCategoryIndex: Int? {
         didSet {
             guard let selectedIndex = selectedCategoryIndex else { return }
-            let category = CategoryViewController.categories[selectedIndex].name
+            let category = ListingCategories.all[selectedIndex].name
             fetchListings(for: category)
         }
     }
-    
-    weak var delegate: SearchViewModelDelegate?
-    
-    private var cancellables: Set<AnyCancellable> = []
-    @Published var detailedPlace: Listing?
+    @Published var detailedPlace: PlaceListing?
     @Published var latitude: Double?
     @Published var longitude: Double?
     @Published var locationError: String?
+    
+    // MARK: - Properties
+    
+    weak var delegate: SearchViewModelDelegate?
+    private var cancellables: Set<AnyCancellable> = []
     var onListingsUpdate: (() -> Void)?
     var onCategoryIndexChanged: ((Int?) -> Void)?
     private let networkService = NetworkService()
@@ -43,6 +47,8 @@ final class SearchViewModel: ObservableObject {
         self.locationManager = locationManager
         bindUI()
     }
+    
+    // MARK: - Binding Methods
     
     private func bindUI() {
         $selectedCategoryIndex
@@ -66,6 +72,8 @@ final class SearchViewModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
+    
+    // MARK: - Location Methods
     
     private func observeLocationAuthorization() {
         locationManager.authorizationChanged = { [weak self] status in
@@ -112,18 +120,18 @@ final class SearchViewModel: ObservableObject {
     }
     
     func handleAuthorizationStatus(manager: CLLocationManager) {
-            switch manager.authorizationStatus {
-            case .authorizedWhenInUse, .authorizedAlways:
-                checkLocationAuthorization()
-                if let location = manager.location {
-                    searchNearbyPlaces(location: location)
-                }
-            case .denied, .restricted, .notDetermined:
-                break
-            @unknown default:
-                break
+        switch manager.authorizationStatus {
+        case .authorizedWhenInUse, .authorizedAlways:
+            checkLocationAuthorization()
+            if let location = manager.location {
+                searchNearbyPlaces(location: location)
             }
+        case .denied, .restricted, .notDetermined:
+            break
+        @unknown default:
+            break
         }
+    }
     
     func searchNearbyPlaces(location: CLLocation) {
         let latitude = location.coordinate.latitude
@@ -144,7 +152,9 @@ final class SearchViewModel: ObservableObject {
         }
     }
     
-    private func postSearchNotification(with listings: [Listing]) {
+    // MARK: - Network Methods
+    
+    private func postSearchNotification(with listings: [PlaceListing]) {
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: .searchPerformed, object: nil, userInfo: ["results": listings])
         }
@@ -179,7 +189,7 @@ final class SearchViewModel: ObservableObject {
             print("Failed to construct URL")
             return
         }
-                
+        
         networkService.getData(urlString: url.absoluteString) { (result: Result<PlacesResponse, Error>) in
             switch result {
             case .success(let decodedData):
@@ -192,7 +202,7 @@ final class SearchViewModel: ObservableObject {
                     }
                     
                     self.listings = sortedResults.compactMap { place in
-                        return Listing(from: place)
+                        return PlaceListing(from: place)
                     }
                 }
             case .failure(let error):
@@ -201,12 +211,14 @@ final class SearchViewModel: ObservableObject {
         }
     }
     
+    // MARK: - Cell Configuration Methods
+    
     func configureCategoryCell(at indexPath: IndexPath, completion: @escaping (SearchCategory) -> Void) {
-        let category = CategoryViewController.categories[indexPath.row]
+        let category = ListingCategories.all[indexPath.row]
         completion(category)
     }
     
-    func configureListingCell(at indexPath: IndexPath, completion: @escaping (Listing, Listing, [String]) -> Void) {
+    func configureListingCell(at indexPath: IndexPath, completion: @escaping (PlaceListing, PlaceListing, [String]) -> Void) {
         let listing = listings[indexPath.row]
         destinationDetails(for: listing.id) { detailedListing in
             guard let detailedListing = detailedListing else { return }
@@ -214,17 +226,21 @@ final class SearchViewModel: ObservableObject {
         }
     }
     
+    // MARK: - Selection Methods
+    
     func didSelectCategory(at indexPath: IndexPath) {
         selectedCategoryIndex = indexPath.row
     }
     
-    func didSelectListing(at indexPath: IndexPath, completion: @escaping (Listing, [String]) -> Void) {
+    func didSelectListing(at indexPath: IndexPath, completion: @escaping (PlaceListing, [String]) -> Void) {
         let listing = listings[indexPath.row]
         destinationDetails(for: listing.id) { detailedListing in
             guard let detailedListing = detailedListing else { return }
             completion(detailedListing, listing.imageUrls)
         }
     }
+    
+    // MARK: - Fetch Methods
     
     func fetchListings(for category: String?) {
         searchPlaces(query: category, radius: nil, near: "\(self.latitude ?? defaultLatitude), \(self.longitude ?? defaultLongitude)")
@@ -238,20 +254,7 @@ final class SearchViewModel: ObservableObject {
         }
     }
     
-    func tierDescription(for tier: Int) -> String {
-        switch tier {
-        case 1:
-            return "Affordable"
-        case 2:
-            return "Moderate"
-        case 3:
-            return "Expensive"
-        default:
-            return "Unknown"
-        }
-    }
-    
-    func destinationDetails(for id: String, completion: @escaping (Listing?) -> Void) {
+    func destinationDetails(for id: String, completion: @escaping (PlaceListing?) -> Void) {
         let urlString = "https://api.foursquare.com/v2/venues/\(id)?v=20231010&oauth_token=QEJ4AQPTMMNB413HGNZ5YDMJSHTOHZHMLZCAQCCLXIX41OMP"
         
         networkService.getData(urlString: urlString) { (result: Result<DetailedVenueResponse, Error>) in
@@ -259,7 +262,7 @@ final class SearchViewModel: ObservableObject {
             case .success(let decodedData):
                 if let venueDetail = decodedData.response.venue {
                     let placeResult = PlaceResult(displayType: "venue", venue: venueDetail, photos: venueDetail.photos)
-                    let listing = Listing(from: placeResult)
+                    let listing = PlaceListing(from: placeResult)
                     
                     DispatchQueue.main.async {
                         self.detailedPlace = listing
@@ -272,6 +275,21 @@ final class SearchViewModel: ObservableObject {
                 print("Failed to decode JSON: \(error)")
                 completion(nil)
             }
+        }
+    }
+    
+    // MARK: - Helper Methods
+    
+    func tierDescription(for tier: Int) -> String {
+        switch tier {
+        case 1:
+            return "Affordable"
+        case 2:
+            return "Moderate"
+        case 3:
+            return "Expensive"
+        default:
+            return "Unknown"
         }
     }
 }

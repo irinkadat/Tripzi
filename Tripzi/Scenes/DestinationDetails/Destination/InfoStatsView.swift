@@ -8,7 +8,9 @@
 import UIKit
 
 final class InfoStatsView: UIView {
-     
+    
+    // MARK: - UI Elements
+
     private let ratingLabel: CustomLabel = {
         let label = CustomLabel(style: .title, fontSize: 16)
         return label
@@ -93,6 +95,8 @@ final class InfoStatsView: UIView {
         setupView()
     }
     
+    // MARK: - Setup View
+
     private func setupView() {
         addSubview(mainStackView)
         
@@ -133,6 +137,8 @@ final class InfoStatsView: UIView {
         return divider
     }
     
+    // MARK: - Configuration
+
     func configure(rating: String, openStatus: String, openStatusColor: UIColor, checkins: String) {
         ratingLabel.text = rating
         openStatusLabel.text = openStatus

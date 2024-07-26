@@ -10,16 +10,18 @@ import SwiftUI
 
 final class CustomCollectionViewCell: UICollectionViewCell {
     private var hostingController: UIHostingController<PlacesListingView>?
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-
-    func configure(with listing: Listing, onTap: @escaping () -> Void) {
+    
+    // MARK: - Configuration Method
+    
+    func configure(with listing: PlaceListing, onTap: @escaping () -> Void) {
         let viewModel = PlacesListingViewModel(listing: listing)
         let hostingController = UIHostingController(rootView: PlacesListingView(viewModel: viewModel, onTap: onTap))
         self.hostingController = hostingController

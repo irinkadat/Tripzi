@@ -11,12 +11,17 @@ import SwiftUI
 import CoreLocation
 
 final class HomeViewController: UIViewController {
+    
+    // MARK: - Properties
+    
     private var categoryViewController: CategoryViewController!
     private var listingsViewController: ListingsViewController!
     private let viewModel = SearchViewModel()
     private let customSearchBar = CustomSearchBar()
     private var cancellables = Set<AnyCancellable>()
     private let locationManager = CLLocationManager()
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,17 +31,12 @@ final class HomeViewController: UIViewController {
         setupListingsViewController()
         addSearchBarTapGesture()
         setupCustomBackButtonStyle()
-        
-        viewModel.onListingsUpdate = { [weak self] in
-            guard let self = self else { return }
-            self.listingsViewController.collectionView.reloadData()
-        }
-        
+        updateListingBasedUserLocation()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
-        
-        viewModel.checkLocationAuthorization()
     }
+    
+    // MARK: - Setup Methods
     
     private func setupCustomSearchBar() {
         customSearchBar.translatesAutoresizingMaskIntoConstraints = false
@@ -92,41 +92,41 @@ final class HomeViewController: UIViewController {
         customSearchBar.addGestureRecognizer(tapGesture)
     }
     
+    // MARK: - Action Methods
+    
     @objc private func didTapSearchBar() {
         let searchVC = SearchViewController()
         searchVC.delegate = self
         searchVC.modalPresentationStyle = .fullScreen
         present(searchVC, animated: true, completion: nil)
     }
+    
+    // MARK: - Helper Methods
+    
+    private func updateListingBasedUserLocation() {
+        viewModel.onListingsUpdate = { [weak self] in
+            guard let self = self else { return }
+            self.listingsViewController.collectionView.reloadData()
+        }
+        viewModel.checkLocationAuthorization()
+    }
 }
 
+// MARK: - SearchViewControllerDelegate
+
 extension HomeViewController: SearchViewControllerDelegate {
-    func didPerformSearch(results: [Listing]) {
+    func didPerformSearch(results: [PlaceListing]) {
         viewModel.listings = results
     }
 }
+
+// MARK: - CLLocationManagerDelegate
 
 extension HomeViewController: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         viewModel.handleAuthorizationStatus(manager: manager)
     }
 }
-
-//extension HomeViewController: CLLocationManagerDelegate {
-//    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-//        switch manager.authorizationStatus {
-//        case .authorizedWhenInUse, .authorizedAlways:
-//            viewModel.checkLocationAuthorization()
-//            if let location = manager.location {
-//                viewModel.searchNearbyPlaces(location: location)
-//            }
-//        case .denied, .restricted, .notDetermined:
-//            break
-//        @unknown default:
-//            break
-//        }
-//    }
-//}
 
 #Preview {
     HomeViewController()

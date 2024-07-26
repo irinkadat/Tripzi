@@ -10,6 +10,8 @@ import UIKit
 final class TipCardCollectionViewCell: UICollectionViewCell {
     static let identifier = "TipCardCollectionViewCell"
     
+    // MARK: - UI Elements
+    
     private let starsLabel: UILabel = {
         let label = UILabel()
         label.text = "★★★★★"
@@ -70,6 +72,8 @@ final class TipCardCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    // MARK: - Stack Views
+    
     private let userInfoStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -121,6 +125,8 @@ final class TipCardCollectionViewCell: UICollectionViewCell {
         setupView()
     }
     
+    // MARK: - Setup Methods
+
     private func setupView() {
         contentView.layer.borderColor = UIColor.gray.withAlphaComponent(0.5).cgColor
         contentView.layer.borderWidth = 1
@@ -163,10 +169,10 @@ final class TipCardCollectionViewCell: UICollectionViewCell {
             userImageView.widthAnchor.constraint(equalToConstant: 24),
             userImageView.heightAnchor.constraint(equalToConstant: 24),
             
-            likesStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            likesStackView.trailingAnchor.constraint(equalTo: dislikesStackView.leadingAnchor, constant: -10),
             likesStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
             
-            dislikesStackView.trailingAnchor.constraint(equalTo: likesStackView.leadingAnchor, constant: -10),
+            dislikesStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             dislikesStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
         ])
     }

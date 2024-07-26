@@ -34,8 +34,8 @@ final class FlightNetworkManager {
                         let options = responseData.originDestinationInformationList.flatMap { $0.originDestinationOptionList }
                         completion(.success(options))
                     } else {
-                        let errorDetail = flightResponse.message?.detail.first?.code ?? "Unknown error"
-                        completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: errorDetail])))
+                        let customError = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "We do not have any flights on the date and route you have selected or all our flights are sold out. Please change the date and/or route for a new flight search."])
+                        completion(.failure(customError))
                     }
                 case .failure(let error):
                     completion(.failure(error))
