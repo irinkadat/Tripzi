@@ -46,7 +46,7 @@ final class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavi
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .uniBackground
         setupHeaderView()
         setupSettingsView()
         setupHeaderConstraints()
@@ -111,21 +111,19 @@ final class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavi
     }
     
     private func createSettingsStackView() -> UIStackView {
-        let personalInfoButton = createSettingsButton(title: "Personal information", icon: UIImage(systemName: "person.circle"))
+        let personalInfoButton = createSettingsButton(title: "Personal information", icon: UIImage(named: "person"))
         personalInfoButton.addAction(UIAction(handler: { _ in self.personalInfoButtonTapped() }), for: .touchUpInside)
         
-        let paymentsButton = createSettingsButton(title: "Payments and payouts", icon: UIImage(systemName: "creditcard"))
+        let paymentsButton = createSettingsButton(title: "Payments and payouts", icon: UIImage(named: "card"))
         paymentsButton.addAction(UIAction(handler: { _ in self.paymentInfoButtonTapped() }), for: .touchUpInside)
         
-        let aboutUsButton = createSettingsButton(title: "About Tripz", icon: UIImage(systemName: "doc.text"))
+        let aboutUsButton = createSettingsButton(title: "About Tripz", icon: UIImage(named: "about"))
         aboutUsButton.addAction(UIAction(handler: { _ in self.aboutUsButtonTapped() }), for: .touchUpInside)
         
-        let securityButton = createSettingsButton(title: "Login & security", icon: UIImage(systemName: "shield"))
-        
-        authButton = createSettingsButton(title: "Loading...", icon: UIImage(systemName: "door.left.hand.open"))
+        authButton = createSettingsButton(title: "Loading...", icon: UIImage(named: "door"))
         authButton.addAction(UIAction(handler: {_ in self.handleAuthButtonTapped()}), for: .touchUpInside)
         
-        let settingsStackView = UIStackView(arrangedSubviews: [personalInfoButton, paymentsButton, aboutUsButton, securityButton, authButton])
+        let settingsStackView = UIStackView(arrangedSubviews: [personalInfoButton, paymentsButton, aboutUsButton, authButton])
         settingsStackView.axis = .vertical
         settingsStackView.spacing = 20
         settingsStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -167,14 +165,14 @@ final class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavi
               let settingsStackView = settingsView.subviews.last else { return }
         
         NSLayoutConstraint.activate([
-            settingsView.topAnchor.constraint(equalTo: view.subviews.first!.bottomAnchor, constant: 20),
+            settingsView.topAnchor.constraint(equalTo: view.subviews.first!.bottomAnchor),
             settingsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             settingsView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
             settingsTitleLabel.leadingAnchor.constraint(equalTo: settingsView.leadingAnchor, constant: 20),
             settingsTitleLabel.topAnchor.constraint(equalTo: settingsView.topAnchor),
             
-            settingsStackView.topAnchor.constraint(equalTo: settingsTitleLabel.bottomAnchor, constant: 10),
+            settingsStackView.topAnchor.constraint(equalTo: settingsTitleLabel.bottomAnchor, constant: 16),
             settingsStackView.leadingAnchor.constraint(equalTo: settingsView.leadingAnchor, constant: 20),
             settingsStackView.trailingAnchor.constraint(equalTo: settingsView.trailingAnchor, constant: -20),
             settingsStackView.bottomAnchor.constraint(equalTo: settingsView.bottomAnchor, constant: -20)
@@ -187,7 +185,7 @@ final class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavi
         configuration.image = icon
         configuration.imagePadding = 10
         configuration.imagePlacement = .leading
-        configuration.baseForegroundColor = .black
+        configuration.baseForegroundColor = .uniCo
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         
         let button = UIButton(configuration: configuration, primaryAction: nil)

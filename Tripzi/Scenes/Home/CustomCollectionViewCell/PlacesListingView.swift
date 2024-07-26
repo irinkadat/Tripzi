@@ -34,7 +34,7 @@ struct PlacesListingView: View {
                         }) {
                             Image(systemName: viewModel.isFavorited ? "heart.fill" : "heart")
                                 .padding()
-                                .foregroundColor(.white)
+                                .foregroundColor(.uniCo)
                                 .font(.system(size: 21))
                         }
                     }
@@ -70,6 +70,9 @@ struct PlacesListingView: View {
         .padding(.horizontal, 20)
         .onAppear {
             viewModel.checkIfFavorited()
+        }
+        .alert(isPresented: $viewModel.showLoginAlert) {
+            Alert(title: Text("Login Required"), message: Text("Please log in to save favorites."), dismissButton: .default(Text("OK")))
         }
     }
 }

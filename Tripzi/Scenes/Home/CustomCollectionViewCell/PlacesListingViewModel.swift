@@ -12,6 +12,7 @@ import Combine
 
 final class PlacesListingViewModel: ObservableObject {
     @Published var isFavorited: Bool = false
+    @Published var showLoginAlert: Bool = false 
     let listing: Listing
     private var cancellables = Set<AnyCancellable>()
     
@@ -21,7 +22,11 @@ final class PlacesListingViewModel: ObservableObject {
     }
     
     func saveToFavorites() {
-        guard let userId = Auth.auth().currentUser?.uid else { return }
+        guard let userId = Auth.auth().currentUser?.uid else {
+            showLoginAlert = true
+            return
+        }
+        
         var updatedListing = listing
         updatedListing.timestamp = Timestamp(date: Date())
         
@@ -37,7 +42,11 @@ final class PlacesListingViewModel: ObservableObject {
     }
     
     func removeFromFavorites() {
-        guard let userId = Auth.auth().currentUser?.uid else { return }
+        guard let userId = Auth.auth().currentUser?.uid else {
+            showLoginAlert = true
+            return
+        }
+        
         let db = Firestore.firestore()
         let favoritesRef = db.collection("users").document(userId).collection("favorites")
         

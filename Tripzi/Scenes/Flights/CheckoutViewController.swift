@@ -34,7 +34,7 @@ class CheckoutViewController: UIViewController, STPApplePayContextDelegate, STPA
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .uniBackground
         setupUI()
     }
     
@@ -49,7 +49,7 @@ class CheckoutViewController: UIViewController, STPApplePayContextDelegate, STPA
     
     private func setupApplePayButton() {
         customApplePayButton.setTitle(" Pay", for: .normal)
-        customApplePayButton.setTitleColor(.white, for: .normal)
+        customApplePayButton.setTitleColor(.uniCo, for: .normal)
         customApplePayButton.backgroundColor = .black
         customApplePayButton.layer.cornerRadius = 16
         customApplePayButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
@@ -170,7 +170,7 @@ class CheckoutViewController: UIViewController, STPApplePayContextDelegate, STPA
     
     private func setupPayButton() {
         payButton.setTitle("Pay", for: .normal)
-        payButton.setTitleColor(.white, for: .normal)
+        payButton.setTitleColor(.uniCo, for: .normal)
         payButton.backgroundColor = .black
         payButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
         payButton.layer.cornerRadius = 16
@@ -228,7 +228,7 @@ class CheckoutViewController: UIViewController, STPApplePayContextDelegate, STPA
         
         if StripeAPI.canSubmitPaymentRequest(paymentRequest) {
             let paymentContext = STPApplePayContext(paymentRequest: paymentRequest, delegate: self)
-            paymentContext?.presentApplePay(on: self)
+            paymentContext?.presentApplePay()
         } else {
             let alert = UIAlertController(title: "Error", message: "Unable to submit payment request", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))

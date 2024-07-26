@@ -12,7 +12,7 @@ class RootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpTabBar()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "UniBackground")
     }
     
     func setUpTabBar() {
@@ -44,7 +44,7 @@ class RootViewController: UIViewController {
         
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithOpaqueBackground()
-        tabBarAppearance.backgroundColor = .white
+        tabBarAppearance.backgroundColor = UIColor(named: "UniBackground")
         
         tabBarAppearance.stackedLayoutAppearance.selected.iconColor = .greenPrimary
                tabBarAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.greenPrimary]

@@ -20,6 +20,7 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
         let textField = CustomTextField()
         textField.placeholder = "From"
         textField.borderStyle = .roundedRect
+        textField.backgroundColor = .uniModal
         textField.tag = 1
         return textField
     }()
@@ -27,6 +28,7 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
     private let destinationField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "To"
+        textField.backgroundColor = .uniModal
         textField.borderStyle = .roundedRect
         textField.tag = 2
         return textField
@@ -35,14 +37,15 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
     private let departureDateField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "Departure Date (dd-MM-yyyy)"
+        textField.backgroundColor = .uniModal
         textField.borderStyle = .roundedRect
         return textField
     }()
     
     private let seeAllDestinationsButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitleColor(.black, for: .normal)
-        button.tintColor = .black
+        button.setTitleColor(.uniCo, for: .normal)
+        button.tintColor = .uniCo
         button.isHidden = true
         
         let attributes: [NSAttributedString.Key: Any] = [
@@ -58,9 +61,10 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
     private let searchButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Search", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.uniCo, for: .normal)
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 26
         button.backgroundColor = .black
-        button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -95,7 +99,7 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .uniModal
         setupTextFields()
         setupButtons()
         setupConstraints()
@@ -133,7 +137,7 @@ class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDeleg
             departureDateField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             departureDateField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
-            seeAllDestinationsButton.topAnchor.constraint(equalTo: departureDateField.bottomAnchor, constant: 100),
+            seeAllDestinationsButton.topAnchor.constraint(equalTo: departureDateField.bottomAnchor, constant: 150),
             seeAllDestinationsButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             seeAllDestinationsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             

@@ -25,7 +25,7 @@ class CustomSearchButton: UIButton {
         layer.cornerRadius = 26
         layer.masksToBounds = true
         contentHorizontalAlignment = .center
-        setTitleColor(.black, for: .normal)
+        setTitleColor(.uniCo, for: .normal)
         titleLabel?.font = UIFont.systemFont(ofSize: 14)
         styledView.isUserInteractionEnabled = false
         styledView.translatesAutoresizingMaskIntoConstraints = false

@@ -17,7 +17,6 @@ struct RegistrationView: View {
     @State private var fullName: String = ""
     @State private var birthDate: Date = Date()
     @State private var showError: Bool = false
-    //    @State private var errorMessage: String = ""
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
@@ -47,7 +46,7 @@ struct RegistrationView: View {
                 Spacer()
                     .frame(height: 30)
                 
-                CustomButton(title: "Sign Up", backgroundColor: .green, textColor: .white, action: {
+                CustomButton(title: "Sign Up", backgroundColor: .green, textColor: .uniCo, action: {
                     if viewModel.passwordsMatch(password, repeatPassword) && viewModel.validatePassword(password: password) {
                         viewModel.register(email: email, password: password, fullName: fullName, birthDate: birthDate)
                     } else {

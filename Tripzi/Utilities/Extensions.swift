@@ -11,7 +11,7 @@ extension UIViewController {
     func setupCustomBackButtonStyle() {
         let backButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backButton
-        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.tintColor = .uniCo
     }
 }
 
@@ -25,3 +25,15 @@ extension UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
     }
 }
+
+extension UIButton {
+    func setIconSize(width: CGFloat, height: CGFloat) {
+        guard let imageView = self.imageView else { return }
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            imageView.widthAnchor.constraint(equalToConstant: width),
+            imageView.heightAnchor.constraint(equalToConstant: height)
+        ])
+    }
+}
+

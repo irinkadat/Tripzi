@@ -9,11 +9,26 @@ import Combine
 import Foundation
 import NetService
 
+protocol SearchViewModelDelegate: AnyObject {
+    func didReceiveValidationMessage(_ message: String)
+}
+
 final class SearchViewModel: ObservableObject {
     @Published var listings: [Listing] = []
+    @Published var selectedCategoryIndex: Int? {
+        didSet {
+            guard let selectedIndex = selectedCategoryIndex else { return }
+            let category = CategoryViewController.categories[selectedIndex].name
+            fetchListings(for: category)
+        }
+    }
+    
+    weak var delegate: SearchViewModelDelegate?
+    
     private var cancellables: Set<AnyCancellable> = []
     @Published var detailedPlace: Listing?
     var onListingsUpdate: (() -> Void)?
+    var onCategoryIndexChanged: ((Int?) -> Void)?
     private let networkService = NetworkService()
     
     init() {
@@ -21,6 +36,12 @@ final class SearchViewModel: ObservableObject {
     }
     
     private func bindUI() {
+        $selectedCategoryIndex
+            .sink { [weak self] index in
+                self?.onCategoryIndexChanged?(index)
+            }
+            .store(in: &cancellables)
+        
         $listings
             .sink { [weak self] listings in
                 self?.onListingsUpdate?()
@@ -35,33 +56,12 @@ final class SearchViewModel: ObservableObject {
         }
     }
     
-    func fetchDefaultListings() {
-        guard let url = Bundle.main.url(forResource: "Places", withExtension: "json") else {
-            print("Failed to locate JSON file.")
+    func searchPlaces(query: String?, radius: Int?, near: String?) {
+        guard let near = near, !near.isEmpty else {
+            delegate?.didReceiveValidationMessage("Please enter a location in the 'near' field.")
             return
         }
         
-        do {
-            let data = try Data(contentsOf: url)
-            let decodedData = try JSONDecoder().decode(PlacesResponse.self, from: data)
-            let results = decodedData.response.group?.results ?? []
-            
-            let sortedResults = results.sorted { (place1, place2) -> Bool in
-                let hasPhotos1 = (place1.photos?.groups?.first?.items.isEmpty == false)
-                let hasPhotos2 = (place2.photos?.groups?.first?.items.isEmpty == false)
-                return hasPhotos1 && !hasPhotos2
-            }
-            
-            self.listings = sortedResults.compactMap { place in
-                return Listing(from: place)
-            }
-            print("Default listings fetched: \(self.listings.count)")
-        } catch {
-            print("Failed to decode JSON: \(error)")
-        }
-    }
-    
-    func searchPlaces(query: String?, radius: Int?, near: String?) {
         var components = URLComponents(string: "https://api.foursquare.com/v2/search/recommendations")!
         
         var queryItems = [
@@ -77,11 +77,7 @@ final class SearchViewModel: ObservableObject {
             queryItems.append(URLQueryItem(name: "radius", value: "\(radius)"))
         }
         
-        if let near = near {
-            queryItems.append(URLQueryItem(name: "near", value: near))
-        } else {
-            queryItems.append(URLQueryItem(name: "near", value: "Tbilisi"))
-        }
+        queryItems.append(URLQueryItem(name: "near", value: near))
         
         components.queryItems = queryItems
         
@@ -97,11 +93,14 @@ final class SearchViewModel: ObservableObject {
             case .success(let decodedData):
                 let results = decodedData.response.group?.results ?? decodedData.response.results ?? []
                 DispatchQueue.main.async {
-                    self.listings = results.compactMap { result in
-                        guard result.displayType == "venue", let venue = result.venue else {
-                            return nil
-                        }
-                        return Listing(from: result)
+                    let sortedResults = results.sorted { (place1, place2) -> Bool in
+                        let hasPhotos1 = (place1.photos?.groups?.first?.items.isEmpty == false)
+                        let hasPhotos2 = (place2.photos?.groups?.first?.items.isEmpty == false)
+                        return hasPhotos1 && !hasPhotos2
+                    }
+                    
+                    self.listings = sortedResults.compactMap { place in
+                        return Listing(from: place)
                     }
                     print("Search results fetched: \(self.listings.count)")
                 }
@@ -125,8 +124,7 @@ final class SearchViewModel: ObservableObject {
     }
     
     func didSelectCategory(at indexPath: IndexPath) {
-        let category = CategoryViewController.categories[indexPath.row].name
-        fetchListings(for: category)
+        selectedCategoryIndex = indexPath.row
     }
     
     func didSelectListing(at indexPath: IndexPath, completion: @escaping (Listing, [String]) -> Void) {
@@ -140,6 +138,11 @@ final class SearchViewModel: ObservableObject {
     func fetchListings(for category: String?) {
         let defaultCity = "Milan"
         searchPlaces(query: category, radius: nil, near: defaultCity)
+    }
+    
+    func fetchLocalListings() {
+        let defaultCity = "Milan"
+        searchPlaces(query: "stores", radius: nil, near: defaultCity)
     }
     
     func tierDescription(for tier: Int) -> String {

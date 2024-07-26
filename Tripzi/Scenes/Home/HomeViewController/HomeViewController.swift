@@ -24,8 +24,7 @@ final class HomeViewController: UIViewController {
         setupListingsViewController()
         addSearchBarTapGesture()
         setupCustomBackButtonStyle()
-        
-        viewModel.fetchDefaultListings()
+        viewModel.fetchLocalListings()
     }
     
     private func setupCustomSearchBar() {
@@ -41,21 +40,17 @@ final class HomeViewController: UIViewController {
     }
     
     private func setupCategoryViewController() {
-        categoryViewController = CategoryViewController()
+        categoryViewController = CategoryViewController(viewModel: viewModel)
         addChild(categoryViewController)
         view.addSubview(categoryViewController.view)
         categoryViewController.view.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             categoryViewController.view.topAnchor.constraint(equalTo: customSearchBar.bottomAnchor, constant: 20),
-            categoryViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            categoryViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             categoryViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             categoryViewController.view.heightAnchor.constraint(equalToConstant: 70)
         ])
-        
-        categoryViewController.didSelectCategory = { [weak self] category in
-            self?.viewModel.fetchListings(for: category)
-        }
     }
     
     private func setupListingsViewController() {

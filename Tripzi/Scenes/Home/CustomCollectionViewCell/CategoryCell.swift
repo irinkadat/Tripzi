@@ -16,10 +16,10 @@ final class CategoryCell: UICollectionViewCell {
     static let reuseIdentifier = "CategoryCell"
     
     let iconImageView: UIImageView = {
-        let imageview = UIImageView()
-        imageview.translatesAutoresizingMaskIntoConstraints = false
-        imageview.contentMode = .scaleAspectFit
-        return imageview
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        return imageView
     }()
     
     let nameLabel: UILabel = {
@@ -31,11 +31,20 @@ final class CategoryCell: UICollectionViewCell {
         return label
     }()
     
+    let underlineView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .gray
+        view.isHidden = true
+        return view
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         contentView.addSubview(iconImageView)
         contentView.addSubview(nameLabel)
+        contentView.addSubview(underlineView)
         
         NSLayoutConstraint.activate([
             iconImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -44,7 +53,12 @@ final class CategoryCell: UICollectionViewCell {
             iconImageView.heightAnchor.constraint(equalToConstant: 32),
             
             nameLabel.topAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 6),
-            nameLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
+            nameLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            
+            underlineView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 2),
+            underlineView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            underlineView.widthAnchor.constraint(equalTo: nameLabel.widthAnchor),
+            underlineView.heightAnchor.constraint(equalToConstant: 2)
         ])
     }
     
@@ -52,13 +66,13 @@ final class CategoryCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with category: SearchCategory) {
+    func configure(with category: SearchCategory, isSelected: Bool) {
         iconImageView.image = category.icon
         nameLabel.text = category.name
+        underlineView.isHidden = !isSelected
     }
 }
 
 #Preview {
     CategoryCell()
 }
-

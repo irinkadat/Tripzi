@@ -45,7 +45,6 @@
 		8C651D042C493CBB00339BA3 /* PlacesListingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651D032C493CBB00339BA3 /* PlacesListingViewModel.swift */; };
 		8C651D062C493CE000339BA3 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651D052C493CE000339BA3 /* SearchViewModel.swift */; };
 		8C651D082C493D0A00339BA3 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651D072C493D0A00339BA3 /* CategoryCell.swift */; };
-		8C651D0A2C493D4600339BA3 /* Places.json in Resources */ = {isa = PBXBuildFile; fileRef = 8C651D092C493D4600339BA3 /* Places.json */; };
 		8C651D0C2C49578A00339BA3 /* TipCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651D0B2C49578A00339BA3 /* TipCardView.swift */; };
 		8C651D102C496AA100339BA3 /* TipCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651D0F2C496AA100339BA3 /* TipCardCollectionViewCell.swift */; };
 		8C651D382C4ABCF300339BA3 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C651D372C4ABCF300339BA3 /* MapView.swift */; };
@@ -117,7 +116,6 @@
 		8C651D032C493CBB00339BA3 /* PlacesListingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesListingViewModel.swift; sourceTree = "<group>"; };
 		8C651D052C493CE000339BA3 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		8C651D072C493D0A00339BA3 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
-		8C651D092C493D4600339BA3 /* Places.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Places.json; sourceTree = "<group>"; };
 		8C651D0B2C49578A00339BA3 /* TipCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipCardView.swift; sourceTree = "<group>"; };
 		8C651D0F2C496AA100339BA3 /* TipCardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipCardCollectionViewCell.swift; sourceTree = "<group>"; };
 		8C651D372C4ABCF300339BA3 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
@@ -283,7 +281,6 @@
 				8C9ED1A02C51020900B7ECB3 /* SearchPlaces */,
 				8C9ED19F2C5101EA00B7ECB3 /* HomeViewController */,
 				8C9ED19E2C51005600B7ECB3 /* CustomCollectionViewCell */,
-				8C651D092C493D4600339BA3 /* Places.json */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -384,6 +381,7 @@
 			isa = PBXGroup;
 			children = (
 				8C8FFFC12C2EE45900079E8B /* FavoritesViewController.swift */,
+				8CC3EFFC2C3DAE4A00400A89 /* CustomCollectionViewCell.swift */,
 				8C651D012C493B2F00339BA3 /* FavoritesViewModel.swift */,
 			);
 			path = Favorites;
@@ -393,7 +391,6 @@
 			isa = PBXGroup;
 			children = (
 				8C651D072C493D0A00339BA3 /* CategoryCell.swift */,
-				8CC3EFFC2C3DAE4A00400A89 /* CustomCollectionViewCell.swift */,
 				8CC530242C3C677E00E020DD /* PlacesListingView.swift */,
 				8C651D032C493CBB00339BA3 /* PlacesListingViewModel.swift */,
 			);
@@ -573,7 +570,6 @@
 				8C309DD22C2DB46A00436F92 /* Assets.xcassets in Resources */,
 				8C309DD52C2DB46A00436F92 /* Base in Resources */,
 				8C309E0D2C2DD01C00436F92 /* GoogleService-Info.plist in Resources */,
-				8C651D0A2C493D4600339BA3 /* Places.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -790,6 +786,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Tripzi/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "This app needs your location to show nearby places";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs your location to show nearby places.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -818,6 +816,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Tripzi/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "This app needs your location to show nearby places";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs your location to show nearby places.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
