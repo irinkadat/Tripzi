@@ -29,7 +29,7 @@ class PersonalInfoViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .uniBackground
         
         let nameLabels = createInfoLabels(title: "Name:", value: "Loading Name...")
         nameLabel = nameLabels.valueLabel

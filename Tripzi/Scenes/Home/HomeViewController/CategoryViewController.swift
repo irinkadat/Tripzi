@@ -47,7 +47,7 @@ final class CategoryViewController: UIViewController {
         layout.minimumLineSpacing = 10
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .uniBackground
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsHorizontalScrollIndicator = false

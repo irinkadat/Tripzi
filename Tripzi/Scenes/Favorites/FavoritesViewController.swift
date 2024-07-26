@@ -29,14 +29,9 @@ final class FavoritesViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.prefersLargeTitles = true
+        setupNavigation()
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.navigationBar.prefersLargeTitles = false
-    }
-    
+
     private func setupNavigation() {
         title = "Favorites"
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -61,7 +56,7 @@ final class FavoritesViewController: UIViewController {
         layout.minimumLineSpacing = 20
         
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .uniBackground
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "CustomCell")
@@ -105,12 +100,14 @@ final class FavoritesViewController: UIViewController {
         NSLayoutConstraint.activate([
             emptyStateView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             emptyStateView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            emptyStateView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            emptyStateView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
             illustrationImageView.topAnchor.constraint(equalTo: emptyStateView.topAnchor),
-            illustrationImageView.leadingAnchor.constraint(equalTo: emptyStateView.leadingAnchor),
-            illustrationImageView.trailingAnchor.constraint(equalTo: emptyStateView.trailingAnchor),
-            illustrationImageView.widthAnchor.constraint(equalToConstant: 200),
+            illustrationImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
             illustrationImageView.heightAnchor.constraint(equalToConstant: 200),
+            illustrationImageView.widthAnchor.constraint(equalToConstant: 200),
             
             emptyStateLabel.topAnchor.constraint(equalTo: illustrationImageView.bottomAnchor, constant: 20),
             emptyStateLabel.leadingAnchor.constraint(equalTo: emptyStateView.leadingAnchor),

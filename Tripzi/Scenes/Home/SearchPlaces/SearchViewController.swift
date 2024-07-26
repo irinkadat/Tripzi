@@ -42,7 +42,7 @@ final class SearchViewController: UIViewController {
         return textField
     }()
     
-    private let latLongContainer: UIStackView = {
+    private let nearContainer: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.spacing = 5
@@ -50,14 +50,14 @@ final class SearchViewController: UIViewController {
         return stackView
     }()
     
-    private let latLongButton: CustomSearchButton = {
+    private let nearButton: CustomSearchButton = {
         let button = CustomSearchButton()
         button.setTitle("Add Near or Lat&Long", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-    private let latLongField: CustomTextField = {
+    private let nearField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "near"
         textField.isHidden = true
@@ -68,7 +68,7 @@ final class SearchViewController: UIViewController {
         let button = UIButton(type: .system)
         let image = UIImage(systemName: "xmark")
         button.setImage(image, for: .normal)
-        button.tintColor = .black
+        button.tintColor = .uniCo
         return button
     }()
     
@@ -78,11 +78,23 @@ final class SearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        viewModel.delegate = self
+        view.backgroundColor = .uniModal
         setupUI()
         setupActions()
         setupBindings()
     }
+    
+    private let searchButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Search", for: .normal)
+        button.setTitleColor(.uniCo, for: .normal)
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 26
+        button.backgroundColor = .black
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
     
     private func setupUI() {
         view.addSubview(closeButton)
@@ -95,10 +107,10 @@ final class SearchViewController: UIViewController {
         radiusContainer.addArrangedSubview(radiusButton)
         radiusContainer.addArrangedSubview(radiusField)
         
-        latLongContainer.addArrangedSubview(latLongButton)
-        latLongContainer.addArrangedSubview(latLongField)
+        nearContainer.addArrangedSubview(nearButton)
+        nearContainer.addArrangedSubview(nearField)
         
-        let stackView = UIStackView(arrangedSubviews: [searchField, radiusContainer, latLongContainer])
+        let stackView = UIStackView(arrangedSubviews: [searchField, nearContainer, radiusContainer])
         stackView.axis = .vertical
         stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -110,23 +122,15 @@ final class SearchViewController: UIViewController {
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
         
-        let searchButton = CustomButton(title: "Search", backgroundColor: .black, textColor: .white, action: {
-            self.performSearch()
-        })
+        view.addSubview(searchButton)
         
-        let searchButtonHostingController = UIHostingController(rootView: searchButton)
-        addChild(searchButtonHostingController)
-        view.addSubview(searchButtonHostingController.view)
-        
-        searchButtonHostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        searchButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            searchButtonHostingController.view.heightAnchor.constraint(equalToConstant: 52),
-            searchButtonHostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            searchButtonHostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            searchButtonHostingController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            searchButton.heightAnchor.constraint(equalToConstant: 52),
+            searchButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            searchButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            searchButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
         ])
-        
-        searchButtonHostingController.didMove(toParent: self)
     }
     
     private func setupActions() {
@@ -136,7 +140,7 @@ final class SearchViewController: UIViewController {
         closeButton.addAction(closeAction, for: .touchUpInside)
         
         radiusButton.addTarget(self, action: #selector(didTapRadiusButton), for: .touchUpInside)
-        latLongButton.addTarget(self, action: #selector(didTapLatLongButton), for: .touchUpInside)
+        nearButton.addTarget(self, action: #selector(didTapLatLongButton), for: .touchUpInside)
     }
     
     private func setupBindings() {
@@ -157,7 +161,7 @@ final class SearchViewController: UIViewController {
     }
     
     @objc private func didTapLatLongButton() {
-        toggleTextField(latLongField)
+        toggleTextField(nearField)
     }
     
     private func toggleTextField(_ textField: UITextField) {
@@ -170,9 +174,22 @@ final class SearchViewController: UIViewController {
     private func performSearch() {
         let query = searchField.text ?? ""
         let radius = Int(radiusField.text ?? "")
-        let ll = latLongField.text
+        let ll = nearField.text
         
         viewModel.searchPlaces(query: query, radius: radius, near: ll)
+    }
+    
+    private func showAlert(message: String) {
+        let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
+    }
+}
+
+extension SearchViewController: SearchViewModelDelegate {
+    func didReceiveValidationMessage(_ message: String) {
+        showAlert(message: message)
     }
 }
 

@@ -70,7 +70,7 @@ final class PaymentsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCustomBackButtonStyle()
-        view.backgroundColor = .white
+        view.backgroundColor = .uniBackground
         configureNavigationBarTitle(title: "Payments & Payouts")
         configureUI()
     }

@@ -31,7 +31,7 @@ struct LoginView: View {
                 CustomButton(
                     title: "Log in",
                     backgroundColor: .green,
-                    textColor: Color.white,
+                    textColor: .uniCo,
                     action: {
                         viewModel.login(email: email, password: password)
                     }
@@ -40,7 +40,7 @@ struct LoginView: View {
                 CustomButton(
                     title: "Forgot password?",
                     backgroundColor: Color.clear,
-                    textColor: Color.black.opacity(0.7),
+                    textColor: Color.uniCo.opacity(0.7),
                     action: {
                         showingResetPassword = true
                     }
@@ -60,8 +60,8 @@ struct LoginView: View {
                 
                 CustomButton(
                     title: "Sign Up With Email",
-                    backgroundColor: .customBlack,
-                    textColor: Color.white,
+                    backgroundColor: .uniBackground,
+                    textColor: .uniCo,
                     action: {
                         showingRegister.toggle()
                     }, icon: "envelope"
@@ -75,8 +75,8 @@ struct LoginView: View {
                 
                 CustomButton(
                     title: "Sign in with Google",
-                    backgroundColor: .customBlack,
-                    textColor: Color.white,
+                    backgroundColor: .uniBackground,
+                    textColor: .uniCo,
                     action: {
                         viewModel.signInWithGoogle()
                     }, icon: "globe"
@@ -87,8 +87,8 @@ struct LoginView: View {
                 
                 CustomButton(
                     title: "Sign in with Facebook",
-                    backgroundColor: .customBlack,
-                    textColor: Color.white,
+                    backgroundColor: .uniBackground,
+                    textColor: .uniCo,
                     action: {
                         viewModel.signInWithFacebook()
                     }, icon: "f.circle"

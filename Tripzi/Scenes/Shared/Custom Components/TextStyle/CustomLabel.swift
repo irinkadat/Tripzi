@@ -71,7 +71,7 @@ class CustomLabel: UILabel {
     private func defaultTextColor(for style: LabelStyle) -> UIColor {
         switch style {
         case .title:
-            return .black
+            return .uniCo
         case .subtitle:
             return .gray
         }

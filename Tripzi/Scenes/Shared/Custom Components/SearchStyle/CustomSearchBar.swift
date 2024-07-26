@@ -28,6 +28,7 @@ class CustomSearchBar: UIView {
 
         let titleLabel = CustomLabel()
         titleLabel.text = "where to"
+        titleLabel.tintColor = UIColor(named: "UniCo")
         titleLabel.style = .title
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
@@ -44,7 +45,7 @@ class CustomSearchBar: UIView {
 
         let filterButton = UIButton(type: .system)
         filterButton.setImage(UIImage(systemName: "line.3.horizontal.decrease.circle"), for: .normal)
-        filterButton.tintColor = .black
+        filterButton.tintColor = .uniCo
         filterButton.translatesAutoresizingMaskIntoConstraints = false
         filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
 
@@ -74,7 +75,7 @@ class CustomSearchBar: UIView {
         borderLayer.cornerRadius = 26
         borderLayer.frame = bounds
         borderLayer.masksToBounds = true
-        borderLayer.shadowColor = UIColor.black.cgColor
+        borderLayer.shadowColor = UIColor.uniCo.cgColor
         borderLayer.shadowOpacity = 0.4
         borderLayer.shadowOffset = CGSize(width: 0, height: 1)
         borderLayer.shadowRadius = 2

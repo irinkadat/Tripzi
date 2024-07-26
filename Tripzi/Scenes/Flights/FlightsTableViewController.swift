@@ -27,18 +27,9 @@ class FlightsTableViewController: UIViewController, UITableViewDataSource, UITab
         return tableView
     }()
     
-//    private let noFlightsLabel: UILabel = {
-//        let label = UILabel()
-//        label.text = "No flights searched"
-//        label.textAlignment = .center
-//        label.isHidden = true
-//        return label
-//    }()
-//    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
-//        setupNoFlightsLabel()
         setupBindings()
         viewModel.flightsDelegate = self
     }
@@ -70,16 +61,6 @@ class FlightsTableViewController: UIViewController, UITableViewDataSource, UITab
         ])
     }
     
-//    private func setupNoFlightsLabel() {
-//        view.addSubview(noFlightsLabel)
-//        noFlightsLabel.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        NSLayoutConstraint.activate([
-//            noFlightsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            noFlightsLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-//        ])
-//    }
-    
     private func setupBindings() {
         viewModel.$searchedFlights
             .receive(on: DispatchQueue.main)
@@ -91,7 +72,6 @@ class FlightsTableViewController: UIViewController, UITableViewDataSource, UITab
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = viewModel.searchedFlights.count
-//        noFlightsLabel.isHidden = count > 0
         return count
     }
     

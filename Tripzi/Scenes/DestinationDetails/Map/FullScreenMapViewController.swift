@@ -43,7 +43,7 @@ final class FullScreenMapViewController: UIViewController {
         let backButton = UIButton(type: .system)
         let backImage = UIImage(systemName: "arrow.backward")
         backButton.setImage(backImage, for: .normal)
-        backButton.tintColor = .black
+        backButton.tintColor = .uniCo
         backButton.addAction(UIAction(handler: {_ in self.backButtonTapped() }), for: .touchUpInside)
 
         view.addSubview(backButton)

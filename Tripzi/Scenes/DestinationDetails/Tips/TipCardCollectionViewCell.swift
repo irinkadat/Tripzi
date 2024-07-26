@@ -15,12 +15,12 @@ class TipCardCollectionViewCell: UICollectionViewCell {
         label.text = "★★★★★"
         label.font = UIFont.systemFont(ofSize: 12)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black.withAlphaComponent(0.7)
+        label.textColor = .uniCo.withAlphaComponent(0.7)
         return label
     }()
     
     private let tipTextLabel: CustomLabel = {
-        let label = CustomLabel(style: .subtitle, fontSize: 14, textColor: .black)
+        let label = CustomLabel(style: .subtitle, fontSize: 14, textColor: .uniCo)
         label.numberOfLines = 6
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

@@ -34,7 +34,7 @@ class InfoStatsView: UIView {
     }()
     
     private let reviewsLabel: UILabel = {
-        let label = CustomLabel(style: .subtitle, fontSize: 12, textColor: .black)
+        let label = CustomLabel(style: .subtitle, fontSize: 12, textColor: .uniCo)
         label.text = "Check-ins"
         return label
     }()

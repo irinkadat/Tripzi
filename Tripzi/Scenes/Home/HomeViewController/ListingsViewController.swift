@@ -25,7 +25,7 @@ final class ListingsViewController: UIViewController {
         layout.minimumLineSpacing = 20
         
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .uniBackground
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false

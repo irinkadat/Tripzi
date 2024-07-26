@@ -8,11 +8,15 @@
 import Foundation
 
 struct PortResponse: Codable {
-    let data: PortData
+    let data: Locations
 }
 
 struct PportResponse: Hashable, Codable {
     let data: [Port]
+}
+
+struct Locations: Codable {
+    let locations: PortData
 }
 
 struct PortData: Hashable, Codable {

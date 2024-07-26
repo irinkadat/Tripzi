@@ -100,14 +100,13 @@ class FlightsViewModel: ObservableObject {
     
     func fetchPortSuggestions(for query: String) {
         ports.removeAll()
-        
         let urlString = "https://www.turkishairlines.com/api/v1/booking/locations/TK/en?searchText=\(query)"
         
         networkService.getData(urlString: urlString) { [weak self] (result: Result<PortResponse, Error>) in
             switch result {
             case .success(let response):
                 DispatchQueue.main.async {
-                    self?.ports = response.data.ports
+                    self?.ports = response.data.locations.ports
                     self?.portSelectionDelegate?.didUpdateSuggestions()
                 }
             case .failure(let error):

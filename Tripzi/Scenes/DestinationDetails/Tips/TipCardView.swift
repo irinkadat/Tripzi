@@ -14,7 +14,7 @@ class TipCardView: UIView {
         label.text = "★★★★★"
         label.font = UIFont.systemFont(ofSize: 12)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black.withAlphaComponent(0.7)
+        label.textColor = .uniCo.withAlphaComponent(0.7)
         return label
     }()
     

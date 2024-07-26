@@ -40,6 +40,7 @@ class FlightsViewController: UIViewController {
         setupIllustrationAndNoFlightsLabel()
         addSearchBarTapGesture()
         embedFlightsTableViewController()
+        setupBindings()
     }
     
     private func setupCustomSearchBar() {
@@ -110,6 +111,16 @@ class FlightsViewController: UIViewController {
         ])
         
         flightsTableViewController.didMove(toParent: self)
+    }
+    
+    private func setupBindings() {
+        viewModel.$hasSearchedFlights
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] hasSearchedFlights in
+                self?.noFlightsLabel.isHidden = hasSearchedFlights
+                self?.illustrationImageView.isHidden = hasSearchedFlights
+            }
+            .store(in: &cancellables)
     }
 }
 

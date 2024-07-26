@@ -30,8 +30,7 @@ class FlightDetailsViewController: UIViewController {
     }
 
     private func setupUI() {
-        view.backgroundColor = .white
-
+        view.backgroundColor = .uniBackground
         flightCell.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(flightCell)

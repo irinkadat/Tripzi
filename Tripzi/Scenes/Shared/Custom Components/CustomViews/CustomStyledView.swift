@@ -27,7 +27,7 @@ class CustomStyledView: UIView {
         borderLayer.cornerRadius = 26
         borderLayer.frame = bounds
         borderLayer.masksToBounds = true
-        borderLayer.shadowColor = UIColor.black.cgColor
+        borderLayer.shadowColor = UIColor.uniCo.cgColor
         borderLayer.shadowOpacity = 0.4
         borderLayer.shadowOffset = CGSize(width: 0, height: 1)
         borderLayer.shadowRadius = 2
@@ -36,7 +36,6 @@ class CustomStyledView: UIView {
         layer.addSublayer(borderLayer)
         layer.cornerRadius = 26
         layer.masksToBounds = true
-        
         layer.addSublayer(borderLayer)
     }
     

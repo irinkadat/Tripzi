@@ -22,7 +22,7 @@ struct CustomUITextField: View {
                         SecureField(placeholder, text: $text)
                             .padding()
                             .frame(height: 50)
-                            .background(Color.white)
+                            .background(Color.uniModal)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 18)
                                     .stroke(Color.gray.opacity(0.4), lineWidth: 3)
@@ -35,7 +35,7 @@ struct CustomUITextField: View {
                         TextField(placeholder, text: $text)
                             .padding()
                             .frame(height: 50)
-                            .background(Color.white)
+                            .background(Color.uniModal)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 18)
                                     .stroke(Color.gray.opacity(0.4), lineWidth: 3)

@@ -50,7 +50,7 @@ final class AboutVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCustomBackButtonStyle()
-        view.backgroundColor = .white
+        view.backgroundColor = .uniBackground
         configureNavigationBarTitle(title: "About Us")
         configureUI()
     }
