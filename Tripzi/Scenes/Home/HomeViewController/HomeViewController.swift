@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 import SwiftUI
+import CoreLocation
 
 final class HomeViewController: UIViewController {
     private var categoryViewController: CategoryViewController!
@@ -15,6 +16,7 @@ final class HomeViewController: UIViewController {
     private let viewModel = SearchViewModel()
     private let customSearchBar = CustomSearchBar()
     private var cancellables = Set<AnyCancellable>()
+    private let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +26,16 @@ final class HomeViewController: UIViewController {
         setupListingsViewController()
         addSearchBarTapGesture()
         setupCustomBackButtonStyle()
-        viewModel.fetchLocalListings()
+        
+        viewModel.onListingsUpdate = { [weak self] in
+            guard let self = self else { return }
+            self.listingsViewController.collectionView.reloadData()
+        }
+        
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        
+        viewModel.checkLocationAuthorization()
     }
     
     private func setupCustomSearchBar() {
@@ -94,6 +105,28 @@ extension HomeViewController: SearchViewControllerDelegate {
         viewModel.listings = results
     }
 }
+
+extension HomeViewController: CLLocationManagerDelegate {
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        viewModel.handleAuthorizationStatus(manager: manager)
+    }
+}
+
+//extension HomeViewController: CLLocationManagerDelegate {
+//    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+//        switch manager.authorizationStatus {
+//        case .authorizedWhenInUse, .authorizedAlways:
+//            viewModel.checkLocationAuthorization()
+//            if let location = manager.location {
+//                viewModel.searchNearbyPlaces(location: location)
+//            }
+//        case .denied, .restricted, .notDetermined:
+//            break
+//        @unknown default:
+//            break
+//        }
+//    }
+//}
 
 #Preview {
     HomeViewController()

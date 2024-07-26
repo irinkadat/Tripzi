@@ -59,16 +59,8 @@ struct FlightSegment: Codable {
     let rph: String?
     let codeShareInd: String?
     let journeyDurationInMillis: Int
-    let groundDuration: Int
-    let codeSharingAirline: String?
     let carrierAirline: CarrierAirline
-    let spaFlight: Bool
-    let equipmentCode: String
-    let stopCount: Int
     let containsTransitVisaRequiredPort: Bool
-    let tourIstanbul: Bool
-    let stopoverHotel: Bool
-    let technicalStops: [String]
 }
 
 struct FlightCode: Codable {

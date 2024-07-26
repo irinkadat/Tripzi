@@ -7,7 +7,7 @@
 
 import UIKit
 
-class InfoStatsView: UIView {
+final class InfoStatsView: UIView {
      
     private let ratingLabel: CustomLabel = {
         let label = CustomLabel(style: .title, fontSize: 16)

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FlightDetailsViewController: UIViewController {
+final class FlightDetailsViewController: UIViewController {
     var viewModel: FlightsViewModel
     private let flightCell = FlightTableViewCell(style: .default, reuseIdentifier: FlightTableViewCell.identifier)
     private var checkoutViewController: CheckoutViewController?

@@ -10,10 +10,10 @@ import FirebaseAuth
 import Combine
 
 final class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    var imageView = UIImageView()
-    var nameLabel = UILabel()
-    var subtitleLabel = UILabel()
-    var editPhotoButton = UIButton(type: .system)
+    let imageView = UIImageView()
+    let nameLabel = UILabel()
+    let subtitleLabel = UILabel()
+    let editPhotoButton = UIButton(type: .system)
     private let profileViewModel = ProfileViewModel()
     private var authButton: UIButton!
     private var subscriptions = Set<AnyCancellable>()

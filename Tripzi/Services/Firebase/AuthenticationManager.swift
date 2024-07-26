@@ -12,7 +12,7 @@ import FirebaseCore
 import FirebaseFirestore
 import FirebaseStorage
 
-class AuthenticationManager: ObservableObject {
+final class AuthenticationManager: ObservableObject {
     @Published var isSignedIn = false
     @Published var errorMessage: String?
     

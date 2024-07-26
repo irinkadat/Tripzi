@@ -29,7 +29,7 @@ final class DetailsViewModel {
     }
     
     var listingLongitude: Double {
-        return listing.lng ?? 0.0
+        return listing.long ?? 0.0
     }
     
     var listingWebsite: String? {

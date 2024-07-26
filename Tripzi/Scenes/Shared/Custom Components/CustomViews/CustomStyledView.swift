@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CustomStyledView: UIView {
+final class CustomStyledView: UIView {
     
     private let borderLayer = CALayer()
     

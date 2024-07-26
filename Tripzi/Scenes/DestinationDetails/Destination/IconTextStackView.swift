@@ -7,7 +7,7 @@
 
 import UIKit
 
-class IconTextStackView: UIStackView {
+final class IconTextStackView: UIStackView {
     
     init(icon: UIImage?, text: String) {
         super.init(frame: .zero)

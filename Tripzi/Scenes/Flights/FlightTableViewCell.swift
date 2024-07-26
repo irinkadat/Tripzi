@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FlightTableViewCell: UITableViewCell {
+final class FlightTableViewCell: UITableViewCell {
     
     static let identifier = "FlightTableViewCell"
     

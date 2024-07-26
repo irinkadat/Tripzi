@@ -80,6 +80,7 @@
 		8CE7CCBA2C4FDD6D006401D0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7CCB92C4FDD6D006401D0 /* Extensions.swift */; };
 		8CE7CCBD2C4FDDF4006401D0 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 8CE7CCBC2C4FDDF4006401D0 /* Stripe */; };
 		8CE7CCBF2C4FDDF4006401D0 /* StripeApplePay in Frameworks */ = {isa = PBXBuildFile; productRef = 8CE7CCBE2C4FDDF4006401D0 /* StripeApplePay */; };
+		8CEEA88B2C537710004B8CD2 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEEA88A2C537710004B8CD2 /* LocationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -147,6 +148,7 @@
 		8CE7CCB52C4FDCFD006401D0 /* CheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutViewController.swift; sourceTree = "<group>"; };
 		8CE7CCB72C4FDD1A006401D0 /* FlightDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightDetailsViewModel.swift; sourceTree = "<group>"; };
 		8CE7CCB92C4FDD6D006401D0 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		8CEEA88A2C537710004B8CD2 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -354,6 +356,7 @@
 			children = (
 				8C651CE52C4936A800339BA3 /* FlightNetworkManager.swift */,
 				8CE7CCB92C4FDD6D006401D0 /* Extensions.swift */,
+				8CEEA88A2C537710004B8CD2 /* LocationManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -612,6 +615,7 @@
 				8C8FFFB62C2E9A8A00079E8B /* HomeViewController.swift in Sources */,
 				8C651D5C2C4AE60300339BA3 /* FullScreenMapViewController.swift in Sources */,
 				8C651D082C493D0A00339BA3 /* CategoryCell.swift in Sources */,
+				8CEEA88B2C537710004B8CD2 /* LocationManager.swift in Sources */,
 				8C651CDF2C4935D300339BA3 /* Port.swift in Sources */,
 				8C651CF02C49394900339BA3 /* CustomSearchButton.swift in Sources */,
 				8C309DEC2C2DB71800436F92 /* CustomUITextField.swift in Sources */,
