@@ -25,7 +25,20 @@ final class FlightsViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var selectedOriginPort: Port?
     @Published var selectedDestinationPort: Port?
-    @Published var hasSearchedFlights: Bool = false
+    @Published var isLoading: Bool = false {
+        didSet {
+            isLoadingChanged?(isLoading)
+        }
+    }
+    
+    var isLoadingChanged: ((Bool) -> Void)?
+    var hasSearchedFlightsChanged: ((Bool) -> Void)?
+    
+    @Published var hasSearchedFlights: Bool = false {
+        didSet {
+            hasSearchedFlightsChanged?(hasSearchedFlights)
+        }
+    }
     
     @Published var flattenedFlights: [(FlightSegment, FlightPrice?)] = []
     var selectedFlightOption: FlightOption? {
@@ -121,6 +134,8 @@ final class FlightsViewModel: ObservableObject {
             flightsDelegate?.didFailWithError(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid search parameters"]))
             return
         }
+
+        isLoading = true
         
         let payload = FlightSearchPayload(
             moduleType: "TICKETING",
@@ -140,15 +155,18 @@ final class FlightsViewModel: ObservableObject {
         )
         
         searchFlights(with: payload) { [weak self] result in
-            switch result {
-            case .success(let segments):
-                self?.searchedFlights = segments
-                self?.hasSearchedFlights = !segments.isEmpty
-                self?.flattenFlights(flight: segments)
-                self?.flightsDelegate?.didUpdateFlightSegments()
-            case .failure(let error):
-                self?.errorMessage = error.localizedDescription
-                self?.flightsDelegate?.didFailWithError(error)
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let segments):
+                    self?.searchedFlights = segments
+                    self?.hasSearchedFlights = !segments.isEmpty
+                    self?.flattenFlights(flight: segments)
+                    self?.flightsDelegate?.didUpdateFlightSegments()
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                    self?.flightsDelegate?.didFailWithError(error)
+                }
             }
         }
         completion()
