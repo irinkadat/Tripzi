@@ -93,7 +93,7 @@ final class SearchViewController: UIViewController {
     private let searchButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Search", for: .normal)
-        button.setTitleColor(.uniCo, for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.clipsToBounds = true
         button.layer.cornerRadius = 26
         button.backgroundColor = .uniButton

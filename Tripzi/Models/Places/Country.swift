@@ -21,6 +21,6 @@ struct City: Codable, Hashable {
 }
 
 struct Country: Codable, Hashable {
-    let code: String
-    let name: String
+    let code: String?
+    let name: String?
 }

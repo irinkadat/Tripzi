@@ -58,7 +58,7 @@ final class CheckoutViewController: UIViewController, STPApplePayContextDelegate
     
     private func setupApplePayButton() {
         customApplePayButton.setTitle(" Pay", for: .normal)
-        customApplePayButton.setTitleColor(.uniCo, for: .normal)
+        customApplePayButton.setTitleColor(.white, for: .normal)
         customApplePayButton.backgroundColor = .uniButton
         customApplePayButton.layer.cornerRadius = 16
         customApplePayButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
@@ -179,7 +179,7 @@ final class CheckoutViewController: UIViewController, STPApplePayContextDelegate
     
     private func setupPayButton() {
         payButton.setTitle("Pay", for: .normal)
-        payButton.setTitleColor(.uniCo, for: .normal)
+        payButton.setTitleColor(.white, for: .normal)
         payButton.backgroundColor = .uniButton
         payButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
         payButton.layer.cornerRadius = 16

@@ -142,7 +142,6 @@ final class FlightsViewController: UIViewController {
     private func setupBindings() {
         viewModel.hasSearchedFlightsChanged = { [weak self] hasSearchedFlights in
             DispatchQueue.main.async {
-                print("Updating UI for hasSearchedFlights: \(hasSearchedFlights)")  // Debug print
                 self?.noFlightsLabel.isHidden = hasSearchedFlights
                 self?.illustrationImageView.isHidden = hasSearchedFlights
             }

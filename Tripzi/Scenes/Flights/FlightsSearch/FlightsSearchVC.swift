@@ -11,7 +11,7 @@ import Combine
 final class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - Properties
-
+    
     var viewModel: FlightsViewModel
     private var cancellables = Set<AnyCancellable>()
     
@@ -20,7 +20,7 @@ final class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFiel
     private let datePicker = UIDatePicker()
     
     // MARK: - UI Elements
-
+    
     private let originField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "From"
@@ -66,7 +66,7 @@ final class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFiel
     private let searchButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Search", for: .normal)
-        button.setTitleColor(.uniCo, for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.clipsToBounds = true
         button.layer.cornerRadius = 26
         button.backgroundColor = .uniButton
@@ -94,7 +94,7 @@ final class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFiel
     }
     
     // MARK: - View Lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -106,7 +106,7 @@ final class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFiel
     }
     
     // MARK: - UI Setup
-
+    
     private func setupUI() {
         view.backgroundColor = .uniModal
         setupTextFields()
@@ -217,12 +217,22 @@ final class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFiel
     }
     
     private func performSearch(completion: @escaping () -> Void) {
-        guard let departureDate = departureDateField.text else {
+        guard let departureDate = departureDateField.text, !departureDate.isEmpty else {
             showErrorAlert("Please enter a departure date.")
             return
         }
         
-        viewModel.performSearch(originPort: viewModel.selectedOriginPort!, destinationPort: viewModel.selectedDestinationPort!, departureDate: departureDate, completion: completion)
+        guard let originPort = viewModel.selectedOriginPort else {
+            showErrorAlert("Please select an origin port.")
+            return
+        }
+        
+        guard let destinationPort = viewModel.selectedDestinationPort else {
+            showErrorAlert("Please select a destination port.")
+            return
+        }
+        
+        viewModel.performSearch(originPort: originPort, destinationPort: destinationPort, departureDate: departureDate, completion: completion)
     }
     
     private func showErrorAlert(_ message: String) {

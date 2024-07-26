@@ -26,13 +26,13 @@ struct PortData: Hashable, Codable {
 struct Port: Codable, Hashable {
     let code: String
     let name: String
-    let city: City
-    let country: Country
+    let city: City?
+    let country: Country?
     let port: PortDetail?
     let region: Region?
-    let domestic: Bool
+    let domestic: Bool?
     let ports: [String]
-    let type: String
+    let type: String?
 }
 
 struct PortDetail: Codable, Hashable {

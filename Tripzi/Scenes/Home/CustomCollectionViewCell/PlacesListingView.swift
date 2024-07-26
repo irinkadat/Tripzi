@@ -34,7 +34,7 @@ struct PlacesListingView: View {
                         }) {
                             Image(systemName: viewModel.isFavorited ? "heart.fill" : "heart")
                                 .padding()
-                                .foregroundColor(.uniCo)
+                                .foregroundColor(.white)
                                 .font(.system(size: 21))
                         }
                     }

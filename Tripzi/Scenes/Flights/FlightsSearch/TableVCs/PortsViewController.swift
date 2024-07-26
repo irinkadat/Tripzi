@@ -66,7 +66,7 @@ final class PortsViewController: UIViewController, UITableViewDataSource, UITabl
     // MARK: - Fetching Data
     
     private func fetchPorts() {
-        viewModel.fetchPorts(for: country.code) { [weak self] _ in
+        viewModel.fetchPorts(for: country.code ?? "") { [weak self] _ in
             self?.tableView.reloadData()
         }
     }

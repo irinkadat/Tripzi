@@ -36,7 +36,7 @@ struct LoginView: View {
                 CustomButton(
                     title: "Log in",
                     backgroundColor: .greenPrimary,
-                    textColor: .uniCo,
+                    textColor: .white,
                     action: {
                         viewModel.login(email: email, password: password)
                     }
