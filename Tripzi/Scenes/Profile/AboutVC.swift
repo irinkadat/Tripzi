@@ -55,6 +55,8 @@ final class AboutVC: UIViewController {
         configureUI()
     }
     
+    // MARK: - UI Configuration
+    
     private func configureUI() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)

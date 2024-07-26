@@ -9,7 +9,7 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
-struct PlaceListing: Identifiable, Decodable {
+struct PlaceListing: Identifiable, Codable {
     let id: String
     let categories: [Category]
     let categorieName: String
@@ -64,3 +64,5 @@ struct PlaceListing: Identifiable, Decodable {
         self.timestamp = Timestamp(date: Date())
     }
 }
+
+

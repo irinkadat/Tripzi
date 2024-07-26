@@ -7,17 +7,17 @@
 
 import Foundation
 
-struct TipGroup: Decodable {
+struct TipGroup: Codable {
     let count: Int
     let items: [TipItem]?
 }
 
-struct Tips: Decodable {
+struct Tips: Codable {
     let count: Int?
     let groups: [TipGroup]?
 }
 
-struct TipItem: Decodable {
+struct TipItem: Codable {
     let id: String
     let createdAt: Int
     let text: String
@@ -26,14 +26,14 @@ struct TipItem: Decodable {
     let user: TipUser?
 }
 
-struct TipUser: Decodable {
+struct TipUser: Codable {
     let id: String
     let firstName: String
     let lastName: String?
     let photo: UserPhoto?
 }
 
-struct UserPhoto: Decodable {
+struct UserPhoto: Codable {
     let prefix: String
     let suffix: String
 }

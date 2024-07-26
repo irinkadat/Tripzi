@@ -33,8 +33,10 @@ final class AuthenticationViewModel: ObservableObject {
                 self.validatePassword(password: password)
             }
             .assign(to: &$isPasswordValid)
-         
+        
     }
+    
+    // MARK: - Binding
     
     private func bindAuthenticationManager() {
         authenticationManager.$isSignedIn
@@ -47,6 +49,8 @@ final class AuthenticationViewModel: ObservableObject {
             .assign(to: \.errorMessage, on: self)
             .store(in: &cancellables)
     }
+    
+    // MARK: - Authentication Actions
     
     func login(email: String, password: String) {
         authenticationManager.signInWithEmail(email: email, password: password)
@@ -68,6 +72,8 @@ final class AuthenticationViewModel: ObservableObject {
         authenticationManager.signOut()
     }
     
+    // MARK: - Navigation Actions
+    
     func showLogin() {
         currentAuthView = .login
     }
@@ -80,6 +86,8 @@ final class AuthenticationViewModel: ObservableObject {
         currentAuthView = .resetPassword
     }
     
+    // MARK: - Password Reset
+    
     func resetPassword(email: String) {
         authenticationManager.resetPassword(email: email) { [weak self] success, errorMessage in
             DispatchQueue.main.async {
@@ -91,6 +99,8 @@ final class AuthenticationViewModel: ObservableObject {
             }
         }
     }
+    
+    // MARK: - Password Validation
     
     func passwordsMatch(_ password: String, _ repeatPassword: String) -> Bool {
         if password != repeatPassword {

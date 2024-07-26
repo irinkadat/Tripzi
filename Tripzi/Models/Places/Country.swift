@@ -7,20 +7,20 @@
 
 import Foundation
 
-struct CountryResponse: Hashable, Decodable {
+struct CountryResponse: Hashable, Codable {
     let data: CountryData
 }
 
-struct CountryData: Hashable, Decodable {
+struct CountryData: Hashable, Codable {
     let countries: [[Country]]
 }
 
-struct City: Decodable, Hashable {
+struct City: Codable, Hashable {
     let code: String
     let name: String
 }
 
-struct Country: Decodable, Hashable {
+struct Country: Codable, Hashable {
     let code: String
     let name: String
 }

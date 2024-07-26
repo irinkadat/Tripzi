@@ -15,6 +15,8 @@ struct SearchCategory {
 final class CategoryCell: UICollectionViewCell {
     static let reuseIdentifier = "CategoryCell"
     
+    // MARK: - UI Elements
+
     let iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -38,6 +40,8 @@ final class CategoryCell: UICollectionViewCell {
         view.isHidden = true
         return view
     }()
+    
+    // MARK: - Initialisers
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -65,6 +69,8 @@ final class CategoryCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Configuration Method
     
     func configure(with category: SearchCategory, isSelected: Bool) {
         iconImageView.image = category.icon

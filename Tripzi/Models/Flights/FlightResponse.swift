@@ -36,44 +36,6 @@ struct FilterAndSortParameters: Decodable {
     let maximumDaysForAvailability: Int
 }
 
-struct FlightOption: Decodable {
-    let optionId: Int
-    let segmentList: [FlightSegment]
-    let startingPrice: FlightPrice?
-}
-
-struct FlightPrice: Decodable {
-    let currencyCode: String
-    let amount: Double
-    let currencySign: String?
-    let decimalPlaces: Int?
-}
-
-struct FlightSegment: Decodable {
-    let departureAirportCode: String
-    let arrivalAirportCode: String
-    let departureDateTime: String
-    let arrivalDateTime: String
-    let flightCode: FlightCode
-    let connected: Bool
-    let rph: String?
-    let codeShareInd: String?
-    let journeyDurationInMillis: Int
-    let carrierAirline: CarrierAirline
-    let containsTransitVisaRequiredPort: Bool
-}
-
-struct FlightCode: Decodable {
-    let airlineCode: String
-    let flightNumber: String
-    let leaseCode: String?
-}
-
-struct CarrierAirline: Decodable {
-    let airlineName: String?
-    let airlineCode: String
-}
-
 struct ResponseMessage: Decodable {
     let detail: [ResponseDetail]
 }
@@ -83,7 +45,7 @@ struct ResponseDetail: Decodable {
     let args: [String]?
 }
 
-struct FlightSearchPayload: Decodable {
+struct FlightSearchPayload: Encodable {
     let moduleType: String
     let originDestinationInformationList: [OriginDestinationInformation]
     let passengerTypeList: [PassengerType]
@@ -91,14 +53,14 @@ struct FlightSearchPayload: Decodable {
     let selectedCabinClass: String
 }
 
-struct OriginDestinationInformation: Decodable {
+struct OriginDestinationInformation: Encodable {
     let destinationAirportCode: String
     let destinationMultiPort: Bool
     let originAirportCode: String
     let departureDate: String
 }
 
-struct PassengerType: Decodable {
+struct PassengerType: Encodable {
     let quantity: Int
     let code: String
 }

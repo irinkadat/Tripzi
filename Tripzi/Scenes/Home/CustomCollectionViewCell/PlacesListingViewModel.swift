@@ -11,15 +11,23 @@ import FirebaseAuth
 import Combine
 
 final class PlacesListingViewModel: ObservableObject {
+    
+    // MARK: - Published Properties
+    
     @Published var isFavorited: Bool = false
-    @Published var showLoginAlert: Bool = false 
-    let listing: Listing
+    @Published var showLoginAlert: Bool = false
+    
+    // MARK: - Properties
+    
+    let listing: PlaceListing
     private var cancellables = Set<AnyCancellable>()
     
-    init(listing: Listing) {
+    init(listing: PlaceListing) {
         self.listing = listing
         checkIfFavorited()
     }
+    
+    // MARK: - Methods
     
     func saveToFavorites() {
         guard let userId = Auth.auth().currentUser?.uid else {

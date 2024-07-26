@@ -7,23 +7,23 @@
 
 import Foundation
 
-struct PortResponse: Decodable {
+struct PortResponse: Codable {
     let data: Locations
 }
 
-struct SuggestedPortResponse: Hashable, Decodable {
+struct SuggestedPortResponse: Hashable, Codable {
     let data: [Port]
 }
 
-struct Locations: Decodable {
+struct Locations: Codable {
     let locations: PortData
 }
 
-struct PortData: Hashable, Decodable {
+struct PortData: Hashable, Codable {
     let ports: [Port]
 }
 
-struct Port: Decodable, Hashable {
+struct Port: Codable, Hashable {
     let code: String
     let name: String
     let city: City
@@ -35,12 +35,12 @@ struct Port: Decodable, Hashable {
     let type: String
 }
 
-struct PortDetail: Decodable, Hashable {
+struct PortDetail: Codable, Hashable {
     let code: String?
     let name: String?
 }
 
-struct Region: Decodable, Hashable {
+struct Region: Codable, Hashable {
     let code: String?
     let name: String?
 }

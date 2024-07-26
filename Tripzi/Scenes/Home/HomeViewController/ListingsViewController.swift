@@ -8,15 +8,20 @@
 import UIKit
 
 final class ListingsViewController: UIViewController {
+    
+    // MARK: - Properties
+
     var collectionView: UICollectionView!
     var viewModel: SearchViewModel!
-    var didSelectListing: ((Listing, [String]) -> Void)?
+    var didSelectListing: ((PlaceListing, [String]) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
         bindViewModel()
     }
+    
+    // MARK: - Setup Methods
     
     private func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
@@ -48,6 +53,8 @@ final class ListingsViewController: UIViewController {
         }
     }
 }
+
+// MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 
 extension ListingsViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

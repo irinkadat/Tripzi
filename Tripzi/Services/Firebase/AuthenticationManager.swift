@@ -22,6 +22,8 @@ final class AuthenticationManager: ObservableObject {
         }
     }
     
+    // MARK: - Email/Password Authentication
+
     func signInWithEmail(email: String, password: String) {
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] (result, error) in
             if let error = error {
@@ -53,6 +55,8 @@ final class AuthenticationManager: ObservableObject {
             }
         }
     }
+    
+    // MARK: - Profile Image Handling
     
     private func uploadProfileImage(_ image: UIImage, userId: String, completion: @escaping (URL?) -> Void) {
         guard let imageData = image.jpegData(compressionQuality: 0.75) else {
@@ -97,6 +101,8 @@ final class AuthenticationManager: ObservableObject {
         }
     }
     
+    // MARK: - Google Authentication
+    
     func signInWithGoogle() {
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
         
@@ -136,6 +142,8 @@ final class AuthenticationManager: ObservableObject {
         }
     }
     
+    // MARK: - Facebook Authentication
+    
     func signInWithFacebook() {
         let loginManager = LoginManager()
         
@@ -168,6 +176,8 @@ final class AuthenticationManager: ObservableObject {
         }
     }
     
+    // MARK: - Password Reset
+    
     func resetPassword(email: String, completion: @escaping (Bool, String?) -> Void) {
         Auth.auth().sendPasswordReset(withEmail: email) { error in
             if let error = error {
@@ -178,6 +188,8 @@ final class AuthenticationManager: ObservableObject {
         }
     }
     
+    // MARK: - Sign Out
+    
     func signOut() {
         do {
             try Auth.auth().signOut()
@@ -186,6 +198,8 @@ final class AuthenticationManager: ObservableObject {
             errorMessage = error.localizedDescription
         }
     }
+    
+    // MARK: - Helpers
     
     private func getRootViewController() -> UIViewController {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,

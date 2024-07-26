@@ -22,12 +22,16 @@ class PersonalInfoViewController: UIViewController {
         profileViewModel.fetchUserInfo()
     }
     
+    // MARK: - Navigation Bar Setup
+
     private func setupNavigationBar() {
         navigationItem.title = "Personal Info"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
     }
     
+    // MARK: - UI Setup
+
     private func setupUI() {
         view.backgroundColor = .uniBackground
         
@@ -51,6 +55,8 @@ class PersonalInfoViewController: UIViewController {
         setupConstraints(labels: birthdateLabels, topAnchor: emailLabels.titleLabel.bottomAnchor, topConstant: 20)
     }
     
+    // MARK: - Helper Methods
+
     private func createInfoLabels(title: String, value: String) -> (titleLabel: UILabel, valueLabel: UILabel) {
         let titleLabel = UILabel()
         titleLabel.text = title

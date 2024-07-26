@@ -9,6 +9,9 @@ import UIKit
 import Combine
 
 final class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
+    
+    // MARK: - Properties
+
     var viewModel: FlightsViewModel
     private var cancellables = Set<AnyCancellable>()
     
@@ -16,6 +19,8 @@ final class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFiel
     
     private let datePicker = UIDatePicker()
     
+    // MARK: - UI Elements
+
     private let originField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "From"
@@ -64,7 +69,7 @@ final class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFiel
         button.setTitleColor(.uniCo, for: .normal)
         button.clipsToBounds = true
         button.layer.cornerRadius = 26
-        button.backgroundColor = .black
+        button.backgroundColor = .uniButton
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -88,6 +93,8 @@ final class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFiel
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - View Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -98,6 +105,8 @@ final class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFiel
         setupTapGesture()
     }
     
+    // MARK: - UI Setup
+
     private func setupUI() {
         view.backgroundColor = .uniModal
         setupTextFields()
@@ -169,6 +178,8 @@ final class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFiel
         dateFormatter.dateFormat = "dd-MM-yyyy"
         departureDateField.text = dateFormatter.string(from: Date())
     }
+    
+    // MARK: - Actions
     
     @objc private func dateChanged() {
         let dateFormatter = DateFormatter()

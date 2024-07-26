@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Venue: Decodable {
+struct Venue: Codable {
     let id: String
     let name: String
     let location: Location
@@ -22,26 +22,26 @@ struct Venue: Decodable {
     let photos: Photos?
 }
 
-struct DetailedVenueResponse: Decodable {
+struct DetailedVenueResponse: Codable {
     let response: DetailedVenue
 }
 
-struct DetailedVenue: Decodable {
+struct DetailedVenue: Codable {
     let venue: Venue?
 }
 
-struct VenueCategory: Decodable {
+struct VenueCategory: Codable {
     let id: String
     let name: String
 }
 
-struct VenueContact: Decodable {
+struct VenueContact: Codable {
     let phone: String?
     let formattedPhone: String?
     let instagram: String?
 }
 
-struct Stats: Decodable {
+struct Stats: Codable {
     let tipCount: Int
     let checkinsCount: Int
 }

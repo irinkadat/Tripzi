@@ -23,7 +23,7 @@ struct PlacesListingView: View {
                             .onTapGesture {
                                 onTap()
                             }
-
+                        
                         Button(action: {
                             viewModel.isFavorited.toggle()
                             if viewModel.isFavorited {
@@ -39,7 +39,7 @@ struct PlacesListingView: View {
                         }
                     }
                 }
-
+                
                 VStack(alignment: .leading) {
                     HStack {
                         Text(viewModel.listing.name)
@@ -52,13 +52,13 @@ struct PlacesListingView: View {
                             .font(.headline)
                             .padding(.trailing, 8)
                     }
-
+                    
                     VStack(alignment: .leading) {
                         Text("Address \(viewModel.listing.address)")
                         Text(viewModel.listing.contextLine)
                     }
                     .secondaryTextStyle()
-
+                    
                     HStack {
                         Text(viewModel.listing.categorieName)
                             .font(.headline)

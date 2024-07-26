@@ -18,6 +18,8 @@ final class IconTextStackView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Setup View
+
     private func setupView(icon: UIImage?, text: String) {
         let iconImageView = UIImageView(image: icon)
         iconImageView.tintColor = .gray

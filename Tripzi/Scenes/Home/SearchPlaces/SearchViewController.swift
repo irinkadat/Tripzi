@@ -10,10 +10,13 @@ import Combine
 import SwiftUI
 
 protocol SearchViewControllerDelegate: AnyObject {
-    func didPerformSearch(results: [Listing])
+    func didPerformSearch(results: [PlaceListing])
 }
 
 final class SearchViewController: UIViewController {
+    
+    // MARK: - UI Elements
+
     private let searchField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "Search destinations"
@@ -72,6 +75,8 @@ final class SearchViewController: UIViewController {
         return button
     }()
     
+    // MARK: - Properties
+
     weak var delegate: SearchViewControllerDelegate?
     private var viewModel = SearchViewModel()
     private var cancellables = Set<AnyCancellable>()
@@ -91,10 +96,12 @@ final class SearchViewController: UIViewController {
         button.setTitleColor(.uniCo, for: .normal)
         button.clipsToBounds = true
         button.layer.cornerRadius = 26
-        button.backgroundColor = .black
+        button.backgroundColor = .uniButton
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    
+    // MARK: - Setup Methods
     
     private func setupUI() {
         view.addSubview(closeButton)
@@ -152,6 +159,8 @@ final class SearchViewController: UIViewController {
             }
         }
     }
+    
+    // MARK: - Action Methods
     
     @objc private func didTapCloseButton() {
         dismiss(animated: true, completion: nil)

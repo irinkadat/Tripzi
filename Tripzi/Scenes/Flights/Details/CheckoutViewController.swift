@@ -12,6 +12,9 @@ import PassKit
 protocol AuthenticationContextProvider: AnyObject {}
 
 final class CheckoutViewController: UIViewController, STPApplePayContextDelegate, STPAuthenticationContext, AuthenticationContextProvider {
+    
+    // MARK: - Properties
+
     var viewModel: FlightDetailsViewModel
     let paymentButton = PKPaymentButton(paymentButtonType: .checkout, paymentButtonStyle: .black)
     let orPayWithCardLabel = UILabel()
@@ -21,6 +24,8 @@ final class CheckoutViewController: UIViewController, STPApplePayContextDelegate
     let payButton = UIButton(type: .system)
     let customApplePayButton = UIButton(type: .system)
     
+    // MARK: - Initializer
+
     init(price: Double) {
         self.viewModel = FlightDetailsViewModel(price: price)
         super.init(nibName: nil, bundle: nil)
@@ -32,12 +37,16 @@ final class CheckoutViewController: UIViewController, STPApplePayContextDelegate
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - View Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .uniBackground
         setupUI()
     }
     
+    // MARK: - UI Setup
+
     private func setupUI() {
         setupApplePayButton()
         setupOrPayWithCardLabel()
@@ -50,7 +59,7 @@ final class CheckoutViewController: UIViewController, STPApplePayContextDelegate
     private func setupApplePayButton() {
         customApplePayButton.setTitle(" Pay", for: .normal)
         customApplePayButton.setTitleColor(.uniCo, for: .normal)
-        customApplePayButton.backgroundColor = .black
+        customApplePayButton.backgroundColor = .uniButton
         customApplePayButton.layer.cornerRadius = 16
         customApplePayButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
         customApplePayButton.addTarget(self, action: #selector(didTapApplePayButton), for: .touchUpInside)
@@ -171,10 +180,10 @@ final class CheckoutViewController: UIViewController, STPApplePayContextDelegate
     private func setupPayButton() {
         payButton.setTitle("Pay", for: .normal)
         payButton.setTitleColor(.uniCo, for: .normal)
-        payButton.backgroundColor = .black
+        payButton.backgroundColor = .uniButton
         payButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
         payButton.layer.cornerRadius = 16
-        payButton.addTarget(self, action: #selector(didTapPayButton), for: .touchUpInside)
+        payButton.addAction(UIAction(handler: { _ in self.didTapPayButton() }), for: .touchUpInside)
         payButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(payButton)
         
@@ -186,6 +195,8 @@ final class CheckoutViewController: UIViewController, STPApplePayContextDelegate
         ])
     }
     
+    // MARK: - Bind ViewModel
+
     private func bindViewModel() {
         viewModel.updateUIForPaymentResult = { [weak self] success in
             DispatchQueue.main.async {
@@ -207,7 +218,9 @@ final class CheckoutViewController: UIViewController, STPApplePayContextDelegate
         }
     }
     
-    @objc func didTapPayButton() {
+    // MARK: - Button Actions
+
+    func didTapPayButton() {
         viewModel.didTapPayButton(
             cardParams: cardTextField.paymentMethodParams.card!,
             email: emailTextField.text,
@@ -219,6 +232,8 @@ final class CheckoutViewController: UIViewController, STPApplePayContextDelegate
         viewModel.didTapApplePayButton()
     }
     
+    // MARK: - Apple Pay Handling
+
     func handleApplePayRequest() {
         let paymentRequest = StripeAPI.paymentRequest(withMerchantIdentifier: "merchant.com.example", country: "US", currency: "usd")
         

@@ -16,12 +16,18 @@ struct CustomButton: View {
     
     var body: some View {
         Button(action: action) {
+            Spacer()
+
             HStack {
                 if let iconName = icon {
-                    Image(systemName: iconName)
+                    Image(iconName)
+                        .resizable()
+                        .frame(width: 24, height: 24)
                         .foregroundColor(textColor)
+                        .padding(.leading, 6)
                 }
                 Text(title)
+                    .frame(maxWidth: .infinity, alignment: .center)
                     .foregroundColor(textColor)
             }
             .padding()
@@ -29,8 +35,11 @@ struct CustomButton: View {
             .frame(maxWidth: .infinity)
             .background(backgroundColor)
             .cornerRadius(18)
+            
+            Spacer()
         }
         .padding(.horizontal)
+        
     }
 }
 

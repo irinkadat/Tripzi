@@ -20,6 +20,9 @@ protocol FlightsViewModelDelegate: AnyObject {
 }
 
 final class FlightsViewModel: ObservableObject {
+    
+    // MARK: - Properties
+    
     @Published var searchedFlights: [FlightOption] = []
     @Published var ports: [Port] = []
     @Published var errorMessage: String?
@@ -58,24 +61,12 @@ final class FlightsViewModel: ObservableObject {
     @Published var flightPrice: Double = 0.0
     
     private var networkService = NetworkService()
-    
-    func selectFlightOption(at index: Int) {
-        selectedFlightOption = searchedFlights[index]
-    }
-    
-    func flattenFlights(flight: [FlightOption]) {
-        flattenedFlights = searchedFlights.flatMap { option in
-            option.segmentList.map { segment in
-                (segment, option.startingPrice)
-            }
-        }
-    }
-    
     var countries: [Country] = []
     let currentTimeMillis = Int(Date().timeIntervalSince1970 * 1000)
-    
     weak var flightsDelegate: FlightsViewModelDelegate?
     weak var portSelectionDelegate: PortSelectionDelegate?
+    
+    // MARK: - Fetch Methods
     
     func fetchCountries(completion: @escaping ([Country]) -> Void) {
         let urlString = "https://www.turkishairlines.com/api/v1/booking/countries?\(currentTimeMillis)"
@@ -129,12 +120,14 @@ final class FlightsViewModel: ObservableObject {
         }
     }
     
+    // MARK: - Search Flights
+    
     func performSearch(originPort: Port, destinationPort: Port, departureDate: String, completion: @escaping () -> Void) {
         guard !departureDate.isEmpty else {
             flightsDelegate?.didFailWithError(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid search parameters"]))
             return
         }
-
+        
         isLoading = true
         
         let payload = FlightSearchPayload(
@@ -182,6 +175,8 @@ final class FlightsViewModel: ObservableObject {
         }
     }
     
+    // MARK: - Handle Ports
+    
     func didChoosePort(port: Port, forField: CustomTextField) {
         portSelectionDelegate?.didChoosePort(portName: port.name, forField: forField)
         
@@ -203,7 +198,7 @@ final class FlightsViewModel: ObservableObject {
             fetchPortSuggestions(for: newText)
         }
     }
-
+    
     func selectPort(at index: Int, forField field: CustomTextField) {
         guard index >= 0 && index < ports.count else {
             print("Index out of range. Index: \(index), Ports count: \(ports.count)")
@@ -212,6 +207,8 @@ final class FlightsViewModel: ObservableObject {
         let selectedPort = ports[index]
         didChoosePort(port: selectedPort, forField: field)
     }
+    
+    // MARK: - Flight Details
     
     private func updateFlightDetails() {
         guard let selectedFlight = selectedFlightOption,
@@ -247,6 +244,20 @@ final class FlightsViewModel: ObservableObject {
         } else {
             flightPrice = 0.0
             flightPriceCurrency = "USD"
+        }
+    }
+    
+    // MARK: - Utility Methods
+    
+    func selectFlightOption(at index: Int) {
+        selectedFlightOption = searchedFlights[index]
+    }
+    
+    func flattenFlights(flight: [FlightOption]) {
+        flattenedFlights = searchedFlights.flatMap { option in
+            option.segmentList.map { segment in
+                (segment, option.startingPrice)
+            }
         }
     }
 }

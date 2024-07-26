@@ -7,52 +7,52 @@
 
 import Foundation
 
-struct PlacesResponse: Decodable {
+struct PlacesResponse: Codable {
     let response: Response
 }
 
-struct Response: Decodable {
+struct Response: Codable {
     let group: Group?
     let results: [PlaceResult]?
     let headerFullLocation: String?
     let headerLocationGranularity: String?
 }
 
-struct Group: Decodable {
+struct Group: Codable {
     let totalResults: Int?
     let results: [PlaceResult]
 }
 
-struct PlaceResult: Decodable {
+struct PlaceResult: Codable {
     let displayType: String
     let venue: Venue?
     let photos: Photos?
 }
 
-struct Popular: Decodable {
+struct Popular: Codable {
     let isOpen: Bool?
 }
 
-struct OpenTime: Decodable {
+struct OpenTime: Codable {
     let renderedTime: String
 }
 
-struct Price: Decodable {
+struct Price: Codable {
     let tier: Int
     let message: String
     let currency: String
 }
 
-struct Photos: Decodable {
+struct Photos: Codable {
     let count: Int
     let groups: [PhotoGroup]?
 }
 
-struct PhotoGroup: Decodable {
+struct PhotoGroup: Codable {
     let items: [Photo]
 }
 
-struct Photo: Decodable {
+struct Photo: Codable {
     let id: String
     let createdAt: Int
     let prefix: String
@@ -61,7 +61,7 @@ struct Photo: Decodable {
     let height: Int
 }
 
-struct Category: Decodable {
+struct Category: Codable {
     let id: String
     let name: String
     
@@ -71,12 +71,12 @@ struct Category: Decodable {
     }
 }
 
-struct CatIcon: Decodable {
+struct CatIcon: Codable {
     let prefix: String
     let suffix: String
 }
 
-struct Location: Decodable {
+struct Location: Codable {
     let address: String?
     let lat: Double?
     let lng: Double?
@@ -88,7 +88,7 @@ struct Location: Decodable {
 }
 
 
-struct Contact: Decodable {
+struct Contact: Codable {
     let phone: String
     let formattedPhone: String
     let instagram: String

@@ -9,18 +9,10 @@ import UIKit
 import Combine
 
 final class CategoryViewController: UIViewController {
-    private var collectionView: UICollectionView!
-    static let categories: [SearchCategory] = [
-        SearchCategory(name: "Hotel", icon: (UIImage(named: "hotel") ?? UIImage(named: "pic"))!),
-        SearchCategory(name: "Food", icon: UIImage(named: "burger") ?? UIImage(named: "pic")!),
-        SearchCategory(name: "Stores", icon: UIImage(named: "store") ?? UIImage(named: "pic")!),
-        SearchCategory(name: "Bar", icon: (UIImage(named: "vodka") ?? UIImage(named: "pic"))!),
-        SearchCategory(name: "Coffee", icon: UIImage(named: "cup") ?? UIImage(named: "pic")!),
-        SearchCategory(name: "Museums", icon: UIImage(named: "museum") ?? UIImage(named: "pic")!),
-        SearchCategory(name: "Night Clubs", icon: UIImage(named: "fire") ?? UIImage(named: "pic")!),
-        SearchCategory(name: "Music", icon: UIImage(named: "music") ?? UIImage(named: "pic")!)
-    ]
     
+    // MARK: - Properties
+    
+    private var collectionView: UICollectionView!
     private var viewModel: SearchViewModel
     private var cancellables: Set<AnyCancellable> = []
     
@@ -40,6 +32,8 @@ final class CategoryViewController: UIViewController {
         super.viewDidLoad()
         setupCollectionView()
     }
+    
+    // MARK: - Set up collectionview
     
     private func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
@@ -65,14 +59,16 @@ final class CategoryViewController: UIViewController {
     }
 }
 
+// MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+
 extension CategoryViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return CategoryViewController.categories.count
+        return ListingCategories.all.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.reuseIdentifier, for: indexPath) as! CategoryCell
-        let category = CategoryViewController.categories[indexPath.row]
+        let category = ListingCategories.all[indexPath.row]
         let isSelected = indexPath.row == viewModel.selectedCategoryIndex
         cell.configure(with: category, isSelected: isSelected)
         return cell

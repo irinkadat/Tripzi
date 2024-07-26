@@ -8,6 +8,8 @@
 import UIKit
 
 final class FlightDetailsViewController: UIViewController {
+    // MARK: - Properties
+
     var viewModel: FlightsViewModel
     private let flightCell = FlightTableViewCell(style: .default, reuseIdentifier: FlightTableViewCell.identifier)
     private var checkoutViewController: CheckoutViewController?
@@ -21,6 +23,8 @@ final class FlightDetailsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - View Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -28,6 +32,8 @@ final class FlightDetailsViewController: UIViewController {
         flightCell.configure(with: viewModel)
         addCheckoutViewController(price: viewModel.flightPrice)
     }
+
+    // MARK: - UI Setup
 
     private func setupUI() {
         view.backgroundColor = .uniBackground
