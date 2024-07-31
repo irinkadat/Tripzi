@@ -17,16 +17,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tripzii" translatesAutoresizingMaskIntoConstraints="NO" id="dce-Nf-VVb">
-                                <rect key="frame" x="13" y="232" width="351" height="309"/>
+                                <rect key="frame" x="21" y="231" width="351" height="309"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="dce-Nf-VVb" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="173" id="CJV-J7-3Yw"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="dce-Nf-VVb" secondAttribute="bottom" constant="277" id="EXz-t9-nst"/>
-                            <constraint firstItem="dce-Nf-VVb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="13" id="luN-Hz-ttj"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dce-Nf-VVb" secondAttribute="trailing" constant="29" id="rnP-WK-Ohl"/>
+                            <constraint firstItem="dce-Nf-VVb" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="172" id="1SY-Wo-iYc"/>
+                            <constraint firstItem="dce-Nf-VVb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="21" id="39U-8Q-ofr"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="dce-Nf-VVb" secondAttribute="bottom" constant="278" id="7zx-uY-cda"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dce-Nf-VVb" secondAttribute="trailing" constant="21" id="Bqc-q6-lk2"/>
                         </constraints>
                     </view>
                 </viewController>

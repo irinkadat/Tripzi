@@ -77,7 +77,7 @@ final class FlightTableViewCell: UITableViewCell {
     private let containerView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 8
-        view.layer.shadowColor = UIColor.uniBackground.cgColor
+        view.layer.shadowColor = UIColor.uniCo.cgColor
         view.layer.shadowOpacity = 0.1
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 4

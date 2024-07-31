@@ -134,9 +134,9 @@ final class FlightsViewModel: ObservableObject {
             moduleType: "TICKETING",
             originDestinationInformationList: [
                 OriginDestinationInformation(
-                    destinationAirportCode: destinationPort.code,
+                    destinationAirportCode: destinationPort.code ?? "",
                     destinationMultiPort: false,
-                    originAirportCode: originPort.code,
+                    originAirportCode: originPort.code ?? "",
                     departureDate: departureDate
                 )
             ],
@@ -178,7 +178,7 @@ final class FlightsViewModel: ObservableObject {
     // MARK: - Handle Ports
     
     func didChoosePort(port: Port, forField: CustomTextField) {
-        portSelectionDelegate?.didChoosePort(portName: port.name, forField: forField)
+        portSelectionDelegate?.didChoosePort(portName: port.name ?? "", forField: forField)
         
         switch forField.tag {
         case 1:

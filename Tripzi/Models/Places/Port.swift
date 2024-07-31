@@ -24,8 +24,8 @@ struct PortData: Hashable, Codable {
 }
 
 struct Port: Codable, Hashable {
-    let code: String
-    let name: String
+    let code: String?
+    let name: String?
     let city: City?
     let country: Country?
     let port: PortDetail?

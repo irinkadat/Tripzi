@@ -37,7 +37,7 @@ final class PortsViewController: UIViewController, UITableViewDataSource, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .uniModal
-        title = "Airports in \(country.name)"
+        title = "Airports in \(country.name ?? "")"
         setupTableView()
         fetchPorts()
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneTapped))
@@ -47,7 +47,7 @@ final class PortsViewController: UIViewController, UITableViewDataSource, UITabl
     
     @objc private func doneTapped() {
         if let selectedPort = selectedPort {
-            delegate?.didChoosePort(portName: selectedPort.name, forField: selectedTextField)
+            delegate?.didChoosePort(portName: selectedPort.name ?? "", forField: selectedTextField)
             viewModel.didChoosePort(port: selectedPort, forField: selectedTextField)
             dismiss(animated: true, completion: nil)
         }
@@ -80,7 +80,7 @@ final class PortsViewController: UIViewController, UITableViewDataSource, UITabl
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PortCell", for: indexPath)
         let port = viewModel.ports[indexPath.row]
-        cell.textLabel?.text = "\(port.name) (\(port.code))"
+        cell.textLabel?.text = "\(port.name ?? "") (\(port.code ?? ""))"
         cell.accessoryType = (selectedPort?.name == port.name) ? .checkmark : .none
         return cell
     }

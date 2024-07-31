@@ -50,7 +50,8 @@ struct RegistrationView: View {
                     if viewModel.passwordsMatch(password, repeatPassword) && viewModel.validatePassword(password: password) {
                         viewModel.register(email: email, password: password, fullName: fullName, birthDate: birthDate)
                     } else {
-                        viewModel.errorMessage = "Passwords do not match or password is invalid"
+//                        viewModel.errorMessage = "Passwords do not match or password is invalid"
+                        viewModel.errorMessage = viewModel.passwordCriteriaMessage(password: password)
                     }
                 })
                 

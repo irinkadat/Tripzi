@@ -37,7 +37,9 @@ final class FavoritesViewModel: ObservableObject {
     }
     
     init() {
-        listenToFavorites()
+        Auth.auth().addStateDidChangeListener { [weak self] auth, user in
+            self?.handleAuthStateChange()
+        }
         setupNotificationObservers()
     }
     
@@ -45,6 +47,7 @@ final class FavoritesViewModel: ObservableObject {
     
     private func setupNotificationObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleAuthStateChange), name: .AuthStateDidChange, object: nil)
+        handleAuthStateChange() //
     }
     
     private func setupBindings() {
@@ -59,7 +62,13 @@ final class FavoritesViewModel: ObservableObject {
     
     @objc private func handleAuthStateChange() {
         stopListeningToFavorites()
-        listenToFavorites()
+        if Auth.auth().currentUser != nil {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.listenToFavorites()
+            }
+        } else {
+            favorites = []
+        }
     }
     
     // MARK: - Data Fetching Methods
@@ -127,7 +136,7 @@ final class FavoritesViewModel: ObservableObject {
         listener?.remove()
         listener = nil
     }
-        
+    
     deinit {
         stopListeningToFavorites()
         NotificationCenter.default.removeObserver(self)

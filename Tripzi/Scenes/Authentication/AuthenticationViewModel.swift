@@ -118,4 +118,24 @@ final class AuthenticationViewModel: ObservableObject {
         let isValid = hasUpperCase && hasLowerCase && hasDigits && isLongEnough
         return isValid
     }
+    
+    func passwordCriteriaMessage(password: String) -> String {
+        var messages: [String] = []
+        
+        if password.range(of: "[A-Z]", options: .regularExpression) == nil {
+            messages.append("one uppercase letter")
+        }
+        if password.range(of: "[a-z]", options: .regularExpression) == nil {
+            messages.append("one lowercase letter")
+        }
+        if password.range(of: "\\d", options: .regularExpression) == nil {
+            messages.append("one digit")
+        }
+        if password.count < 6 {
+            messages.append("at least 6 characters")
+        }
+        
+        return "Password must contain " + messages.joined(separator: ", ") + "."
+    }
+
 }
