@@ -29,6 +29,7 @@ struct ListingImageCarouselView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .tag(index)
+                                .frame(width: 40, height: 40)
                         @unknown default:
                             EmptyView()
                         }
@@ -40,6 +41,7 @@ struct ListingImageCarouselView: View {
             Image("pic")
                 .resizable()
                 .scaledToFit()
+                .frame(width: 50, height: 50)
         }
     }
 }
