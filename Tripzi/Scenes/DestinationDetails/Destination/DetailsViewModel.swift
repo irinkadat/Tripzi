@@ -10,7 +10,7 @@ import Foundation
 final class DetailsViewModel {
     
     // MARK: - Properties
-
+    
     let listing: PlaceListing
     let imageUrls: [String]
     
@@ -20,7 +20,7 @@ final class DetailsViewModel {
     }
     
     // MARK: - Computed Properties
-
+    
     var listingName: String {
         return listing.name
     }

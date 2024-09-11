@@ -10,7 +10,7 @@ import UIKit
 final class ListingsViewController: UIViewController {
     
     // MARK: - Properties
-
+    
     var collectionView: UICollectionView!
     var viewModel: SearchViewModel!
     var didSelectListing: ((PlaceListing, [String]) -> Void)?

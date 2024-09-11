@@ -30,7 +30,7 @@ final class FlightDetailsViewController: UIViewController {
         setupUI()
         setupCustomBackButtonStyle()
         flightCell.configure(with: viewModel)
-        addCheckoutViewController(price: viewModel.flightPrice)
+        addCheckoutViewController(price: Double(viewModel.flightPrice) ?? 0.0)
     }
 
     // MARK: - UI Setup

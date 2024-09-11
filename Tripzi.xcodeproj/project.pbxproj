@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C104C7D2C8B83BE00CBAB24 /* CustomPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C104C7C2C8B83BE00CBAB24 /* CustomPageControl.swift */; };
+		8C104C7F2C8F61C700CBAB24 /* CoordinateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C104C7E2C8F61C700CBAB24 /* CoordinateUtils.swift */; };
 		8C309DC92C2DB46800436F92 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C309DC82C2DB46800436F92 /* AppDelegate.swift */; };
 		8C309DCB2C2DB46800436F92 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C309DCA2C2DB46800436F92 /* SceneDelegate.swift */; };
 		8C309DD22C2DB46A00436F92 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C309DD12C2DB46A00436F92 /* Assets.xcassets */; };
@@ -89,6 +91,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8C104C7C2C8B83BE00CBAB24 /* CustomPageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPageControl.swift; sourceTree = "<group>"; };
+		8C104C7E2C8F61C700CBAB24 /* CoordinateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateUtils.swift; sourceTree = "<group>"; };
 		8C309DC52C2DB46800436F92 /* Tripzi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tripzi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C309DC82C2DB46800436F92 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8C309DCA2C2DB46800436F92 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -358,6 +362,7 @@
 				8C651CE52C4936A800339BA3 /* FlightNetworkManager.swift */,
 				8CE7CCB92C4FDD6D006401D0 /* Extensions.swift */,
 				8CEEA88A2C537710004B8CD2 /* LocationManager.swift */,
+				8C104C7E2C8F61C700CBAB24 /* CoordinateUtils.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -481,6 +486,7 @@
 			children = (
 				8CC3EFF22C3D6C7300400A89 /* ListingImageCarouselView.swift */,
 				8C651CED2C49393200339BA3 /* CustomStyledView.swift */,
+				8C104C7C2C8B83BE00CBAB24 /* CustomPageControl.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -676,6 +682,7 @@
 				8C651D382C4ABCF300339BA3 /* MapView.swift in Sources */,
 				8CC3F0092C3EC63900400A89 /* SearchViewController.swift in Sources */,
 				8C309DCB2C2DB46800436F92 /* SceneDelegate.swift in Sources */,
+				8C104C7F2C8F61C700CBAB24 /* CoordinateUtils.swift in Sources */,
 				8CC530252C3C677F00E020DD /* PlacesListingView.swift in Sources */,
 				8C309E062C2DC7D100436F92 /* AuthenticationViewModel.swift in Sources */,
 				8C9ED1A22C511D5200B7ECB3 /* CategoryViewController.swift in Sources */,
@@ -689,6 +696,7 @@
 				8CC17F102C53E7CA0072E6D5 /* Venue.swift in Sources */,
 				8C651D5C2C4AE60300339BA3 /* FullScreenMapViewController.swift in Sources */,
 				8C651D082C493D0A00339BA3 /* CategoryCell.swift in Sources */,
+				8C104C7D2C8B83BE00CBAB24 /* CustomPageControl.swift in Sources */,
 				8CEEA88B2C537710004B8CD2 /* LocationManager.swift in Sources */,
 				8C651CDF2C4935D300339BA3 /* Port.swift in Sources */,
 				8C651CF02C49394900339BA3 /* CustomSearchButton.swift in Sources */,

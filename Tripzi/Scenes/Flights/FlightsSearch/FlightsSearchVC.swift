@@ -232,7 +232,7 @@ final class FlightsSearchVC: UIViewController, PortSelectionDelegate, UITextFiel
             return
         }
         
-        viewModel.performSearch(originPort: originPort, destinationPort: destinationPort, departureDate: departureDate, completion: completion)
+        viewModel.performSearch(originPort: originPort, destinationPort: destinationPort, departureDateString: departureDate, completion: completion)
     }
     
     private func showErrorAlert(_ message: String) {

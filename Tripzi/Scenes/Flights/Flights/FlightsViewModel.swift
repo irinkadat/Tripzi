@@ -58,7 +58,9 @@ final class FlightsViewModel: ObservableObject {
     @Published var arrivalAirportCode: String = ""
     @Published var flightDuration: String = ""
     @Published var flightPriceCurrency: String = ""
-    @Published var flightPrice: Double = 0.0
+//    @Published var flightPrice: Double = 0.0
+    @Published var flightPrice: String = "Full"
+
     
     private var networkService = NetworkService()
     var countries: [Country] = []
@@ -122,11 +124,9 @@ final class FlightsViewModel: ObservableObject {
     
     // MARK: - Search Flights
     
-    func performSearch(originPort: Port, destinationPort: Port, departureDate: String, completion: @escaping () -> Void) {
-        guard !departureDate.isEmpty else {
-            flightsDelegate?.didFailWithError(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid search parameters"]))
-            return
-        }
+    func performSearch(originPort: Port, destinationPort: Port, departureDateString: String, completion: @escaping () -> Void) {
+        
+        print("Original departureDateString: \(departureDateString)")
         
         isLoading = true
         
@@ -137,7 +137,8 @@ final class FlightsViewModel: ObservableObject {
                     destinationAirportCode: destinationPort.code ?? "",
                     destinationMultiPort: false,
                     originAirportCode: originPort.code ?? "",
-                    departureDate: departureDate
+                    departureDate: departureDateString
+//                    departureDate: "06-09-2024"
                 )
             ],
             passengerTypeList: [
@@ -146,6 +147,7 @@ final class FlightsViewModel: ObservableObject {
             selectedBookerSearch: "O",
             selectedCabinClass: "ECONOMY"
         )
+        
         
         searchFlights(with: payload) { [weak self] result in
             DispatchQueue.main.async {
@@ -208,6 +210,34 @@ final class FlightsViewModel: ObservableObject {
         didChoosePort(port: selectedPort, forField: field)
     }
     
+    // Function to convert date string into Date object
+    func convertStringToDate(_ dateString: String, format: String = "dd-MM-yyyy HH:mm") -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        return dateFormatter.date(from: dateString)
+    }
+
+    // Function to calculate duration in minutes between two Date objects
+    func calculateDurationInMinutes(start: Date, end: Date) -> Int {
+        let duration = end.timeIntervalSince(start) // duration in seconds
+        return Int(duration / 60) // convert to minutes
+    }
+    
+    func convertMinutesToHoursMinutes(_ minutes: Int) -> String {
+        let hours = minutes / 60
+        let remainingMinutes = minutes % 60
+        return "\(hours)h \(remainingMinutes)m"
+    }
+    
+    // Method to determine if a flight is clickable
+    func isFlightClickable(at index: Int) -> Bool {
+        guard index >= 0 && index < searchedFlights.count else {
+            return false
+        }
+        let flight = searchedFlights[index]
+        return flight.startingPrice?.amount != 0.0
+    }
+    
     // MARK: - Flight Details
     
     private func updateFlightDetails() {
@@ -216,6 +246,10 @@ final class FlightsViewModel: ObservableObject {
               let endSegment = selectedFlight.segmentList.last else {
             return
         }
+        
+        print("This is start segment \(startSegment)")
+        print("This is end segment \(endSegment)")
+
         
         let departureDateTimeComponents = startSegment.departureDateTime.split(separator: " ")
         if departureDateTimeComponents.count == 2 {
@@ -237,13 +271,25 @@ final class FlightsViewModel: ObservableObject {
         
         departureAirportCode = startSegment.departureAirportCode
         arrivalAirportCode = endSegment.arrivalAirportCode
-        flightDuration = "Duration: \(startSegment.journeyDurationInMillis / 60000) mins"
+//        flightDuration = "Duration: \(startSegment.journeyDurationInMillis / 60000) mins"
+        
+        if let startDepartureDate = convertStringToDate(startSegment.departureDateTime),
+           let endArrivalDate = convertStringToDate(endSegment.arrivalDateTime) {
+            
+            // Calculate the total duration in minutes
+            let totalDurationInMinutes = calculateDurationInMinutes(start: startDepartureDate, end: endArrivalDate)
+            let formattedDuration = convertMinutesToHoursMinutes(totalDurationInMinutes)
+            // Display total duration
+            flightDuration = "Duration: \(formattedDuration)"
+        } else {
+            flightDuration = "Invalid dates"
+        }
+        
         if let price = selectedFlight.startingPrice {
-            flightPrice = price.amount
+            flightPrice = "\(price.amount)"
             flightPriceCurrency = price.currencyCode
         } else {
-            flightPrice = 0.0
-            flightPriceCurrency = "USD"
+            flightPrice = "Full"
         }
     }
     

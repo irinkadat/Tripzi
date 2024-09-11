@@ -19,7 +19,7 @@ final class IconTextStackView: UIStackView {
     }
     
     // MARK: - Setup View
-
+    
     private func setupView(icon: UIImage?, text: String) {
         let iconImageView = UIImageView(image: icon)
         iconImageView.tintColor = .gray

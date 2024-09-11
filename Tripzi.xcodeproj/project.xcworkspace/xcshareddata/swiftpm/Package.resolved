@@ -160,7 +160,7 @@
       "location" : "https://github.com/stripe/stripe-ios",
       "state" : {
         "branch" : "master",
-        "revision" : "d208beed08292c011dd052e5f668360750f3c50e"
+        "revision" : "e7bce071595e05aa0d48acabc012a8ca8c8fb79a"
       }
     },
     {
@@ -168,8 +168,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-protobuf.git",
       "state" : {
-        "revision" : "e17d61f26df0f0e06f58f6977ba05a097a720106",
-        "version" : "1.27.1"
+        "revision" : "edb6ed4919f7756157fe02f2552b7e3850a538e5",
+        "version" : "1.28.1"
       }
     }
   ],

@@ -11,7 +11,7 @@ import SwiftUI
 final class DestinationDetailsVC: UIViewController {
     
     // MARK: - Properties
-
+    
     var viewModel: DetailsViewModel!
     private var scrollView: UIScrollView!
     private var contentView: UIView!
@@ -26,12 +26,11 @@ final class DestinationDetailsVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         navigationController?.navigationBar.prefersLargeTitles = false
     }
     
     // MARK: - Setup
-
+    
     private func setupScrollView() {
         scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -76,7 +75,7 @@ final class DestinationDetailsVC: UIViewController {
     }
     
     // MARK: - UI Components
-
+    
     private func addImageCarousel() {
         let hostingController = UIHostingController(rootView: ListingImageCarouselView(imageUrls: viewModel.imageUrls))
         addChild(hostingController)
@@ -134,8 +133,9 @@ final class DestinationDetailsVC: UIViewController {
         ])
         
         lastAddedView = titleLabel
+        let mapLocation = MapLocation(latitude: lat, longitude: long, name: locationName)
+        let mapView = UIHostingController(rootView: MapView(locations: [mapLocation]))
         
-        let mapView = UIHostingController(rootView: MapView(latitude: lat, longitude: long, locationName: locationName))
         addChild(mapView)
         mapView.view.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(mapView.view)

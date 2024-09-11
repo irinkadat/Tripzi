@@ -14,7 +14,7 @@ protocol AuthenticationContextProvider: AnyObject {}
 final class CheckoutViewController: UIViewController, STPApplePayContextDelegate, STPAuthenticationContext, AuthenticationContextProvider {
     
     // MARK: - Properties
-
+    
     var viewModel: FlightDetailsViewModel
     let paymentButton = PKPaymentButton(paymentButtonType: .checkout, paymentButtonStyle: .black)
     let orPayWithCardLabel = UILabel()
@@ -25,7 +25,7 @@ final class CheckoutViewController: UIViewController, STPApplePayContextDelegate
     let customApplePayButton = UIButton(type: .system)
     
     // MARK: - Initializer
-
+    
     init(price: Double) {
         self.viewModel = FlightDetailsViewModel(price: price)
         super.init(nibName: nil, bundle: nil)
@@ -38,7 +38,7 @@ final class CheckoutViewController: UIViewController, STPApplePayContextDelegate
     }
     
     // MARK: - View Lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .uniBackground
@@ -46,7 +46,7 @@ final class CheckoutViewController: UIViewController, STPApplePayContextDelegate
     }
     
     // MARK: - UI Setup
-
+    
     private func setupUI() {
         setupApplePayButton()
         setupOrPayWithCardLabel()
@@ -196,7 +196,7 @@ final class CheckoutViewController: UIViewController, STPApplePayContextDelegate
     }
     
     // MARK: - Bind ViewModel
-
+    
     private func bindViewModel() {
         viewModel.updateUIForPaymentResult = { [weak self] success in
             DispatchQueue.main.async {
@@ -219,7 +219,7 @@ final class CheckoutViewController: UIViewController, STPApplePayContextDelegate
     }
     
     // MARK: - Button Actions
-
+    
     func didTapPayButton() {
         viewModel.didTapPayButton(
             cardParams: cardTextField.paymentMethodParams.card!,
@@ -233,7 +233,7 @@ final class CheckoutViewController: UIViewController, STPApplePayContextDelegate
     }
     
     // MARK: - Apple Pay Handling
-
+    
     func handleApplePayRequest() {
         let paymentRequest = StripeAPI.paymentRequest(withMerchantIdentifier: "merchant.com.example", country: "US", currency: "usd")
         

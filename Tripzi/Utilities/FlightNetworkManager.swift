@@ -10,15 +10,19 @@ import NetService
 
 final class FlightNetworkManager {
     private let url = "https://www.turkishairlines.com/api/v1/availability"
+
     private let headers = [
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json",
+        "Origin": "https://www.turkishairlines.com",
+        "Referer": "https://www.turkishairlines.com/en-int/flights/booking/availability-international",
         "X-Bfp": "eefd623666b7d32de067e67c19cdbcbe",
         "X-Clientid": "fdc44a1f-aaee-46bd-aaa3-3f8539ee3bc8",
         "X-Conversationid": "68006240-6101-4a7e-9dc2-c384d695ca9c",
         "X-Country": "int",
         "X-Requestid": "b604f200-7ba5-45b7-a80d-e769f76e16af"
     ]
+
     
     private let networkService = NetworkService()
     

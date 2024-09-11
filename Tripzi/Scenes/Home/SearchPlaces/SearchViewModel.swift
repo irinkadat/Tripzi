@@ -18,7 +18,11 @@ final class SearchViewModel: ObservableObject {
     
     // MARK: - Published Properties
     
-    @Published var listings: [PlaceListing] = []
+    @Published var listings: [PlaceListing] = [] {
+        didSet {
+            updateMapLocations()
+        }
+    }
     @Published var selectedCategoryIndex: Int? {
         didSet {
             guard let selectedIndex = selectedCategoryIndex else { return }
@@ -26,20 +30,22 @@ final class SearchViewModel: ObservableObject {
             fetchListings(for: category)
         }
     }
+    @Published var isMapVisible = false
     @Published var detailedPlace: PlaceListing?
     @Published var latitude: Double?
     @Published var longitude: Double?
     @Published var locationError: String?
     
     // MARK: - Properties
-    
+    @Published var mapLocations: [MapLocation] = []
     weak var delegate: SearchViewModelDelegate?
     private var cancellables: Set<AnyCancellable> = []
     var onListingsUpdate: (() -> Void)?
     var onCategoryIndexChanged: ((Int?) -> Void)?
+    var onMapLocationsUpdate: (([MapLocation]) -> Void)?
+    
     private let networkService = NetworkService()
     var locationManager: LocationManager
-    
     private let defaultLatitude = 45.464664
     private let defaultLongitude = 9.188540
     
@@ -61,6 +67,7 @@ final class SearchViewModel: ObservableObject {
             .sink { [weak self] listings in
                 self?.onListingsUpdate?()
                 self?.postSearchNotification(with: listings)
+                self?.updateMapLocations()
             }
             .store(in: &cancellables)
         
@@ -71,6 +78,12 @@ final class SearchViewModel: ObservableObject {
                 self?.fetchLocalListings(usingDefaultLocation: false)
             }
             .store(in: &cancellables)
+        
+        $mapLocations
+            .sink { [weak self] mapLocations in
+                self?.onMapLocationsUpdate?(mapLocations)
+            }
+            .store(in: &cancellables)
     }
     
     // MARK: - Location Methods
@@ -79,6 +92,29 @@ final class SearchViewModel: ObservableObject {
         locationManager.authorizationChanged = { [weak self] status in
             self?.handleLocationAuthorization(status: status)
         }
+    }
+    
+    func updateMapLocations() {
+        mapLocations = fetchListingsNearLocation()
+        
+    }
+    
+    func fetchListingsNearLocation() -> [MapLocation] {
+        let mapLocations: [MapLocation] = listings.compactMap { listing in
+            
+            guard let latitude = listing.lat,
+                  let longitude = listing.long,
+                  !listing.name.isEmpty else {
+                
+                print("Skipping listing with missing data or empty name: \(listing)")
+                return nil
+            }
+            
+            
+            return MapLocation(latitude: latitude, longitude: longitude, name: listing.name)
+        }
+        return mapLocations
+        
     }
     
     func checkLocationAuthorization() {
@@ -205,6 +241,7 @@ final class SearchViewModel: ObservableObject {
                         return PlaceListing(from: place)
                     }
                 }
+                
             case .failure(let error):
                 print("Error occurred: \(error)")
             }

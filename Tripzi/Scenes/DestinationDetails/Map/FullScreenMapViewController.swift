@@ -44,7 +44,10 @@ final class FullScreenMapViewController: UIViewController {
     }
     
     private func setupMapView() {
-        let mapView = UIHostingController(rootView: MapView(latitude: latitude, longitude: longitude, locationName: locationName))
+        let mapLocation = MapLocation(latitude: latitude, longitude: longitude, name: locationName)
+        let mapView = UIHostingController(rootView: MapView(locations: [mapLocation]))
+        
+        //        let mapView = UIHostingController(rootView: MapView(latitude: latitude, longitude: longitude, locationName: locationName))
         addChild(mapView)
         mapView.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(mapView.view)

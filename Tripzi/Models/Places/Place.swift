@@ -87,7 +87,6 @@ struct Location: Codable {
     let formattedAddress: [String]
 }
 
-
 struct Contact: Codable {
     let phone: String
     let formattedPhone: String
